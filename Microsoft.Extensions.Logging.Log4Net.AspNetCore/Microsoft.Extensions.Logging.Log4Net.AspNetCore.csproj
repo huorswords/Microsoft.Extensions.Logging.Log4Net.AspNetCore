@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PackageId>Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageId>
+    <Authors>Huor Swords</Authors>
+    <Company></Company>
+    <Product>Microsoft.Extensions.Logging.Log4Net.AspNetCore</Product>
+    <Description>Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.NET Core application.
+
+Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/</Description>
+    <Copyright></Copyright>
+    <PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
+    <RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
+    <AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
+  </ItemGroup>
+
+</Project>
