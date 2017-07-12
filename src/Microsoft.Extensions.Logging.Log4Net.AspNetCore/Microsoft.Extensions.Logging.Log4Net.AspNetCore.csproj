@@ -15,7 +15,9 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
     <PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
     <RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
     <AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>First working version</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
