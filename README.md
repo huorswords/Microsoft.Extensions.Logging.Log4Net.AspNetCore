@@ -2,9 +2,11 @@
 
 Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.NET Core application.
 
-Thanks to @anuraj for this [original blog post](https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/).
+Thanks to [@anuraj](https://github.com/anuraj) for this [original blog post](https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/).
 
 ## Example of use
+
+* Install the package or reference the project into your asp.net core application.
 
 * Add the `AddLog4Net()` call into your `Configure` method of the `Startup` class.
 
