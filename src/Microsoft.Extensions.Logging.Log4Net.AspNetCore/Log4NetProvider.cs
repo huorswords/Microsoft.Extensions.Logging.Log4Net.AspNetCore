@@ -53,9 +53,24 @@
         /// <returns>The <see cref="XmlElement"/> with the log4net XML element.</returns>
         private static XmlElement Parselog4NetConfigFile(string filename)
         {
-            var log4netConfig = new XmlDocument();
-            log4netConfig.Load(File.OpenRead(filename));
-            return log4netConfig["log4net"];
+            using (FileStream fp = File.OpenRead(filename))
+            {
+                var settings = new XmlReaderSettings
+                {
+                    DtdProcessing = DtdProcessing.Prohibit
+                };
+
+                var log4netConfig = new XmlDocument();
+                using (var reader = XmlReader.Create(fp, settings))
+                {
+                    log4netConfig.Load(reader);
+                }
+
+                fp.Flush();
+                fp.Dispose();
+
+                return log4netConfig["log4net"];
+            }
         }
 
         /// <summary>
