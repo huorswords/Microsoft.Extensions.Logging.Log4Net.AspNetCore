@@ -18,6 +18,7 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
     <PackageReleaseNotes>Changes to avoid DTD Xml injection</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
