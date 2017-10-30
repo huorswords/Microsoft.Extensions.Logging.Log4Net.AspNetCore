@@ -3,6 +3,7 @@
     using System;
     using System.Reflection;
     using System.Xml;
+
     using log4net;
     using log4net.Repository;
 
@@ -10,7 +11,7 @@
     /// The log4net logger class.
     /// </summary>
     public class Log4NetLogger : ILogger
-    {
+    {        
         /// <summary>
         /// The name.
         /// </summary>
@@ -25,6 +26,11 @@
         /// The log.
         /// </summary>
         private readonly ILog log;
+
+        /// <summary>
+        /// The formatter when logging an exception.
+        /// </summary>
+        private Func<object, Exception, string> exceptionDetailsFormatter;
 
         /// <summary>
         /// The logger repository.
@@ -45,7 +51,7 @@
             this.log = LogManager.GetLogger(loggerRepository.Name, name);
             log4net.Config.XmlConfigurator.Configure(loggerRepository, xmlElement);
         }
-
+        
         /// <summary>
         /// Begins a logical operation scope.
         /// </summary>
@@ -106,16 +112,21 @@
             {
                 return;
             }
-
-            if (formatter == null)
+            
+            if (null == formatter)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
-
+            
             string message = null;
             if (null != formatter)
             {
                 message = formatter(state, exception);
+            }
+
+            if (null != exception && null != this.exceptionDetailsFormatter)
+            {
+                message = this.exceptionDetailsFormatter(message, exception);
             }
 
             if (!string.IsNullOrEmpty(message)
@@ -145,6 +156,17 @@
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Defines custom formatter for logging exceptions.
+        /// </summary>
+        /// <param name="formatter">The formatting function to be used when formatting exceptions.</param>
+        /// <returns>The logger itself for fluent use.</returns>
+        public Log4NetLogger UsingCustomExceptionFormatter(Func<object, Exception, string> formatter)
+        {
+            this.exceptionDetailsFormatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
+            return this;
         }
     }
 }

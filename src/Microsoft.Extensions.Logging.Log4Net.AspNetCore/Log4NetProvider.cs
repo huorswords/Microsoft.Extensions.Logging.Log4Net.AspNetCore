@@ -1,7 +1,9 @@
 ﻿namespace Microsoft.Extensions.Logging
 {
+    using System;
     using System.Collections.Concurrent;
     using System.IO;
+    using System.Text;
     using System.Xml;
 
     /// <summary>
@@ -15,6 +17,11 @@
         private readonly string log4NetConfigFile;
 
         /// <summary>
+        /// The exception formatter Func.
+        /// </summary>
+        private Func<object, Exception, string> exceptionFormatter;
+
+        /// <summary>
         /// The loggers collection.
         /// </summary>
         private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
@@ -23,9 +30,10 @@
         /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
         /// </summary>
         /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
-        public Log4NetProvider(string log4NetConfigFile)
+        public Log4NetProvider(string log4NetConfigFile, Func<object, Exception, string> exceptionFormatter)
         {
             this.log4NetConfigFile = log4NetConfigFile;
+            this.exceptionFormatter = exceptionFormatter ?? FormatExceptionByDefault;
         }
 
         /// <summary>
@@ -35,7 +43,8 @@
         /// <returns>The <see cref="ILogger"/> instance.</returns>
         public ILogger CreateLogger(string categoryName)
         {
-            return this.loggers.GetOrAdd(categoryName, CreateLoggerImplementation);
+            var logger = this.CreateLoggerImplementation(categoryName, exceptionFormatter);
+            return this.loggers.GetOrAdd(categoryName, logger);
         }
 
         /// <summary>
@@ -78,9 +87,30 @@
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>The <see cref="Log4NetLogger"/> instance.</returns>
-        private Log4NetLogger CreateLoggerImplementation(string name)
+        private Log4NetLogger CreateLoggerImplementation(string name, Func<object, Exception, string> exceptionFormatter)
         {
-            return new Log4NetLogger(name, Parselog4NetConfigFile(log4NetConfigFile));
+            return new Log4NetLogger(name, Parselog4NetConfigFile(log4NetConfigFile))
+                       .UsingCustomExceptionFormatter(exceptionFormatter);
+        }
+
+        /// <summary>
+        /// Formats an exception by default.
+        /// </summary>
+        /// <typeparam name="TState">The type of the state.</typeparam>
+        /// <param name="state">The state of the logged object.</param>
+        /// <param name="exception">The exception to be logged.</param>
+        /// <returns>The text with the formatted message.</returns>
+        private static string FormatExceptionByDefault<TState>(TState state, Exception exception)
+        {
+            var builder = new StringBuilder();
+            builder.Append(state.ToString());
+            builder.Append(" - ");
+            if (null != exception)
+            {
+                builder.Append(exception.ToString());
+            }
+
+            return builder.ToString();
         }
     }
 }
