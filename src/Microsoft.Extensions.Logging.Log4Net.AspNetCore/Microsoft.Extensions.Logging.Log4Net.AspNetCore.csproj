@@ -15,10 +15,12 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
     <PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
     <RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
     <AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-    <PackageReleaseNotes>Changes to avoid DTD Xml injection</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds the possibility of configure a custom exception formatter, and includes a default one to log any exception thrown when Error or Warning levels are configured in the log4net.config file.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
     <Version>1.0.1</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
