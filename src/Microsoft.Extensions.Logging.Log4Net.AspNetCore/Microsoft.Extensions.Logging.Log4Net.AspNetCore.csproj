@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net462</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageId>Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageId>
@@ -15,12 +16,12 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
     <PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
     <RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
     <AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-    <PackageReleaseNotes>Adds the possibility of configure a custom exception formatter, and includes a default one to log any exception thrown when Error or Warning levels are configured in the log4net.config file.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add support to .NET Core 2.0 and .NET Framework 4.6.2 frameworks.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
