@@ -5,23 +5,12 @@
     using System.Xml;
 
     using log4net;
-    using log4net.Repository;
 
     /// <summary>
     /// The log4net logger class.
     /// </summary>
     public class Log4NetLogger : ILogger
     {        
-        /// <summary>
-        /// The name.
-        /// </summary>
-        private readonly string name;
-
-        /// <summary>
-        /// The XML element.
-        /// </summary>
-        private readonly XmlElement xmlElement;
-
         /// <summary>
         /// The log.
         /// </summary>
@@ -33,20 +22,13 @@
         private Func<object, Exception, string> exceptionDetailsFormatter;
 
         /// <summary>
-        /// The logger repository.
-        /// </summary>
-        private ILoggerRepository loggerRepository;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="xmlElement">The XML Element.</param>
         public Log4NetLogger(string name, XmlElement xmlElement)
         {
-            this.name = name;
-            this.xmlElement = xmlElement;
-            this.loggerRepository = LogManager.CreateRepository(
+            var loggerRepository = LogManager.CreateRepository(
                 Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
             this.log = LogManager.GetLogger(loggerRepository.Name, name);
             log4net.Config.XmlConfigurator.Configure(loggerRepository, xmlElement);
