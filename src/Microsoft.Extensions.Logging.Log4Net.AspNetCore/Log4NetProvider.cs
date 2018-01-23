@@ -43,8 +43,7 @@
         /// <returns>The <see cref="ILogger"/> instance.</returns>
         public ILogger CreateLogger(string categoryName)
         {
-            var logger = this.CreateLoggerImplementation(categoryName, exceptionFormatter);
-            return this.loggers.GetOrAdd(categoryName, logger);
+            return this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
         }
 
         /// <summary>
@@ -74,10 +73,6 @@
                 {
                     log4netConfig.Load(reader);
                 }
-
-                fp.Flush();
-                fp.Dispose();
-
                 return log4netConfig["log4net"];
             }
         }
@@ -87,7 +82,7 @@
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>The <see cref="Log4NetLogger"/> instance.</returns>
-        private Log4NetLogger CreateLoggerImplementation(string name, Func<object, Exception, string> exceptionFormatter)
+        private Log4NetLogger CreateLoggerImplementation(string name)
         {
             return new Log4NetLogger(name, Parselog4NetConfigFile(log4NetConfigFile))
                        .UsingCustomExceptionFormatter(exceptionFormatter);
@@ -105,7 +100,7 @@
             var builder = new StringBuilder();
             builder.Append(state.ToString());
             builder.Append(" - ");
-            if (null != exception)
+            if (exception != null)
             {
                 builder.Append(exception.ToString());
             }
