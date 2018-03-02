@@ -134,7 +134,7 @@
 				builder.Append(exception.ToString());
 			}
 
-			return builder.ToString();
-		}
-	}
+            return builder.ToString();
+        }
+    }
 }
