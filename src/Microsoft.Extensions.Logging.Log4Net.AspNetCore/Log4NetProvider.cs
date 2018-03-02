@@ -5,6 +5,11 @@
 	using System.IO;
 	using System.Text;
 	using System.Xml;
+	using System.Reflection;
+
+	using log4net;
+	using log4net.Config;
+	using log4net.Repository;
 
 	/// <summary>
 	/// The log4net provider class.
@@ -12,9 +17,9 @@
 	public class Log4NetProvider : ILoggerProvider
 	{
 		/// <summary>
-		/// The log4net config file.
+		/// The log4net repository.
 		/// </summary>
-		private readonly string log4NetConfigFile;
+		private ILoggerRepository loggerRepository;
 
 		/// <summary>
 		/// The exception formatter Func.
@@ -29,20 +34,22 @@
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
 		/// </summary>
-		/// <param name="log4NetConfigFile">The log4net configuration file.</param>
-		public Log4NetProvider(string log4NetConfigFile, Func<object, Exception, string> exceptionFormatter)
+		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+		public Log4NetProvider(string log4NetConfigFile)
+			: this(log4NetConfigFile, null)
 		{
-			this.log4NetConfigFile = log4NetConfigFile;
-			this.exceptionFormatter = exceptionFormatter ?? FormatExceptionByDefault;
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
 		/// </summary>
-		/// <param name="log4NetConfigFile">The log4net configuration file.</param>
-		public Log4NetProvider(string log4NetConfigFile)
-			: this(log4NetConfigFile, null)
+		/// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
+		public Log4NetProvider(string log4NetConfigFile, Func<object, Exception, string> exceptionFormatter)
 		{
+			this.exceptionFormatter = exceptionFormatter ?? FormatExceptionByDefault;
+			loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly(),
+														   typeof(log4net.Repository.Hierarchy.Hierarchy));
+			XmlConfigurator.Configure(loggerRepository, Parselog4NetConfigFile(log4NetConfigFile));
 		}
 
 		/// <summary>
@@ -52,8 +59,7 @@
 		/// <returns>The <see cref="ILogger"/> instance.</returns>
 		public ILogger CreateLogger(string categoryName)
 		{
-			var logger = this.CreateLoggerImplementation(categoryName, exceptionFormatter);
-			return this.loggers.GetOrAdd(categoryName, logger);
+			return this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
 		}
 
 		/// <summary>
@@ -98,9 +104,6 @@
 					log4netConfig.Load(reader);
 				}
 
-				fp.Flush();
-				fp.Dispose();
-
 				return log4netConfig["log4net"];
 			}
 		}
@@ -110,8 +113,9 @@
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns>The <see cref="Log4NetLogger"/> instance.</returns>
-		private Log4NetLogger CreateLoggerImplementation(string name, Func<object, Exception, string> exceptionFormatter)
-			=> new Log4NetLogger(name, Parselog4NetConfigFile(log4NetConfigFile)).UsingCustomExceptionFormatter(exceptionFormatter);
+		private Log4NetLogger CreateLoggerImplementation(string name)
+			=> new Log4NetLogger(loggerRepository.Name, name)
+					.UsingCustomExceptionFormatter(this.exceptionFormatter);
 
 		/// <summary>
 		/// Formats an exception by default.
@@ -125,12 +129,12 @@
 			var builder = new StringBuilder();
 			builder.Append(state.ToString());
 			builder.Append(" - ");
-			if (null != exception)
+			if (exception != null)
 			{
 				builder.Append(exception.ToString());
 			}
 
-			return builder.ToString();
-		}
-	}
+            return builder.ToString();
+        }
+    }
 }
