@@ -20,8 +20,7 @@
         /// <returns>The <see cref="ILoggerFactory"/>.</returns>
         public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile, Func<object, Exception, string> exceptionFormatter)
         {
-            Log4NetProvider provider = new Log4NetProvider(log4NetConfigFile, exceptionFormatter);
-            factory.AddProvider(provider);
+			factory.AddProvider(new Log4NetProvider(log4NetConfigFile, exceptionFormatter));
             return factory;
         }
 
@@ -33,7 +32,7 @@
         /// <returns>The <see cref="ILoggerFactory"/>.</returns>
         public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile)
         {
-            factory.AddProvider(new Log4NetProvider(log4NetConfigFile, null));
+            factory.AddProvider(new Log4NetProvider(log4NetConfigFile));
             return factory;
         }
 
@@ -56,7 +55,7 @@
         /// <returns>The <see cref="ILoggerFactory"/>.</returns>
         public static ILoggerFactory AddLog4Net(this ILoggerFactory factory)
         {
-            factory.AddLog4Net(DefaultLog4NetConfigFile, null);
+            factory.AddLog4Net(DefaultLog4NetConfigFile);
             return factory;
         }
     }
