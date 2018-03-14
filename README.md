@@ -4,7 +4,7 @@ Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.N
 
 Thanks to [@anuraj](https://github.com/anuraj) for this [original blog post](https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/).
 
-[![NuGet](https://img.shields.io/nuget/dt/Microsoft.Extensions.Logging.Log4net.AspNetCore.svg)](https://preview.nuget.org/packages/Microsoft.Extensions.Logging.Log4Net.AspNetCore/)
+[![NuGet](https://img.shields.io/nuget/dt/Microsoft.Extensions.Logging.Log4net.AspNetCore.svg)](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Log4Net.AspNetCore/)
 
 ## Example of use
 
