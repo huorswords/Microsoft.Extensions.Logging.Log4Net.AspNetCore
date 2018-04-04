@@ -16,12 +16,16 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
     <PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
     <RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
     <AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-    <PackageReleaseNotes>Add support to .NET Standard 2.0.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed bug #11 - Log file overwritten every time that the application restarts
+https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/issues/11</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-    <Version>2.0.1</Version>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
-    <FileVersion>2.0.1.0</FileVersion>
+    <Version>2.0.3</Version>
+    <AssemblyVersion>2.0.3.0</AssemblyVersion>
+    <FileVersion>2.0.3.0</FileVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.pfx</AssemblyOriginatorKeyFile>
+    <PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
