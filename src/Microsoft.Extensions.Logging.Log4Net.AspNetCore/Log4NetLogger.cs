@@ -100,10 +100,10 @@
                 message = formatter(state, exception);
             }
 
-            if (null != exception && null != this.exceptionDetailsFormatter)
-            {
-                message = this.exceptionDetailsFormatter(message, exception);
-            }
+            //if (null != exception && null != this.exceptionDetailsFormatter)
+            //{
+            //    message = this.exceptionDetailsFormatter(message, exception);
+            //}
 
             if (!string.IsNullOrEmpty(message)
                 || exception != null)
@@ -111,20 +111,20 @@
                 switch (logLevel)
                 {
                     case LogLevel.Critical:
-                        log.Fatal(message);
+                        log.Fatal(message, exception);
                         break;
                     case LogLevel.Debug:
                     case LogLevel.Trace:
-                        log.Debug(message);
+                        log.Debug(message, exception);
                         break;
                     case LogLevel.Error:
-                        log.Error(message);
+                        log.Error(message, exception);
                         break;
                     case LogLevel.Information:
-                        log.Info(message);
+                        log.Info(message, exception);
                         break;
                     case LogLevel.Warning:
-                        log.Warn(message);
+                        log.Warn(message, exception);
                         break;
                     default:
                         log.Warn($"Encountered unknown log level {logLevel}, writing out as Info.");
