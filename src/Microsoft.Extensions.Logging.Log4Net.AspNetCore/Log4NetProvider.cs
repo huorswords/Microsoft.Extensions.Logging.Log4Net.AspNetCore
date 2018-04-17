@@ -21,11 +21,6 @@
         private ILoggerRepository loggerRepository;
 
         /// <summary>
-        /// The exception formatter Func.
-        /// </summary>
-        private Func<object, Exception, string> exceptionFormatter;
-
-        /// <summary>
         /// The loggers collection.
         /// </summary>
         private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
@@ -33,19 +28,9 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
         /// </summary>
-        /// <param name="log4NetConfigFile">The log4 net configuration file.</param>
-        public Log4NetProvider(string log4NetConfigFile)
-            : this(log4NetConfigFile, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
-        /// </summary>
         /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
-        public Log4NetProvider(string log4NetConfigFile, Func<object, Exception, string> exceptionFormatter)
+        public Log4NetProvider(string log4NetConfigFile)
         {
-            this.exceptionFormatter = exceptionFormatter; //?? FormatExceptionByDefault;
             loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
                                                            typeof(log4net.Repository.Hierarchy.Hierarchy));
             XmlConfigurator.Configure(loggerRepository, Parselog4NetConfigFile(log4NetConfigFile));

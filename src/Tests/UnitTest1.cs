@@ -10,7 +10,7 @@ namespace Tests
         [TestMethod]
         public void TestMethod1()
         {
-            var provider = new Log4NetProvider("log4net.config", null);
+            var provider = new Log4NetProvider("log4net.config");
             var logger = provider.CreateLogger("Test");
 
             logger.LogCritical("A message");
@@ -21,7 +21,7 @@ namespace Tests
         [TestMethod]
         public void UsePatternLayoutOnExceptions()
         {
-            var provider = new Log4NetProvider("log4net.config", null);
+            var provider = new Log4NetProvider("log4net.config");
             var logger = provider.CreateLogger("Test");
 
             try
@@ -36,9 +36,10 @@ namespace Tests
             Assert.Inconclusive();
         }
 
-        private void ThrowException()
-        {
-            throw new InvalidOperationException("A message");
-        }
+        /// <summary>
+        /// Throws the exception, and have stacktrace to be tested by the ExceptionLayoutPattern.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">A message</exception>
+        private static void ThrowException() => throw new InvalidOperationException("A message");
     }
 }
