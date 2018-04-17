@@ -16,13 +16,20 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
     <PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
     <RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
     <AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-    <PackageReleaseNotes>Fixed bug #11 - Log file overwritten every time that the application restarts
-https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/issues/11</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed bugs:
+- #15 - Invalid exception logging
+Now, the exception formatter has been removed, and included the exception to be considered by Log4Net Exception pattern layout.
+- #16 - ArgumentNullException when running with TestHost
+@twenzel have implemented the required change to get the executing assembly from the startup class.
+- #20 - Not compatible with new WebHostBuilder pattern
+@twenzel have implemented the required change to adapt the logging extensions to the new recommended logging configuration by Microsoft (ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?tabs=aspnetcore2x#how-to-add-providers).
+
+Special thanks to Toni Wenzel (@twenzel) by its contributions</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-    <Version>2.0.3</Version>
-    <AssemblyVersion>2.0.3.0</AssemblyVersion>
-    <FileVersion>2.0.3.0</FileVersion>
+    <Version>2.1.0</Version>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+    <FileVersion>2.1.0.0</FileVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.pfx</AssemblyOriginatorKeyFile>
     <PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
@@ -30,7 +37,8 @@ https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/is
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.1" Condition="'$(TargetFramework)' != 'netcoreapp1.1'" />
   </ItemGroup>
 
 </Project>

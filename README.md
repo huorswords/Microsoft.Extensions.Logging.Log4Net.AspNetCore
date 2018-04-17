@@ -48,26 +48,9 @@ public class Startup
 </log4net>
 ```
 
-### Use custom exception logging formatter
+## Special thanks
 
-If you want to manage explicitly your exception logging when you pass it as parameter, you should initialize the logger on your  `Startup` class as follows:
+Thank you very much to all contributors & users by its collaboration, and specially to:
 
-
-```csharp
-using Microsoft.Extensions.Logging;
-
-public class Startup
-{
-    //...
-
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-    {
-        //...
-
-        loggerFactory.AddLog4Net((state, exception) => return "yourString");  // Change the lambda by your formatting exception method.
-        app.UseMvc();
-
-        //...
-    }
-}
-```
+* [@twenzel](https://github.com/twenzel) by his great job on adapting the library to the new logging recomendations for .NET Core 2.
+* [@sBoff](https://github.com/sBoff) by the fix of the mutiple calls to XmlConfigurator.Configure issue.
