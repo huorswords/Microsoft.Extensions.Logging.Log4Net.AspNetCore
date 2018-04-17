@@ -47,3 +47,10 @@ public class Startup
   </root>
 </log4net>
 ```
+
+## Special thanks
+
+Thank you very much to all contributors & users by its collaboration, and specially to:
+
+* [@twenzel](https://github.com/twenzel) by his great job on adapting the library to the new logging recomendations for .NET Core 2.
+* [@sBoff](https://github.com/sBoff) by the fix of the mutiple calls to XmlConfigurator.Configure issue.
