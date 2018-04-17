@@ -30,7 +30,8 @@ https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/is
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.1" Condition="'$(TargetFramework)' != 'netcoreapp1.1'" />
   </ItemGroup>
 
 </Project>
