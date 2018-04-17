@@ -1,6 +1,7 @@
 ﻿namespace Microsoft.Extensions.Logging
 {
     using System;
+
     using log4net;
 
     /// <summary>
@@ -14,11 +15,6 @@
         private readonly ILog log;
 
         /// <summary>
-        /// The formatter when logging an exception.
-        /// </summary>
-        private Func<object, Exception, string> exceptionDetailsFormatter;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
         /// </summary>
         /// <param name="loggerRepository">The repository name.</param>
@@ -27,7 +23,7 @@
         {
             this.log = LogManager.GetLogger(loggerRepository, name);
         }
-        
+
         /// <summary>
         /// Begins a logical operation scope.
         /// </summary>
@@ -88,23 +84,13 @@
             {
                 return;
             }
-            
+
             if (null == formatter)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
-            
-            string message = null;
-            if (null != formatter)
-            {
-                message = formatter(state, exception);
-            }
 
-            //if (null != exception && null != this.exceptionDetailsFormatter)
-            //{
-            //    message = this.exceptionDetailsFormatter(message, exception);
-            //}
-
+            string message = formatter(state, exception);
             if (!string.IsNullOrEmpty(message)
                 || exception != null)
             {
@@ -132,17 +118,6 @@
                         break;
                 }
             }
-        }
-
-        /// <summary>
-        /// Defines custom formatter for logging exceptions.
-        /// </summary>
-        /// <param name="formatter">The formatting function to be used when formatting exceptions.</param>
-        /// <returns>The logger itself for fluent use.</returns>
-        public Log4NetLogger UsingCustomExceptionFormatter(Func<object, Exception, string> formatter)
-        {
-            this.exceptionDetailsFormatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
-            return this;
         }
     }
 }

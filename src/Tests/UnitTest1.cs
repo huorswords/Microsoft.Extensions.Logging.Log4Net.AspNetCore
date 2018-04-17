@@ -10,35 +10,35 @@ namespace Tests
         [TestMethod]
         public void TestMethod1()
         {
-			var provider = new Log4NetProvider("log4net.config", null);
-			var logger = provider.CreateLogger("Test");
+            var provider = new Log4NetProvider("log4net.config", null);
+            var logger = provider.CreateLogger("Test");
 
-			logger.LogCritical("A message");
+            logger.LogCritical("A message");
 
-			Assert.Inconclusive();
+            Assert.Inconclusive();
         }
 
-		[TestMethod]
-		public void UsePatternLayoutOnExceptions()
-		{
-			var provider = new Log4NetProvider("log4net.config", null);
-			var logger = provider.CreateLogger("Test");
+        [TestMethod]
+        public void UsePatternLayoutOnExceptions()
+        {
+            var provider = new Log4NetProvider("log4net.config", null);
+            var logger = provider.CreateLogger("Test");
 
-			try
-			{
-				ThrowException();
-			}
-			catch (Exception ex)
-			{
-				logger.LogCritical(10, ex, "Catched message");
-			}
+            try
+            {
+                ThrowException();
+            }
+            catch (Exception ex)
+            {
+                logger.LogCritical(10, ex, "Catched message");
+            }
 
-			Assert.Inconclusive();
-		}
+            Assert.Inconclusive();
+        }
 
-		private void ThrowException()
-		{
-			throw new InvalidOperationException("A message");
-		}
+        private void ThrowException()
+        {
+            throw new InvalidOperationException("A message");
+        }
     }
 }

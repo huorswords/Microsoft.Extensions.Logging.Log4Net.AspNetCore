@@ -20,7 +20,7 @@
         /// <returns>The <see cref="ILoggerFactory"/>.</returns>
         public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile, Func<object, Exception, string> exceptionFormatter)
         {
-			factory.AddProvider(new Log4NetProvider(log4NetConfigFile, exceptionFormatter));
+            factory.AddProvider(new Log4NetProvider(log4NetConfigFile, exceptionFormatter));
             return factory;
         }
 

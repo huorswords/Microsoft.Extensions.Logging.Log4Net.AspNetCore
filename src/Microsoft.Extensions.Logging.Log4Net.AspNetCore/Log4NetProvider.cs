@@ -3,9 +3,8 @@
     using System;
     using System.Collections.Concurrent;
     using System.IO;
-    using System.Text;
-    using System.Xml;
     using System.Reflection;
+    using System.Xml;
 
     using log4net;
     using log4net.Config;
@@ -46,7 +45,7 @@
         /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
         public Log4NetProvider(string log4NetConfigFile, Func<object, Exception, string> exceptionFormatter)
         {
-            this.exceptionFormatter = exceptionFormatter ?? FormatExceptionByDefault;
+            this.exceptionFormatter = exceptionFormatter; //?? FormatExceptionByDefault;
             loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
                                                            typeof(log4net.Repository.Hierarchy.Hierarchy));
             XmlConfigurator.Configure(loggerRepository, Parselog4NetConfigFile(log4NetConfigFile));
@@ -58,9 +57,7 @@
         /// <param name="categoryName">The category name.</param>
         /// <returns>The <see cref="ILogger"/> instance.</returns>
         public ILogger CreateLogger(string categoryName)
-        {
-            return this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
-        }
+            => this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -114,28 +111,7 @@
         /// <param name="name">The name.</param>
         /// <returns>The <see cref="Log4NetLogger"/> instance.</returns>
         private Log4NetLogger CreateLoggerImplementation(string name)
-            => new Log4NetLogger(loggerRepository.Name, name)
-                    .UsingCustomExceptionFormatter(this.exceptionFormatter);
-
-        /// <summary>
-        /// Formats an exception by default.
-        /// </summary>
-        /// <typeparam name="TState">The type of the state.</typeparam>
-        /// <param name="state">The state of the logged object.</param>
-        /// <param name="exception">The exception to be logged.</param>
-        /// <returns>The text with the formatted message.</returns>
-        private static string FormatExceptionByDefault<TState>(TState state, Exception exception)
-        {
-            var builder = new StringBuilder();
-            builder.Append(state.ToString());
-            builder.Append(" - ");
-            if (exception != null)
-            {
-                builder.Append(exception.ToString());
-            }
-
-            return builder.ToString();
-        }
+            => new Log4NetLogger(loggerRepository.Name, name);
 
         /// <summary>
         /// Tries to retrieve the assembly from a "Startup" type found in the stacktrace.
