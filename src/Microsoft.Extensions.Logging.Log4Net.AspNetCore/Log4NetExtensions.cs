@@ -12,6 +12,19 @@
         /// </summary>
         private const string DefaultLog4NetConfigFile = "log4net.config";
 
+		/// <summary>
+		/// Adds the log4net.
+		/// </summary>
+		/// <param name="factory">The factory.</param>
+		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+		/// <param name="watch">if set to <c>true</c> [watch].</param>
+		/// <returns></returns>
+		public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile, bool watch)
+		{
+			factory.AddProvider(new Log4NetProvider(log4NetConfigFile, watch));
+			return factory;
+		}
+
         /// <summary>
         /// Adds the log4net.
         /// </summary>
@@ -59,6 +72,18 @@
             builder.Services.AddSingleton<ILoggerProvider>(new Log4NetProvider(log4NetConfigFile));
             return builder; 
         }
+
+        /// <summary>
+        /// Adds the log4net logging provider.
+        /// </summary>
+        /// <param name="builder">The logging builder instance.</param>
+        /// <param name="log4NetConfigFile">The log4net Config File.</param>
+        /// <returns></returns>
+        public static ILoggingBuilder AddLog4Net(this ILoggingBuilder builder, string log4NetConfigFile, bool watch)
+        {
+            builder.Services.AddSingleton<ILoggerProvider>(new Log4NetProvider(log4NetConfigFile, watch));
+            return builder; 
+        }
 #endif
-    }
+	}
 }
