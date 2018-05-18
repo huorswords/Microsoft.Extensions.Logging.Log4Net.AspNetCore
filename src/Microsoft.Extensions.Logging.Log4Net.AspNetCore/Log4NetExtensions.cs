@@ -17,21 +17,15 @@
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="log4NetConfigFile">The log4net Config File.</param>
+        /// <param name="logFile">The file name of the Log File.</param>
+        /// <param name="watch">If this flag is specified and set to true then the framework will watch the configuration file and will reload the config each time the file is modified.</param>
         /// <returns>The <see cref="ILoggerFactory"/>.</returns>
-        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile)
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory,
+            string log4NetConfigFile = DefaultLog4NetConfigFile,
+            string logFile = null,
+            bool watch = false)
         {
-            factory.AddProvider(new Log4NetProvider(log4NetConfigFile));
-            return factory;
-        }
-
-        /// <summary>
-        /// Adds the log4net.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <returns>The <see cref="ILoggerFactory"/>.</returns>
-        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory)
-        {
-            factory.AddLog4Net(DefaultLog4NetConfigFile);
+            factory.AddProvider(new Log4NetProvider(log4NetConfigFile, new Log4NetParams { FileName = logFile, Watch = watch }));
             return factory;
         }
 

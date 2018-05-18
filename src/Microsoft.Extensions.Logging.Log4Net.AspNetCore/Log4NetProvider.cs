@@ -31,9 +31,17 @@
         /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
         public Log4NetProvider(string log4NetConfigFile)
         {
-            loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
-                                                           typeof(log4net.Repository.Hierarchy.Hierarchy));
-            XmlConfigurator.Configure(loggerRepository, Parselog4NetConfigFile(log4NetConfigFile));
+            SetupProvider(log4NetConfigFile, new Log4NetParams());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+        /// </summary>
+        /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
+        /// <param name="log4NetParams">The log4net Config Parameters.</param>
+        public Log4NetProvider(string log4NetConfigFile, Log4NetParams log4NetParams)
+        {
+            SetupProvider(log4NetConfigFile, log4NetParams);
         }
 
         /// <summary>
@@ -122,6 +130,58 @@
 
             return null;
 #endif
+        }
+
+        private void SetupProvider(string log4NetConfigFile, Log4NetParams log4NetParams)
+        {
+            loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
+                typeof(log4net.Repository.Hierarchy.Hierarchy));
+
+            var log4NetXml = Parselog4NetConfigFile(log4NetConfigFile);
+            if (log4NetParams != null)
+            {
+                log4NetXml = SetParams(log4NetXml, log4NetParams);
+
+                if (log4NetParams.Watch)
+                {
+                    var log4NetConfigWatchFile = "watch-" + log4NetConfigFile;
+                    var xmlDoc = new XmlDocument();
+
+                    //necessary for crossing XmlDocument contexts
+                    var importNode = xmlDoc.ImportNode(log4NetXml, true);
+
+                    // Write down the XML declaration
+                    var xmlDeclaration = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                    xmlDoc.InsertBefore(xmlDeclaration, xmlDoc.DocumentElement);
+                    xmlDoc.AppendChild(importNode);
+
+                    // Save to the XML file
+                    var stream = File.Create(log4NetConfigWatchFile);
+                    xmlDoc.Save(stream);
+                    stream.Dispose();
+
+                    XmlConfigurator.ConfigureAndWatch(loggerRepository, new FileInfo(log4NetConfigWatchFile));
+                    return;
+                }
+            }
+            XmlConfigurator.Configure(loggerRepository, log4NetXml);
+        }
+
+        /// <summary>
+        /// Overwrites the parameters of config file before initializing the logger.
+        /// </summary>
+        /// <param name="log4NetXml">The Config file xml.</param>
+        /// <param name="log4NetParams">The log4net Config Parameters.</param>
+        private XmlElement SetParams(XmlElement log4NetXml, Log4NetParams log4NetParams)
+        {
+            if (log4NetParams.FileName != null)
+            {
+                var fileNodes = log4NetXml.GetElementsByTagName("file");
+                var fileNode = fileNodes.Item(0);
+                fileNode.Attributes["value"].Value = log4NetParams.FileName;
+            }
+
+            return log4NetXml;
         }
     }
 }
