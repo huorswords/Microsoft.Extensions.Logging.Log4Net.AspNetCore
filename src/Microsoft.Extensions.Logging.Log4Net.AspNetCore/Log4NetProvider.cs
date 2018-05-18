@@ -34,6 +34,11 @@
             SetupProvider(log4NetConfigFile, new Log4NetParams());
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+        /// </summary>
+        /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
+        /// <param name="log4NetParams">The log4net Config Parameters.</param>
         public Log4NetProvider(string log4NetConfigFile, Log4NetParams log4NetParams)
         {
             SetupProvider(log4NetConfigFile, log4NetParams);
