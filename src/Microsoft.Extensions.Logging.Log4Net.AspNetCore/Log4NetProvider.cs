@@ -167,6 +167,11 @@
             XmlConfigurator.Configure(loggerRepository, log4NetXml);
         }
 
+        /// <summary>
+        /// Overwrites the parameters of config file before initializing the logger.
+        /// </summary>
+        /// <param name="log4NetXml">The Config file xml.</param>
+        /// <param name="log4NetParams">The log4net Config Parameters.</param>
         private XmlElement SetParams(XmlElement log4NetXml, Log4NetParams log4NetParams)
         {
             if (log4NetParams.FileName != null)
