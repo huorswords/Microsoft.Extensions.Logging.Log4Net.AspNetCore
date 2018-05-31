@@ -28,13 +28,21 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
         /// </summary>
-        /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
-        public Log4NetProvider(string log4NetConfigFile)
+        public Log4NetProvider()
         {
             loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
-                                                           typeof(log4net.Repository.Hierarchy.Hierarchy));
+                typeof(log4net.Repository.Hierarchy.Hierarchy));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+        /// </summary>
+        /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
+        public Log4NetProvider(string log4NetConfigFile) : this()
+        {
             XmlConfigurator.Configure(loggerRepository, Parselog4NetConfigFile(log4NetConfigFile));
         }
+
 
         /// <summary>
         /// Creates the logger.
