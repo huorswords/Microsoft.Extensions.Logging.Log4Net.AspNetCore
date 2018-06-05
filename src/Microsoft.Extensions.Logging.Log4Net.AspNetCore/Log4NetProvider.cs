@@ -30,28 +30,28 @@
         /// </summary>
         /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
         public Log4NetProvider(string log4NetConfigFile)
-			: this(log4NetConfigFile, false)
+            : this(log4NetConfigFile, false)
         {
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
-		/// </summary>
-		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
-		/// <param name="watch">if set to <c>true</c> [watch].</param>
-		public Log4NetProvider(string log4NetConfigFile, bool watch)
-		{
-			loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
-														   typeof(log4net.Repository.Hierarchy.Hierarchy));
-			if (watch)
-			{
-				XmlConfigurator.ConfigureAndWatch(loggerRepository, new FileInfo(Path.GetFullPath(log4NetConfigFile)));
-			}
-			else
-			{
-				XmlConfigurator.Configure(loggerRepository, Parselog4NetConfigFile(log4NetConfigFile));
-			}			
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+        /// </summary>
+        /// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+        /// <param name="watch">if set to <c>true</c> [watch].</param>
+        public Log4NetProvider(string log4NetConfigFile, bool watch)
+        {
+            loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
+                                                           typeof(log4net.Repository.Hierarchy.Hierarchy));
+            if (watch)
+            {
+                XmlConfigurator.ConfigureAndWatch(loggerRepository, new FileInfo(Path.GetFullPath(log4NetConfigFile)));
+            }
+            else
+            {
+                XmlConfigurator.Configure(loggerRepository, Parselog4NetConfigFile(log4NetConfigFile));
+            }
+        }
 
         /// <summary>
         /// Creates the logger.
