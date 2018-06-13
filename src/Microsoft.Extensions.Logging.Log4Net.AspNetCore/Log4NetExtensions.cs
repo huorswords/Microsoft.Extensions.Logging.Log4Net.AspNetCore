@@ -1,6 +1,7 @@
 ﻿namespace Microsoft.Extensions.Logging
 {
-    using Microsoft.Extensions.DependencyInjection;
+	using Microsoft.Extensions.Configuration;
+	using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// The log4net extensions class.
@@ -12,13 +13,14 @@
         /// </summary>
         private const string DefaultLog4NetConfigFile = "log4net.config";
 
-        /// <summary>
-        /// Adds the log4net.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <param name="log4NetConfigFile">The log4net Config File.</param>
-        /// <returns>The <see cref="ILoggerFactory"/>.</returns>
-        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile)
+
+		/// <summary>
+		/// Adds the log4net.
+		/// </summary>
+		/// <param name="factory">The factory.</param>
+		/// <param name="log4NetConfigFile">The log4net Config File.</param>
+		/// <returns>The <see cref="ILoggerFactory"/>.</returns>
+		public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile)
         {
             factory.AddProvider(new Log4NetProvider(log4NetConfigFile));
             return factory;
