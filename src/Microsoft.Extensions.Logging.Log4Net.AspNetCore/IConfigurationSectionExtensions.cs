@@ -20,17 +20,8 @@ namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore
 		/// <param name="configurationSection">The configuration section.</param>
 		/// <returns>The dictionary</returns>
 		/// <exception cref="ArgumentNullException">configurationSection</exception>
-		public static IDictionary<string, string> ConvertToDictionary(this IConfigurationSection configurationSection)
-		{
-			if (configurationSection == null)
-			{
-				throw new ArgumentNullException(nameof(configurationSection));
-			}
-
-			var configs = configurationSection.AsEnumerable().Skip(1);
-			return configs.ToDictionary((k) => k.Key.Substring(k.Key.LastIndexOf(HierarchySeparatorChar) + 1), (v) => v.Value);
-		}
-
+		public static IDictionary<string, string> ConvertToDictionary(this IConfigurationSection configurationSection) =>
+			configurationSection.Get<Dictionary<string, string>>();
 
 
 	}

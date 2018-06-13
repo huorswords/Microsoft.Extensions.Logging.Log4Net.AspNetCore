@@ -2,10 +2,7 @@
 {
 	using System;
 	using System.Collections.Concurrent;
-	using System.Collections.Generic;
-	using System.Dynamic;
 	using System.IO;
-	using System.Linq;
 	using System.Reflection;
 	using System.Xml;
 	using System.Xml.XPath;
@@ -18,6 +15,7 @@
 	/// <summary>
 	/// The log4net provider class.
 	/// </summary>
+	/// <seealso cref="Microsoft.Extensions.Logging.ILoggerProvider" />
 	public class Log4NetProvider : ILoggerProvider
 	{
 		/// <summary>
@@ -30,39 +28,75 @@
 		/// </summary>
 		private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
 
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
-		/// </summary>
-		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
-		/// <param name="configurationSection">The configuration section. The values provided in this configuration will override the matching nodes value in original configuration file. You should use xpath as key (to find the node to override), and the new value as value.</param>
-		public Log4NetProvider(string log4NetConfigFile, IConfigurationSection configurationSection)
-		{
-			var log4NetConfigXml = ParseLog4NetConfigFile(log4NetConfigFile).ToXDocument();
-			var cfSectionAsDict = configurationSection.ConvertToDictionary();
-			foreach (string xpath in cfSectionAsDict.Keys)
-			{
-				var node = log4NetConfigXml.XPathSelectElement(xpath);
-				if (node != null && node.Attribute("value") != null)
-				{
-					node.Attribute("value").Value = cfSectionAsDict[xpath];
-				}
-			}
-			loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
-														   typeof(log4net.Repository.Hierarchy.Hierarchy));
-			XmlConfigurator.Configure(loggerRepository, log4NetConfigXml.ToXmlDocument().DocumentElement);
-		}
-
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
 		/// </summary>
 		/// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
 		public Log4NetProvider(string log4NetConfigFile)
+			: this(log4NetConfigFile, false, null)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+		/// </summary>
+		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+		/// <param name="configurationSection">The configuration section.</param>
+		public Log4NetProvider(string log4NetConfigFile, IConfigurationSection configurationSection)
+			: this(log4NetConfigFile, false, configurationSection)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+		/// </summary>
+		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+		/// <param name="watch">if set to <c>true</c> [watch].</param>
+		public Log4NetProvider(string log4NetConfigFile, bool watch)
+			: this(log4NetConfigFile, watch, null)
+		{
+		}
+
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider" /> class.
+		/// </summary>
+		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+		/// <param name="watch">if set to <c>true</c> [watch].</param>
+		/// <param name="configurationSection">The configuration section.</param>
+		/// <exception cref="NotSupportedException">Wach cannot be true if you are overwriting config file values with values from configuration section.</exception>
+		private Log4NetProvider(string log4NetConfigFile, bool watch, IConfigurationSection configurationSection)
 		{
 			loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
 														   typeof(log4net.Repository.Hierarchy.Hierarchy));
-			XmlConfigurator.Configure(loggerRepository, ParseLog4NetConfigFile(log4NetConfigFile).DocumentElement);
+			if (watch && configurationSection != null)
+			{
+				throw new NotSupportedException("Wach cannot be true if you are overwriting config file values with values from configuration section.");
+			}
+
+			if (watch)
+			{
+				XmlConfigurator.ConfigureAndWatch(loggerRepository, new FileInfo(Path.GetFullPath(log4NetConfigFile)));
+			}
+			else
+			{
+				var configXml = ParseLog4NetConfigFile(log4NetConfigFile);
+				if (configurationSection != null)
+				{
+					var configXDoc = configXml.ToXDocument();
+					var cfSectionAsDict = configurationSection.ConvertToDictionary();
+					foreach (string xpath in cfSectionAsDict.Keys)
+					{
+						var node = configXDoc.XPathSelectElement(xpath);
+						if (node != null && node.Attribute("value") != null)
+						{
+							node.Attribute("value").Value = cfSectionAsDict[xpath];
+						}
+					}
+					configXml = configXDoc.ToXmlDocument();
+				}
+				XmlConfigurator.Configure(loggerRepository, configXml.DocumentElement);
+			}
 		}
 
 		/// <summary>
@@ -90,13 +124,11 @@
 		{
 			if (disposing)
 			{
-				return;
 			}
 
 			this.loggers.Clear();
 		}
 
-		
 		/// <summary>
 		/// Parses log4net config file.
 		/// </summary>
