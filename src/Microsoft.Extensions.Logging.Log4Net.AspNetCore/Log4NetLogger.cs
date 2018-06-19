@@ -42,22 +42,22 @@
         /// </summary>
         /// <param name="logLevel">The log level.</param>
         /// <returns>The <see cref="bool"/> value indicating whether the logging level is enabled.</returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException">Throws when <paramref name="logLevel"/> is outside allowed range</exception>
         public bool IsEnabled(LogLevel logLevel)
         {
             switch (logLevel)
             {
                 case LogLevel.Critical:
-                    return log.IsFatalEnabled;
+                    return this.log.IsFatalEnabled;
                 case LogLevel.Debug:
                 case LogLevel.Trace:
-                    return log.IsDebugEnabled;
+                    return this.log.IsDebugEnabled;
                 case LogLevel.Error:
-                    return log.IsErrorEnabled;
+                    return this.log.IsErrorEnabled;
                 case LogLevel.Information:
-                    return log.IsInfoEnabled;
+                    return this.log.IsInfoEnabled;
                 case LogLevel.Warning:
-                    return log.IsWarnEnabled;
+                    return this.log.IsWarnEnabled;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(logLevel));
             }
@@ -85,7 +85,7 @@
                 return;
             }
 
-            if (null == formatter)
+            if (formatter == null)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
@@ -97,24 +97,24 @@
                 switch (logLevel)
                 {
                     case LogLevel.Critical:
-                        log.Fatal(message, exception);
+                        this.log.Fatal(message, exception);
                         break;
                     case LogLevel.Debug:
                     case LogLevel.Trace:
-                        log.Debug(message, exception);
+                        this.log.Debug(message, exception);
                         break;
                     case LogLevel.Error:
-                        log.Error(message, exception);
+                        this.log.Error(message, exception);
                         break;
                     case LogLevel.Information:
-                        log.Info(message, exception);
+                        this.log.Info(message, exception);
                         break;
                     case LogLevel.Warning:
-                        log.Warn(message, exception);
+                        this.log.Warn(message, exception);
                         break;
                     default:
-                        log.Warn($"Encountered unknown log level {logLevel}, writing out as Info.");
-                        log.Info(message, exception);
+                        this.log.Warn($"Encountered unknown log level {logLevel}, writing out as Info.");
+                        this.log.Info(message, exception);
                         break;
                 }
             }
