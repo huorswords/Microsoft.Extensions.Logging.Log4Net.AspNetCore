@@ -8,7 +8,7 @@ namespace Tests
     public class LoggerShould
     {
         [TestMethod]
-        public void TestMethod1()
+        public void LogCriticalMessages()
         {
             var provider = new Log4NetProvider("log4net.config");
             var logger = provider.CreateLogger("Test");

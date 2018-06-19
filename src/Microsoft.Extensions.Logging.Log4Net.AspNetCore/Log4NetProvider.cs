@@ -33,7 +33,7 @@
                 throw new ArgumentOutOfRangeException(nameof(self), "The ILoggerProvider should be of type Log4NetProvider.");
             }
 
-            return self.CreateLogger(typeof(TName).AssemblyQualifiedName);
+            return self.CreateLogger(typeof(TName).FullName);
         }
     }
 
