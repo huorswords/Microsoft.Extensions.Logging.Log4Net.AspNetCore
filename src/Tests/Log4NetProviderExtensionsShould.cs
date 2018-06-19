@@ -9,12 +9,12 @@
 		[TestMethod]
 		public void CreateLoggerWithTypeName()
 		{
-			var provider = new Log4NetProvider("log4net.config");
+			var provider = new Log4NetProvider();
 
 			Log4NetLogger logger = provider.CreateLogger<Log4NetProviderExtensionsShould>() as Log4NetLogger;
 
 			Assert.IsNotNull(logger);
-			Assert.AreEqual("Tests.Log4NetProviderExtensionsShould", logger.Name);
+			Assert.AreEqual(typeof(Log4NetProviderExtensionsShould).FullName, logger.Name);
 		}
 	}
 }

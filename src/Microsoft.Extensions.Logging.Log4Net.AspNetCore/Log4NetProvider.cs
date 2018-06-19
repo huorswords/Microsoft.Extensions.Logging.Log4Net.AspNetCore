@@ -1,236 +1,222 @@
 ﻿namespace Microsoft.Extensions.Logging
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.IO;
-    using System.Reflection;
-    using System.Xml;
-    using System.Xml.Linq;
-    using System.Xml.XPath;
-    using log4net;
-    using log4net.Config;
-    using log4net.Repository;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
+	using System;
+	using System.Collections.Concurrent;
+	using System.IO;
+	using System.Reflection;
+	using System.Xml;
+	using System.Xml.Linq;
+	using System.Xml.XPath;
 
-    /// <summary>
-    /// Log4Net provider extensions.
-    /// </summary>
-    public static class Log4NetProviderExtensions
-    {
-        /// <summary>
-        /// Creates a logger with the name of the given <see cref="TName"/> type.
-        /// </summary>
-        /// <typeparam name="TName">The type of the class to be used as name of the logger.</typeparam>
-        /// <param name="self">An ILoggerProvider instance.</param>
-        /// <returns>An instance of the <see cref="ILogger"/>.</returns>
-        public static ILogger CreateLogger<TName>(this ILoggerProvider self) where TName : class
-        {
-            if (self == null)
-            {
-                throw new ArgumentNullException(nameof(self));
-            }
-            
-            if (!self.GetType().IsAssignableFrom(typeof(Log4NetProvider)))
-            {
-                throw new ArgumentOutOfRangeException(nameof(self), "The ILoggerProvider should be of type Log4NetProvider.");
-            }
+	using Microsoft.Extensions.Configuration;
+	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
 
-            return self.CreateLogger(typeof(TName).FullName);
-        }
-    }
+	using log4net;
+	using log4net.Config;
+	using log4net.Repository;
 
-    /// <summary>
-    /// The log4net provider class.
-    /// </summary>
-    /// <seealso cref="Microsoft.Extensions.Logging.ILoggerProvider" />
-    public class Log4NetProvider : ILoggerProvider
-    {
-        /// <summary>
-        /// The log4net repository.
-        /// </summary>
-        private readonly ILoggerRepository loggerRepository;
+	/// <summary>
+	/// The log4net provider class.
+	/// </summary>
+	/// <seealso cref="Microsoft.Extensions.Logging.ILoggerProvider" />
+	public class Log4NetProvider : ILoggerProvider
+	{
+		/// <summary>
+		/// The log4net repository.
+		/// </summary>
+		private readonly ILoggerRepository loggerRepository;
 
-        /// <summary>
-        /// The loggers collection.
-        /// </summary>
-        private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
+		/// <summary>
+		/// The loggers collection.
+		/// </summary>
+		private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
-        /// </summary>
-        /// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
-        public Log4NetProvider(string log4NetConfigFile)
-            : this(log4NetConfigFile, false, null)
-        {
-        }
+		private const string DefaultLog4NetFileName = "log4net.config";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
-        /// </summary>
-        /// <param name="log4NetConfigFile">The log4 net configuration file.</param>
-        /// <param name="configurationSection">The configuration section.</param>
-        public Log4NetProvider(string log4NetConfigFile, IConfigurationSection configurationSection)
-            : this(log4NetConfigFile, false, configurationSection)
-        {
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+		/// </summary>
+		public Log4NetProvider()
+			: this(DefaultLog4NetFileName)
+		{
+		}
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
-        /// </summary>
-        /// <param name="log4NetConfigFile">The log4 net configuration file.</param>
-        /// <param name="watch">if set to <c>true</c> [watch].</param>
-        public Log4NetProvider(string log4NetConfigFile, bool watch)
-            : this(log4NetConfigFile, watch, null)
-        {
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+		/// </summary>
+		/// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
+		public Log4NetProvider(string log4NetConfigFile)
+			: this(log4NetConfigFile, false, null)
+		{
+		}
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetProvider" /> class.
-        /// </summary>
-        /// <param name="log4NetConfigFile">The log4 net configuration file.</param>
-        /// <param name="watch">if set to <c>true</c> [watch].</param>
-        /// <param name="configurationSection">The configuration section.</param>
-        /// <exception cref="NotSupportedException">Watch cannot be true if you are overwriting config file values with values from configuration section.</exception>
-        private Log4NetProvider(string log4NetConfigFile, bool watch, IConfigurationSection configurationSection)
-        {
-            if (watch && configurationSection != null)
-            {
-                throw new NotSupportedException("Wach cannot be true if you are overwriting config file values with values from configuration section.");
-            }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+		/// </summary>
+		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+		/// <param name="configurationSection">The configuration section.</param>
+		public Log4NetProvider(string log4NetConfigFile, IConfigurationSection configurationSection)
+			: this(log4NetConfigFile, false, configurationSection)
+		{
+		}
 
-            this.loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
-                                                           typeof(log4net.Repository.Hierarchy.Hierarchy));
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+		/// </summary>
+		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+		/// <param name="watch">if set to <c>true</c> [watch].</param>
+		public Log4NetProvider(string log4NetConfigFile, bool watch)
+			: this(log4NetConfigFile, watch, null)
+		{
+		}
 
-            if (watch)
-            {
-                XmlConfigurator.ConfigureAndWatch(this.loggerRepository, new FileInfo(Path.GetFullPath(log4NetConfigFile)));
-            }
-            else
-            {
-                var configXml = ParseLog4NetConfigFile(log4NetConfigFile);
-                if (configurationSection != null)
-                {
-                    configXml = UpdateNodesWithAdditionalConfiguration(configXml, configurationSection);
-                }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider" /> class.
+		/// </summary>
+		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+		/// <param name="watch">if set to <c>true</c> [watch].</param>
+		/// <param name="configurationSection">The configuration section.</param>
+		/// <exception cref="NotSupportedException">Watch cannot be true if you are overwriting config file values with values from configuration section.</exception>
+		private Log4NetProvider(string log4NetConfigFile, bool watch, IConfigurationSection configurationSection)
+		{
+			if (watch && configurationSection != null)
+			{
+				throw new NotSupportedException("Wach cannot be true if you are overwriting config file values with values from configuration section.");
+			}
 
-                XmlConfigurator.Configure(this.loggerRepository, configXml.DocumentElement);
-            }
-        }
+			this.loggerRepository = LogManager.CreateRepository(
+				Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
+				typeof(log4net.Repository.Hierarchy.Hierarchy));
 
-        /// <summary>
-        /// Creates the logger.
-        /// </summary>
-        /// <param name="categoryName">The category name.</param>
-        /// <returns>The <see cref="ILogger"/> instance.</returns>
-        public ILogger CreateLogger(string categoryName)
-                => this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
+			if (watch)
+			{
+				XmlConfigurator.ConfigureAndWatch(this.loggerRepository, new FileInfo(Path.GetFullPath(log4NetConfigFile)));
+			}
+			else
+			{
+				var configXml = ParseLog4NetConfigFile(log4NetConfigFile);
+				if (configurationSection != null)
+				{
+					configXml = UpdateNodesWithAdditionalConfiguration(configXml, configurationSection);
+				}
 
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public void Dispose()
-            {
-                this.Dispose(true);
-                GC.SuppressFinalize(this);
-            }
+				XmlConfigurator.Configure(this.loggerRepository, configXml.DocumentElement);
+			}
+		}
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                return;
-            }
+		/// <summary>
+		/// Creates the logger.
+		/// </summary>
+		/// <param name="categoryName">The category name.</param>
+		/// <returns>The <see cref="ILogger"/> instance.</returns>
+		public ILogger CreateLogger(string categoryName)
+				=> this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
 
-            this.loggers.Clear();
-        }
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		public void Dispose()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 
-        /// <summary>
-        /// Rewrites the information of the node specified by xpath expression.
-        /// </summary>
-        /// <param name="configXml">The log4net config in xml.</param>
-        /// <param name="configurationSection">The configuration section.</param>
-        /// <returns>The xml configuration with overwritten  nodes if any</returns>
-        private static XmlDocument UpdateNodesWithAdditionalConfiguration(XmlDocument configXml, IConfigurationSection configurationSection)
-        {
-            var configXDoc = configXml.ToXDocument();
-            var additionalConfig = configurationSection.ConvertToDictionary();
-            foreach (string xpath in additionalConfig.Keys)
-            {
-                var node = configXDoc.XPathSelectElement(xpath);
-                if (node != null)
-                {
-                    var nodeInfo = additionalConfig[xpath];
-                    if (nodeInfo.NodeContent != null)
-                    {
-                        node.Value = nodeInfo.NodeContent;
-                    }
+		/// <summary>
+		/// Releases unmanaged and - optionally - managed resources.
+		/// </summary>
+		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				return;
+			}
 
-                    AddOrUpdateAttributes(node, nodeInfo);
-                }
-            }
+			this.loggers.Clear();
+		}
 
-            return configXDoc.ToXmlDocument();
-        }
+		/// <summary>
+		/// Rewrites the information of the node specified by xpath expression.
+		/// </summary>
+		/// <param name="configXml">The log4net config in xml.</param>
+		/// <param name="configurationSection">The configuration section.</param>
+		/// <returns>The xml configuration with overwritten  nodes if any</returns>
+		private static XmlDocument UpdateNodesWithAdditionalConfiguration(XmlDocument configXml, IConfigurationSection configurationSection)
+		{
+			var configXDoc = configXml.ToXDocument();
+			var additionalConfig = configurationSection.ConvertToDictionary();
+			foreach (string xpath in additionalConfig.Keys)
+			{
+				var node = configXDoc.XPathSelectElement(xpath);
+				if (node != null)
+				{
+					var nodeInfo = additionalConfig[xpath];
+					if (nodeInfo.NodeContent != null)
+					{
+						node.Value = nodeInfo.NodeContent;
+					}
 
-        /// <summary>
-        /// Adds or updates the attributes specified in the node information.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <param name="nodeInfo">The node information.</param>
-        private static void AddOrUpdateAttributes(XElement node, NodeInfo nodeInfo)
-        {
-            foreach (var attribute in nodeInfo.Attributes)
-            {
-                var nodeAttribute = node.Attribute(attribute.Key);
-                if (nodeAttribute != null)
-                {
-                    nodeAttribute.Value = attribute.Value;
-                }
-                else
-                {
-                    node.SetAttributeValue(attribute.Key, attribute.Value);
-                }
-            }
-        }
+					AddOrUpdateAttributes(node, nodeInfo);
+				}
+			}
 
-        /// <summary>
-        /// Parses log4net config file.
-        /// </summary>
-        /// <param name="filename">The filename.</param>
-        /// <returns>The <see cref="XmlElement"/> with the log4net XML element.</returns>
-        private static XmlDocument ParseLog4NetConfigFile(string filename)
-        {
-            using (FileStream fp = File.OpenRead(filename))
-            {
-                var settings = new XmlReaderSettings
-                {
-                    DtdProcessing = DtdProcessing.Prohibit
-                };
+			return configXDoc.ToXmlDocument();
+		}
 
-                var log4netConfig = new XmlDocument();
-                using (var reader = XmlReader.Create(fp, settings))
-                {
-                    log4netConfig.Load(reader);
-                }
+		/// <summary>
+		/// Adds or updates the attributes specified in the node information.
+		/// </summary>
+		/// <param name="node">The node.</param>
+		/// <param name="nodeInfo">The node information.</param>
+		private static void AddOrUpdateAttributes(XElement node, NodeInfo nodeInfo)
+		{
+			foreach (var attribute in nodeInfo.Attributes)
+			{
+				var nodeAttribute = node.Attribute(attribute.Key);
+				if (nodeAttribute != null)
+				{
+					nodeAttribute.Value = attribute.Value;
+				}
+				else
+				{
+					node.SetAttributeValue(attribute.Key, attribute.Value);
+				}
+			}
+		}
 
-                return log4netConfig;
-            }
-        }
+		/// <summary>
+		/// Parses log4net config file.
+		/// </summary>
+		/// <param name="filename">The filename.</param>
+		/// <returns>The <see cref="XmlElement"/> with the log4net XML element.</returns>
+		private static XmlDocument ParseLog4NetConfigFile(string filename)
+		{
+			using (FileStream fp = File.OpenRead(filename))
+			{
+				var settings = new XmlReaderSettings
+				{
+					DtdProcessing = DtdProcessing.Prohibit
+				};
 
-        /// <summary>
-        /// Tries to retrieve the assembly from a "Startup" type found in the stack trace.
-        /// </summary>
-        /// <returns>Null for NetCoreApp 1.1, otherwise, Assembly of Startup type if found in stack trace.</returns>
-        private static Assembly GetCallingAssemblyFromStartup()
-        {
+				var log4netConfig = new XmlDocument();
+				using (var reader = XmlReader.Create(fp, settings))
+				{
+					log4netConfig.Load(reader);
+				}
+
+				return log4netConfig;
+			}
+		}
+
+		/// <summary>
+		/// Tries to retrieve the assembly from a "Startup" type found in the stack trace.
+		/// </summary>
+		/// <returns>Null for NetCoreApp 1.1, otherwise, Assembly of Startup type if found in stack trace.</returns>
+		private static Assembly GetCallingAssemblyFromStartup()
+		{
 #if NETCOREAPP1_1
-            return null;
+			return null;
 #else
             var stackTrace = new System.Diagnostics.StackTrace(2);
 
@@ -247,14 +233,14 @@
 
             return null;
 #endif
-        }
+		}
 
-        /// <summary>
-        /// Creates the logger implementation.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns>The <see cref="Log4NetLogger"/> instance.</returns>
-        private Log4NetLogger CreateLoggerImplementation(string name)
-            => new Log4NetLogger(this.loggerRepository.Name, name);
-    }
+		/// <summary>
+		/// Creates the logger implementation.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns>The <see cref="Log4NetLogger"/> instance.</returns>
+		private Log4NetLogger CreateLoggerImplementation(string name)
+			=> new Log4NetLogger(this.loggerRepository.Name, name);
+	}
 }
