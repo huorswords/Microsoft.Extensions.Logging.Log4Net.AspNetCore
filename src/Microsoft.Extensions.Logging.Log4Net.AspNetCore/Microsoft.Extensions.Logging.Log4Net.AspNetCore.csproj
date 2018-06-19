@@ -37,8 +37,12 @@ Special thanks to Toni Wenzel (@twenzel) by its contributions</PackageReleaseNot
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.1" Condition="'$(TargetFramework)' != 'netcoreapp1.1'" />
+    <PackageReference Include="System.Xml.XPath.XDocument" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

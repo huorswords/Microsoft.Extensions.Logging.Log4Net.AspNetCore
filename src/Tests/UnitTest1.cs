@@ -1,45 +1,58 @@
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
 namespace Tests
 {
-    [TestClass]
-    public class LoggerShould
-    {
-        [TestMethod]
-        public void LogCriticalMessages()
-        {
-            var provider = new Log4NetProvider("log4net.config");
-            var logger = provider.CreateLogger("Test");
+	using System;
+	using System.IO;
 
-            logger.LogCritical("A message");
+	using Microsoft.Extensions.Logging;
+	using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-            Assert.Inconclusive();
-        }
+	[TestClass]
+	public class LoggerShould
+	{
 
-        [TestMethod]
-        public void UsePatternLayoutOnExceptions()
-        {
-            var provider = new Log4NetProvider("log4net.config");
-            var logger = provider.CreateLogger("Test");
+		[TestMethod]
+		public void ProviderShouldBeCreatedWithConfigurationSectionOverrides()
+		{
+			var builder = new ConfigurationBuilder();
+			builder.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile("appsettings.json");
+			var configuration = builder.Build();
+			var provider = new Log4NetProvider("log4net.config", configuration.GetSection("Logging"));
+		}
 
-            try
-            {
-                ThrowException();
-            }
-            catch (Exception ex)
-            {
-                logger.LogCritical(10, ex, "Catched message");
-            }
+		[TestMethod]
+		public void LogCriticalMessages()
+		{
+			var provider = new Log4NetProvider("log4net.config");
+			var logger = provider.CreateLogger("Test");
 
-            Assert.Inconclusive();
-        }
+			logger.LogCritical("A message");
 
-        /// <summary>
-        /// Throws the exception, and have stacktrace to be tested by the ExceptionLayoutPattern.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">A message</exception>
-        private static void ThrowException() => throw new InvalidOperationException("A message");
-    }
+			Assert.Inconclusive();
+		}
+
+		[TestMethod]
+		public void UsePatternLayoutOnExceptions()
+		{
+			var provider = new Log4NetProvider("log4net.config");
+			var logger = provider.CreateLogger("Test");
+
+			try
+			{
+				ThrowException();
+			}
+			catch (Exception ex)
+			{
+				logger.LogCritical(10, ex, "Catched message");
+			}
+
+			Assert.Inconclusive();
+		}
+
+		/// <summary>
+		/// Throws the exception, and have stacktrace to be tested by the ExceptionLayoutPattern.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">A message</exception>
+		private static void ThrowException() => throw new InvalidOperationException("A message");
+	}
 }
