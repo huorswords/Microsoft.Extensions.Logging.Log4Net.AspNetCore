@@ -1,41 +1,48 @@
 ﻿namespace Microsoft.Extensions.Logging
 {
-    using System;
+	using System;
 
-    using log4net;
+	using log4net;
 
-    /// <summary>
-    /// The log4net logger class.
-    /// </summary>
-    public class Log4NetLogger : ILogger
-    {
-        /// <summary>
-        /// The log.
-        /// </summary>
-        private readonly ILog log;
+	/// <summary>
+	/// The log4net logger class.
+	/// </summary>
+	public class Log4NetLogger : ILogger
+	{
+		/// <summary>
+		/// The log.
+		/// </summary>
+		private readonly ILog log;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
-        /// </summary>
-        /// <param name="loggerRepository">The repository name.</param>
-        /// <param name="name">The logger's name.</param>
-        public Log4NetLogger(string loggerRepository, string name)
-        {
-            this.log = LogManager.GetLogger(loggerRepository, name);
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
+		/// </summary>
+		/// <param name="loggerRepository">The repository name.</param>
+		/// <param name="name">The logger's name.</param>
+		public Log4NetLogger(string loggerRepository, string name) 
+			=> this.log = LogManager.GetLogger(loggerRepository, name);
 
-        /// <summary>
-        /// Begins a logical operation scope.
-        /// </summary>
-        /// <typeparam name="TState">The type of the state.</typeparam>
-        /// <param name="state">The identifier for the scope.</param>
-        /// <returns>
-        /// An IDisposable that ends the logical operation scope on dispose.
-        /// </returns>
-        public IDisposable BeginScope<TState>(TState state)
-        {
-            return null;
-        }
+		/// <summary>
+		/// Gets the name.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return this.log.Logger.Name;
+			}
+		}
+
+		/// <summary>
+		/// Begins a logical operation scope.
+		/// </summary>
+		/// <typeparam name="TState">The type of the state.</typeparam>
+		/// <param name="state">The identifier for the scope.</param>
+		/// <returns>
+		/// An IDisposable that ends the logical operation scope on dispose.
+		/// </returns>
+		public IDisposable BeginScope<TState>(TState state) 
+			=> null;
 
         /// <summary>
         /// Determines whether the logging level is enabled.
@@ -63,27 +70,27 @@
             }
         }
 
-        /// <summary>
-        /// Logs an exception into the log.
-        /// </summary>
-        /// <param name="logLevel">The log level.</param>
-        /// <param name="eventId">The event Id.</param>
-        /// <param name="state">The state.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="formatter">The formatter.</param>
-        /// <typeparam name="TState">The type of the state.</typeparam>
-        /// <exception cref="ArgumentNullException">Throws when the <paramref name="formatter"/> is null.</exception>
-        public void Log<TState>(
-            LogLevel logLevel,
-            EventId eventId,
-            TState state,
-            Exception exception,
-            Func<TState, Exception, string> formatter)
-        {
-            if (!this.IsEnabled(logLevel))
-            {
-                return;
-            }
+		/// <summary>
+		/// Logs an exception into the log.
+		/// </summary>
+		/// <param name="logLevel">The log level.</param>
+		/// <param name="eventId">The event Id.</param>
+		/// <param name="state">The state.</param>
+		/// <param name="exception">The exception.</param>
+		/// <param name="formatter">The formatter.</param>
+		/// <typeparam name="TState">The type of the state.</typeparam>
+		/// <exception cref="ArgumentNullException">Throws when the <paramref name="formatter"/> is null.</exception>
+		public void Log<TState>(
+			LogLevel logLevel,
+			EventId eventId,
+			TState state,
+			Exception exception,
+			Func<TState, Exception, string> formatter)
+		{
+			if (!this.IsEnabled(logLevel))
+			{
+				return;
+			}
 
             if (formatter == null)
             {

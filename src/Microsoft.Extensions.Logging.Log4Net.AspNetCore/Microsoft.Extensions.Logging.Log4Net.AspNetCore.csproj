@@ -1,48 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net462;netstandard2.0</TargetFrameworks>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <PackageId>Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageId>
-    <Authors>Huor Swords</Authors>
-    <Company></Company>
-    <Product>Microsoft.Extensions.Logging.Log4Net.AspNetCore</Product>
-    <Description>Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.NET Core application.
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net462;netstandard2.0</TargetFrameworks>
+	</PropertyGroup>
+	<PropertyGroup>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageId>Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageId>
+		<Authors>Huor Swords</Authors>
+		<Company></Company>
+		<Product>Microsoft.Extensions.Logging.Log4Net.AspNetCore</Product>
+		<Description>
+			Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.NET Core application.
 
-Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/</Description>
-    <Copyright></Copyright>
-    <PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
-    <RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
-    <AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-    <PackageReleaseNotes>Fixed bugs:
-- #15 - Invalid exception logging
-Now, the exception formatter has been removed, and included the exception to be considered by Log4Net Exception pattern layout.
-- #16 - ArgumentNullException when running with TestHost
-@twenzel have implemented the required change to get the executing assembly from the startup class.
-- #20 - Not compatible with new WebHostBuilder pattern
-@twenzel have implemented the required change to adapt the logging extensions to the new recommended logging configuration by Microsoft (ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?tabs=aspnetcore2x#how-to-add-providers).
+			Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/
+		</Description>
+		<Copyright></Copyright>
+		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
+		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
+		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
+		<PackageReleaseNotes>
+			Fixed bugs:
+			- #15 - Invalid exception logging
+			Now, the exception formatter has been removed, and included the exception to be considered by Log4Net Exception pattern layout.
+			- #16 - ArgumentNullException when running with TestHost
+			@twenzel have implemented the required change to get the executing assembly from the startup class.
+			- #20 - Not compatible with new WebHostBuilder pattern
+			@twenzel have implemented the required change to adapt the logging extensions to the new recommended logging configuration by Microsoft (ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?tabs=aspnetcore2x#how-to-add-providers).
 
-Special thanks to Toni Wenzel (@twenzel) by its contributions</PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-    <Version>2.1.0</Version>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.pfx</AssemblyOriginatorKeyFile>
-    <PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
-  </PropertyGroup>
+			Special thanks to Toni Wenzel (@twenzel) by its contributions
+		</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
+		<Version>2.1.0</Version>
+		<AssemblyVersion>2.1.0.0</AssemblyVersion>
+		<FileVersion>2.1.0.0</FileVersion>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.pfx</AssemblyOriginatorKeyFile>
+		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.1" Condition="'$(TargetFramework)' != 'netcoreapp1.1'" />
-    <PackageReference Include="System.Xml.XPath.XDocument" Version="4.3.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="log4net" Version="2.0.8" />
+		<PackageReference Include="System.Xml.XPath.XDocument" Version="4.3.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" Condition="'$(TargetFramework)' != 'netcoreapp1.1'" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" Condition="'$(TargetFramework)' != 'netcoreapp1.1'" />
+	</ItemGroup>
 
 </Project>
