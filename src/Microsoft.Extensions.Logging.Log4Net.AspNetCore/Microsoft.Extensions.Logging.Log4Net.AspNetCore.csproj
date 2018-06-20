@@ -20,20 +20,22 @@
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
 		<PackageReleaseNotes>
 			Fixed bugs:
-			- #15 - Invalid exception logging
-			Now, the exception formatter has been removed, and included the exception to be considered by Log4Net Exception pattern layout.
-			- #16 - ArgumentNullException when running with TestHost
-			@twenzel have implemented the required change to get the executing assembly from the startup class.
-			- #20 - Not compatible with new WebHostBuilder pattern
-			@twenzel have implemented the required change to adapt the logging extensions to the new recommended logging configuration by Microsoft (ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?tabs=aspnetcore2x#how-to-add-providers).
+			- #24 - Support for configuration watching
+			Now, you are able to configure Log4Net to be on watch mode over the log4net.config file.
+			- #25 - Allow to create logger with type name
+			The library now allows you to create a named logger within CreateLogger&gt;T&lt;, that automatically takes your type FullName and configures the logger with that name.
+			- #28 - Configure log4net outside the log4net.config
+			@kastwey implemented a way, using XPath routes, to be able to configure the log4net.config file through appsettings or environment variables in .NET Core.
+			- #32 - The AddLog4Net() method does not take log4net.config filename automatically
+			Fixed bug.
 
-			Special thanks to Toni Wenzel (@twenzel) by its contributions
+			Special thanks to Toni Wenzel (@kastwey) by its contributions
 		</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>2.1.0</Version>
-		<AssemblyVersion>2.1.0.0</AssemblyVersion>
-		<FileVersion>2.1.0.0</FileVersion>
+		<Version>2.2.0</Version>
+		<AssemblyVersion>2.2.0.0</AssemblyVersion>
+		<FileVersion>2.2.0.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.pfx</AssemblyOriginatorKeyFile>
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
