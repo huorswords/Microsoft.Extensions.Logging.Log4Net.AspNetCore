@@ -29,14 +29,14 @@
 			- #32 - The AddLog4Net() method does not take log4net.config filename automatically
 			Fixed bug.
 
-			Special thanks to Toni Wenzel (@kastwey) by its contributions
+			Special thanks to Toni Wenzel (@twenzel) and Juanjo M (@kastwey) by its contributions
 		</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
 		<Version>2.2.0</Version>
 		<AssemblyVersion>2.2.0.0</AssemblyVersion>
 		<FileVersion>2.2.0.0</FileVersion>
-		<SignAssembly>true</SignAssembly>
+		<SignAssembly>false</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.pfx</AssemblyOriginatorKeyFile>
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
 	</PropertyGroup>
