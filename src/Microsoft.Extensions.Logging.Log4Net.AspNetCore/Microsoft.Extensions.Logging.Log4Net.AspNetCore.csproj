@@ -36,7 +36,7 @@
 		<Version>2.2.0</Version>
 		<AssemblyVersion>2.2.0.0</AssemblyVersion>
 		<FileVersion>2.2.0.0</FileVersion>
-		<SignAssembly>false</SignAssembly>
+		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.pfx</AssemblyOriginatorKeyFile>
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
 	</PropertyGroup>
