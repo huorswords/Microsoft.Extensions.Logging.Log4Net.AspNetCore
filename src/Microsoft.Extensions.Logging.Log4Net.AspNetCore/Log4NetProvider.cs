@@ -8,20 +8,24 @@
     using System.Xml.Linq;
     using System.Xml.XPath;
 
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
-
     using log4net;
     using log4net.Config;
     using log4net.Repository;
-
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
+    
     /// <summary>
     /// The log4net provider class.
     /// </summary>
     /// <seealso cref="Microsoft.Extensions.Logging.ILoggerProvider" />
     public class Log4NetProvider : ILoggerProvider
     {
+        /// <summary>
+        /// The default log4 net file name
+        /// </summary>
+        private const string DefaultLog4NetFileName = "log4net.config";
+
         /// <summary>
         /// The log4net repository.
         /// </summary>
@@ -31,8 +35,6 @@
         /// The loggers collection.
         /// </summary>
         private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
-
-        private const string DefaultLog4NetFileName = "log4net.config";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
