@@ -15,7 +15,7 @@
         /// <param name="configurationSection">The configuration section.</param>
         /// <returns>The dictionary</returns>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="configurationSection"/> is null.</exception>
-        public static IDictionary<string, NodeInfo> ConvertToDictionary(this IConfigurationSection configurationSection) =>
-            configurationSection.Get<Dictionary<string, NodeInfo>>();
+        public static IEnumerable<NodeInfo> ConvertToNodesInfo(this IConfigurationSection configurationSection) =>
+            configurationSection.Get<IEnumerable<NodeInfo>>();
     }
 }

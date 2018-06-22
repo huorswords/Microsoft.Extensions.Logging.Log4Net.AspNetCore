@@ -10,6 +10,14 @@
     public class NodeInfo
     {
         /// <summary>
+        /// Gets or sets the x path to find the node to override.
+        /// </summary>
+        /// <value>
+        /// The x path.
+        /// </value>
+        public string XPath { get; set; }
+
+        /// <summary>
         /// Gets or sets the content of the node.
         /// </summary>
         /// <value>
