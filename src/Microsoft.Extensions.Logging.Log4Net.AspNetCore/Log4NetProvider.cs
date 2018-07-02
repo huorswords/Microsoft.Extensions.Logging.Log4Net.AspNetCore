@@ -87,8 +87,13 @@
                 throw new NotSupportedException("Wach cannot be true if you are overwriting config file values with values from configuration section.");
             }
 
-            this.loggerRepository = LogManager.CreateRepository(
-                Assembly.GetEntryAssembly() ?? GetCallingAssemblyFromStartup(),
+#if NETCOREAPP1_1
+			Assembly assembly = Assembly.GetEntryAssembly();
+#else
+			Assembly assembly = Assembly.GetExecutingAssembly();
+#endif
+			this.loggerRepository = LogManager.CreateRepository(
+				assembly ?? GetCallingAssemblyFromStartup(),
                 typeof(log4net.Repository.Hierarchy.Hierarchy));
 
             if (watch)

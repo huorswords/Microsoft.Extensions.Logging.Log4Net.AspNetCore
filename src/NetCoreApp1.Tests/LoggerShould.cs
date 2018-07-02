@@ -1,4 +1,4 @@
-namespace NetCore2.Tests
+namespace NetCore1.Tests
 {
 	using System;
 	using System.Diagnostics;
@@ -9,7 +9,7 @@ namespace NetCore2.Tests
 	using Microsoft.Extensions.Logging;
 	using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-	using NetCore2.Tests.Listeners;
+	using NetCore1.Tests.Listeners;
 
 	[TestClass]
 	public class LoggerShould

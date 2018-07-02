@@ -1,4 +1,4 @@
-﻿namespace NetCore2.Tests
+﻿namespace FullFramework.Tests
 {
 	using Microsoft.Extensions.Logging;
 	using Microsoft.VisualStudio.TestTools.UnitTesting;

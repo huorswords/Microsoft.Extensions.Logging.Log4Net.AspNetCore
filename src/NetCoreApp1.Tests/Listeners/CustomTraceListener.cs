@@ -1,4 +1,4 @@
-﻿namespace NetCore2.Tests.Listeners
+﻿namespace NetCore1.Tests.Listeners
 {
 	using System.Collections.Generic;
 	using System.Diagnostics;
