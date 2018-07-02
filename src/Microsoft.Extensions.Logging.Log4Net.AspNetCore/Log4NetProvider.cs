@@ -14,7 +14,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
     using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
-    
+
     /// <summary>
     /// The log4net provider class.
     /// </summary>
@@ -146,23 +146,28 @@
         /// <returns>The xml configuration with overwritten  nodes if any</returns>
         private static XmlDocument UpdateNodesWithAdditionalConfiguration(XmlDocument configXml, IConfigurationSection configurationSection)
         {
-            var configXDoc = configXml.ToXDocument();
             var additionalConfig = configurationSection.ConvertToNodesInfo();
-            foreach (var nodeInfo in additionalConfig)
+            if (additionalConfig != null)
             {
-                var node = configXDoc.XPathSelectElement(nodeInfo.XPath);
-                if (node != null)
+                var configXDoc = configXml.ToXDocument();
+                foreach (var nodeInfo in additionalConfig)
                 {
-                    if (nodeInfo.NodeContent != null)
+                    var node = configXDoc.XPathSelectElement(nodeInfo.XPath);
+                    if (node != null)
                     {
-                        node.Value = nodeInfo.NodeContent;
-                    }
+                        if (nodeInfo.NodeContent != null)
+                        {
+                            node.Value = nodeInfo.NodeContent;
+                        }
 
-                    AddOrUpdateAttributes(node, nodeInfo);
+                        AddOrUpdateAttributes(node, nodeInfo);
+                    }
                 }
+
+                return configXDoc.ToXmlDocument();
             }
 
-            return configXDoc.ToXmlDocument();
+            return configXml;
         }
 
         /// <summary>
@@ -172,16 +177,19 @@
         /// <param name="nodeInfo">The node information.</param>
         private static void AddOrUpdateAttributes(XElement node, NodeInfo nodeInfo)
         {
-            foreach (var attribute in nodeInfo.Attributes)
+            if (nodeInfo?.Attributes != null)
             {
-                var nodeAttribute = node.Attribute(attribute.Key);
-                if (nodeAttribute != null)
+                foreach (var attribute in nodeInfo.Attributes)
                 {
-                    nodeAttribute.Value = attribute.Value;
-                }
-                else
-                {
-                    node.SetAttributeValue(attribute.Key, attribute.Value);
+                    var nodeAttribute = node.Attribute(attribute.Key);
+                    if (nodeAttribute != null)
+                    {
+                        nodeAttribute.Value = attribute.Value;
+                    }
+                    else
+                    {
+                        node.SetAttributeValue(attribute.Key, attribute.Value);
+                    }
                 }
             }
         }
