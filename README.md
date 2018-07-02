@@ -58,19 +58,19 @@ To do this, you will need to do the following:
 
   ```json
 "Log4net": [
-		{
-			"XPath": "/log4net/appender[@name='RollingFile']/file",
-			"attributes": {
-				"value": "overrided.log"
-			}
-		},
-		{
-			"XPath": "/log4net/appender[@name='RollingFile']/maximumFileSize",
-			"attributes": {
-				"value": "1024KB"
-			}
-		}
-	]
+  {
+    "XPath": "/log4net/appender[@name='RollingFile']/file",
+    "Attributes": {
+      "Value": "overrided.log"
+      }
+    },
+    {
+      "XPath": "/log4net/appender[@name='RollingFile']/maximumFileSize",
+      "Attributes": {
+        "Value": "1024KB"
+      }
+    }
+]
 ```
 
   As you can see, the section is an array. For each element of the array, an `XPath` key must be included, which will contain the XPath expression to find the node from which we want to overwrite its information.
@@ -79,10 +79,10 @@ To do this, you will need to do the following:
 
   The `NodeContent` key will contain the text to be included inside the node, removing any information that was previously on the original node.
 
-2. Change the call to `loggerFactory.AddLog4Net`. Add as the first parameter the name of your `log4net` configuration file, and specify, as the second parameter, an IConfigurationSection object containing the configuration section you added to your `AppSettings.json` file:
+1. Change the call to `loggerFactory.AddLog4Net`. Add as the first parameter the name of your `log4net` configuration file, and specify, as the second parameter, an IConfigurationSection object containing the configuration section you added to your `AppSettings.json` file:
 
   ```csharp
-        loggerFactory.AddLog4Net("log4net.config", Configuration.GetSection("Log4net"));
+loggerFactory.AddLog4Net("log4net.config", Configuration.GetSection("Log4net"));
   ```
 
 This way, the package will iterate for each XPath contained in the array, will check if there are any nodes within the XML file that match the expression, and will overwrite the attributes or content of that node, depending on what you have specified in the configuration section.
@@ -93,3 +93,4 @@ Thank you very much to all contributors & users by its collaboration, and specia
 
 * [@twenzel](https://github.com/twenzel) by his great job on adapting the library to the new logging recomendations for .NET Core 2.
 * [@sBoff](https://github.com/sBoff) by the fix of the mutiple calls to XmlConfigurator.Configure issue.
+* [@kastwey](https://github.com/kastwey) by the feature to allow to replace values of log4net.config using the *Microsoft.Extensions.Configuration*.
