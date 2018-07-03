@@ -1,4 +1,4 @@
-﻿namespace NetCore2.Tests
+﻿namespace NetCore1.Tests
 {
 	using Microsoft.Extensions.Logging;
 	using Microsoft.VisualStudio.TestTools.UnitTesting;
