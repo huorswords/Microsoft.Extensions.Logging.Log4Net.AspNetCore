@@ -49,15 +49,38 @@ public class Startup
 </log4net>
 ```
 
-## Overwriting the native log4net xml configuration using the Net Core configuration system.
+## FAQ
+
+### .NET Core 2.0 - Logging debug level messages
+
+> Associated issues #34 & #41
+
+In order to be able to register Debug level messages in any of your configured log4net appenders, you should change the ASP .NET Core 2 configuration when you build your `IWebHost` instance as follows.
+
+```csharp
+public static IWebHost BuildWebHost(string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+           .UseStartup<Startup>()
+           .ConfigureLogging((hostingContext, logging) =>
+            {
+              // The ILoggingBuilder minimum level determines the
+              // the lowest possible level for logging. The log4net
+              // level then sets the level that we actually log at.
+              logging.AddLog4Net();
+              logging.SetMinimumLevel(LogLevel.Debug);
+            })
+            .Build();
+```
+
+### Overwriting the native log4net xml configuration using the Net Core configuration system.
 
 Sometimes we might want to modify the value of an appender, for example, the file name of our log. This might be interesting if we want to use a different name for each environment deployed. To do this, this package includes the possibility of overwriting the information of a node or the attributes of that node using the Net Core configuration system.
 
 To do this, you will need to do the following:
 
-1. Create a section within your `AppSettings.json` file:
+#### Create a section within your `AppSettings.json` file
 
-  ```json
+```json
 "Log4net": [
   {
     "XPath": "/log4net/appender[@name='RollingFile']/file",
@@ -74,17 +97,19 @@ To do this, you will need to do the following:
 ]
 ```
 
-  As you can see, the section is an array. For each element of the array, an `XPath` key must be included, which will contain the XPath expression to find the node from which we want to overwrite its information.
+As you can see, the section is an array. For each element of the array, an `XPath` key must be included, which will contain the XPath expression to find the node from which we want to overwrite its information.
 
-  The `Attributes` key will contain a list of all the attributes you want to overwrite. In our case, we will almost always add the attribute `value`, followed by the value we want that attribute to take.
+The `Attributes` key will contain a list of all the attributes you want to overwrite. In our case, we will almost always add the attribute `value`, followed by the value we want that attribute to take.
 
-  The `NodeContent` key will contain the text to be included inside the node, removing any information that was previously on the original node.
+The `NodeContent` key will contain the text to be included inside the node, removing any information that was previously on the original node.
 
-1. Change the call to `loggerFactory.AddLog4Net`. Add as the first parameter the name of your `log4net` configuration file, and specify, as the second parameter, an IConfigurationSection object containing the configuration section you added to your `AppSettings.json` file:
+#### Change the call to `loggerFactory.AddLog4Net`
 
-  ```csharp
+Add as the first parameter the name of your `log4net` configuration file, and specify, as the second parameter, an IConfigurationSection object containing the configuration section you added to your `AppSettings.json` file:
+
+```csharp
 loggerFactory.AddLog4Net("log4net.config", Configuration.GetSection("Log4net"));
-  ```
+```
 
 This way, the package will iterate for each XPath contained in the array, will check if there are any nodes within the XML file that match the expression, and will overwrite the attributes or content of that node, depending on what you have specified in the configuration section.
 
