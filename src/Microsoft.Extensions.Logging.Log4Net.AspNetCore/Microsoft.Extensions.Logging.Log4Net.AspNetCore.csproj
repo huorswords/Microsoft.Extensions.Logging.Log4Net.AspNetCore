@@ -20,18 +20,13 @@
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
 		<PackageReleaseNotes>
 			Bugs:
-			- Fixes an error when the configuration section is not present on appsettings.json.
-			- Fixes a bug when creating a provider using GetEntryAssembly from .NET Core 1.1
-			
-			Features:
-			- Included / updated test projects for .NET Core 2.0, .NET Core 1.1 and .NET Framework 4.6.2
-			- Change signing procedure to use SNK files instead PFX to make it compatible with dotnet CLI.			
+			- #42 / Ignores case sensitivity getting configuration attribute keys.
 		</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>2.2.3</Version>
-		<AssemblyVersion>2.2.3.0</AssemblyVersion>
-		<FileVersion>2.2.3.0</FileVersion>
+		<Version>2.2.4</Version>
+		<AssemblyVersion>2.2.4.0</AssemblyVersion>
+		<FileVersion>2.2.4.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
