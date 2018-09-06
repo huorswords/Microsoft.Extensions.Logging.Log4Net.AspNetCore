@@ -24,6 +24,24 @@ namespace NetCore1.Tests
 		}
 
 		[TestMethod]
+		public void ProviderShouldBeCreatedWithOptions()
+		{
+			const string OverridOHLogFilePath = "overridOH.log";
+			if (File.Exists(OverridOHLogFilePath))
+			{
+				File.Delete(OverridOHLogFilePath);
+			}
+
+			var options = GetLog4NetProviderOptions();
+			var provider = new Log4NetProvider(options);
+			var logger = provider.CreateLogger();
+			logger.LogCritical("Test file creation");
+
+			Assert.IsNotNull(provider);
+			Assert.IsTrue(File.Exists(OverridOHLogFilePath));
+		}
+
+		[TestMethod]
 		public void ProviderShouldBeCreatedWithConfigurationSectionOverrides()
 		{
 			if (File.Exists("overrided.log"))
@@ -96,14 +114,31 @@ namespace NetCore1.Tests
 		/// <exception cref="InvalidOperationException">A message</exception>
 		private static void ThrowException() => throw new InvalidOperationException("A message");
 
+		/// <summary>
+		/// Gets the .Net Core configuration.
+		/// </summary>
+		/// <returns>The <see cref="IConfigurationRoot"/> of the appsettings.json file.</returns>
 		private static IConfigurationRoot GetNetCoreConfiguration()
+		{
+			var builder = new ConfigurationBuilder();
+			builder.SetBasePath(Directory.GetCurrentDirectory())
+				   .AddJsonFile("appsettings.json");
+			var configuration = builder.Build();
+			return configuration;
+		}
+
+		/// <summary>
+		/// Gets the log4net provider options.
+		/// </summary>
+		/// <returns></returns>
+		private static Log4NetProviderOptions GetLog4NetProviderOptions()
 		{
 			var builder = new ConfigurationBuilder();
 			builder.SetBasePath(Directory.GetCurrentDirectory())
 				.AddJsonFile("appsettings.json");
 			var configuration = builder.Build();
-			return configuration;
-		}
 
+			return configuration.GetSection("Log4NetCore").Get<Log4NetProviderOptions>();
+		}
 	}
 }
