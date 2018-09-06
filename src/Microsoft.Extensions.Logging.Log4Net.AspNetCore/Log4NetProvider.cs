@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Concurrent;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
 	using System.Reflection;
@@ -12,6 +13,7 @@
 	using log4net;
 	using log4net.Config;
 	using log4net.Repository;
+
 	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
@@ -19,14 +21,9 @@
 	/// <summary>
 	/// The log4net provider class.
 	/// </summary>
-	/// <seealso cref="Microsoft.Extensions.Logging.ILoggerProvider" />
+	/// <seealso cref="ILoggerProvider" />
 	public class Log4NetProvider : ILoggerProvider
 	{
-		/// <summary>
-		/// The default log4 net file name
-		/// </summary>
-		private const string DefaultLog4NetFileName = "log4net.config";
-
 		/// <summary>
 		/// The log4net repository.
 		/// </summary>
@@ -38,20 +35,82 @@
 		private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
 
 		/// <summary>
+		/// The provider options.
+		/// </summary>
+		private readonly Log4NetProviderOptions options;
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
 		/// </summary>
 		public Log4NetProvider()
-			: this(DefaultLog4NetFileName)
+			: this(new Log4NetProviderOptions())
 		{
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
 		/// </summary>
-		/// <param name="log4NetConfigFile">The log4NetConfigFile.</param>
-		public Log4NetProvider(string log4NetConfigFile)
-			: this(log4NetConfigFile, false, null)
+		/// <param name="log4NetConfigFileName">The log4NetConfigFile.</param>
+		public Log4NetProvider(string log4NetConfigFileName)
+			: this(new Log4NetProviderOptions(log4NetConfigFileName))
 		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
+		/// </summary>
+		/// <param name="options">The options.</param>
+		/// <exception cref="ArgumentNullException">options</exception>
+		/// <exception cref="NotSupportedException">Wach cannot be true when you are overwriting config file values with values from configuration section.</exception>
+		public Log4NetProvider(Log4NetProviderOptions options)
+		{
+			this.options = options ?? throw new ArgumentNullException(nameof(options));
+
+			if (options.Watch
+				&& options.PropertyOverrides.Any())
+			{
+				throw new NotSupportedException("Wach cannot be true when you are overwriting config file values with values from configuration section.");
+			}
+
+			if (string.IsNullOrEmpty(this.options.LoggerRepository))
+			{
+
+#if NETCOREAPP1_1
+				Assembly assembly = Assembly.GetEntryAssembly();
+#else
+				Assembly assembly = Assembly.GetExecutingAssembly();
+#endif
+				this.loggerRepository = LogManager.CreateRepository(
+					assembly ?? GetCallingAssemblyFromStartup(),
+					typeof(log4net.Repository.Hierarchy.Hierarchy));
+			}
+			else
+			{
+				this.loggerRepository = LogManager.CreateRepository(
+					options.LoggerRepository,
+					typeof(log4net.Repository.Hierarchy.Hierarchy));
+			}
+
+
+			if (options.Watch)
+			{
+				XmlConfigurator.ConfigureAndWatch(
+					this.loggerRepository,
+					new FileInfo(Path.GetFullPath(options.Log4NetConfigFileName)));
+			}
+			else
+			{
+				var configXml = ParseLog4NetConfigFile(options.Log4NetConfigFileName);
+				if (this.options.PropertyOverrides != null
+					&& this.options.PropertyOverrides.Any())
+				{
+					configXml = UpdateNodesWithOverridingValues(
+						configXml,
+						this.options.PropertyOverrides);
+				}
+
+				XmlConfigurator.Configure(this.loggerRepository, configXml.DocumentElement);
+			}
 		}
 
 		/// <summary>
@@ -59,6 +118,7 @@
 		/// </summary>
 		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
 		/// <param name="configurationSection">The configuration section.</param>
+		[Obsolete("Use Log4NetProvider(Log4NetProviderOptions) instead.")]
 		public Log4NetProvider(string log4NetConfigFile, IConfigurationSection configurationSection)
 			: this(log4NetConfigFile, false, configurationSection)
 		{
@@ -69,6 +129,7 @@
 		/// </summary>
 		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
 		/// <param name="watch">if set to <c>true</c> [watch].</param>
+		[Obsolete("Use Log4NetProvider(Log4NetProviderOptions) instead.")]
 		public Log4NetProvider(string log4NetConfigFile, bool watch)
 			: this(log4NetConfigFile, watch, null)
 		{
@@ -116,10 +177,17 @@
 		/// <summary>
 		/// Creates the logger.
 		/// </summary>
+		/// <returns>An instance of the <see cref="ILogger"/>.</returns>
+		public ILogger CreateLogger()
+			=> this.CreateLogger(this.options.Name);
+
+		/// <summary>
+		/// Creates the logger.
+		/// </summary>
 		/// <param name="categoryName">The category name.</param>
-		/// <returns>The <see cref="ILogger"/> instance.</returns>
+		/// <returns>An instance of the <see cref="ILogger"/>.</returns>
 		public ILogger CreateLogger(string categoryName)
-				=> this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
+			=> this.loggers.GetOrAdd(categoryName, this.CreateLoggerImplementation);
 
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -144,6 +212,32 @@
 			this.loggers.Clear();
 		}
 
+		private static XmlDocument UpdateNodesWithOverridingValues(XmlDocument configXmlDocument, IEnumerable<NodeInfo> overridingNodes)
+		{
+			var additionalConfig = overridingNodes;
+			if (additionalConfig != null)
+			{
+				var configXDoc = configXmlDocument.ToXDocument();
+				foreach (var nodeInfo in additionalConfig)
+				{
+					var node = configXDoc.XPathSelectElement(nodeInfo.XPath);
+					if (node != null)
+					{
+						if (nodeInfo.NodeContent != null)
+						{
+							node.Value = nodeInfo.NodeContent;
+						}
+
+						AddOrUpdateAttributes(node, nodeInfo);
+					}
+				}
+
+				return configXDoc.ToXmlDocument();
+			}
+
+			return configXmlDocument;
+		}
+
 		/// <summary>
 		/// Rewrites the information of the node specified by xpath expression.
 		/// </summary>
@@ -152,7 +246,7 @@
 		/// <returns>The xml configuration with overwritten  nodes if any</returns>
 		private static XmlDocument UpdateNodesWithAdditionalConfiguration(XmlDocument configXml, IConfigurationSection configurationSection)
 		{
-			var additionalConfig = configurationSection.ConvertToNodesInfo();
+			var additionalConfig = configurationSection.ToNodesInfo();
 			if (additionalConfig != null)
 			{
 				var configXDoc = configXml.ToXDocument();
@@ -234,20 +328,20 @@
 #if NETCOREAPP1_1
 			return null;
 #else
-            var stackTrace = new System.Diagnostics.StackTrace(2);
+			var stackTrace = new System.Diagnostics.StackTrace(2);
 
-            for (int i = 0; i < stackTrace.FrameCount; i++)
-            {
-                var frame = stackTrace.GetFrame(i);
-                var type = frame.GetMethod()?.DeclaringType;
+			for (int i = 0; i < stackTrace.FrameCount; i++)
+			{
+				var frame = stackTrace.GetFrame(i);
+				var type = frame.GetMethod()?.DeclaringType;
 
-                if (string.Equals(type?.Name, "Startup", StringComparison.OrdinalIgnoreCase))
-                {
-                    return type.Assembly;
-                }
-            }
+				if (string.Equals(type?.Name, "Startup", StringComparison.OrdinalIgnoreCase))
+				{
+					return type.Assembly;
+				}
+			}
 
-            return null;
+			return null;
 #endif
 		}
 
@@ -257,6 +351,15 @@
 		/// <param name="name">The name.</param>
 		/// <returns>The <see cref="Log4NetLogger"/> instance.</returns>
 		private Log4NetLogger CreateLoggerImplementation(string name)
-			=> new Log4NetLogger(this.loggerRepository.Name, name);
+		{
+			var options = new Log4NetProviderOptions
+			{
+				Name = name,
+				LoggerRepository = this.loggerRepository.Name,
+
+			};
+
+			return new Log4NetLogger(options);
+		}
 	}
 }

@@ -9,24 +9,21 @@
 		<Authors>Huor Swords</Authors>
 		<Company></Company>
 		<Product>Microsoft.Extensions.Logging.Log4Net.AspNetCore</Product>
-		<Description>
-			Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.NET Core application.
+		<Description>Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.NET Core application.
 
-			Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/
-		</Description>
+Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/</Description>
 		<Copyright></Copyright>
 		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-		<PackageReleaseNotes>
-			Bugs:
-			- #42 / Ignores case sensitivity getting configuration attribute keys.
-		</PackageReleaseNotes>
+		<PackageReleaseNotes>Enhancements:
+- #44 / Match the Microsoft.Extensions.Logging LogLevels CRITICAL and TRACE to the corresponding log4net.Core Levels
+- Adds the possibility to configure the logging reference throught Log4NetProviderOptions.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>2.2.4</Version>
-		<AssemblyVersion>2.2.4.0</AssemblyVersion>
-		<FileVersion>2.2.4.0</FileVersion>
+		<Version>2.2.5</Version>
+		<AssemblyVersion>2.2.5.0</AssemblyVersion>
+		<FileVersion>2.2.5.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
