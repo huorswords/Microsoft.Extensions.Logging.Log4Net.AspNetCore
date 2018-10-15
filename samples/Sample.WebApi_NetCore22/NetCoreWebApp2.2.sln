@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreWebApp2.2", "NetCoreWebApp2.2.csproj", "{F66B4D98-4751-4F22-87B0-730F55249C90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.Logging.Log4Net.AspNetCore", "..\..\src\Microsoft.Extensions.Logging.Log4Net.AspNetCore\Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj", "{648668FB-3635-4390-89ED-6654B84D40F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F66B4D98-4751-4F22-87B0-730F55249C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66B4D98-4751-4F22-87B0-730F55249C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66B4D98-4751-4F22-87B0-730F55249C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66B4D98-4751-4F22-87B0-730F55249C90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{648668FB-3635-4390-89ED-6654B84D40F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{648668FB-3635-4390-89ED-6654B84D40F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{648668FB-3635-4390-89ED-6654B84D40F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{648668FB-3635-4390-89ED-6654B84D40F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DA72112-8CCC-4AD7-9559-DBFFA84EE136}
+	EndGlobalSection
+EndGlobal

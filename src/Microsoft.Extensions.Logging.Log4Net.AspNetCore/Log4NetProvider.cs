@@ -72,13 +72,14 @@
 				throw new NotSupportedException("Wach cannot be true when you are overwriting config file values with values from configuration section.");
 			}
 
+			Assembly assembly = null;
 			if (string.IsNullOrEmpty(this.options.LoggerRepository))
 			{
 
 #if NETCOREAPP1_1
-				Assembly assembly = Assembly.GetEntryAssembly();
+				assembly = Assembly.GetEntryAssembly();
 #else
-				Assembly assembly = Assembly.GetExecutingAssembly();
+				assembly = Assembly.GetExecutingAssembly();
 #endif
 				this.loggerRepository = LogManager.CreateRepository(
 					assembly ?? GetCallingAssemblyFromStartup(),
@@ -91,16 +92,29 @@
 					typeof(log4net.Repository.Hierarchy.Hierarchy));
 			}
 
+			string fileNamePath = options.Log4NetConfigFileName;
+			if (!Path.IsPathRooted(fileNamePath))
+			{
+#if NETCOREAPP1_1
+				if (!File.Exists(fileNamePath))
+				{
+					fileNamePath = Path.Combine(Path.GetDirectoryName(assembly.Location), fileNamePath);
+				}
+#else
+				fileNamePath = Path.Combine(Environment.CurrentDirectory, fileNamePath);
+#endif
+			}
 
+			fileNamePath = Path.GetFullPath(fileNamePath);
 			if (options.Watch)
 			{
 				XmlConfigurator.ConfigureAndWatch(
 					this.loggerRepository,
-					new FileInfo(Path.GetFullPath(options.Log4NetConfigFileName)));
+					new FileInfo(fileNamePath));
 			}
 			else
 			{
-				var configXml = ParseLog4NetConfigFile(options.Log4NetConfigFileName);
+				var configXml = ParseLog4NetConfigFile(fileNamePath);
 				if (this.options.PropertyOverrides != null
 					&& this.options.PropertyOverrides.Any())
 				{
