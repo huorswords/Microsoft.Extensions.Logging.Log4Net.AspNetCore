@@ -101,7 +101,7 @@
 					fileNamePath = Path.Combine(Path.GetDirectoryName(assembly.Location), fileNamePath);
 				}
 #else
-				fileNamePath = Path.Combine(Environment.CurrentDirectory, fileNamePath);
+				fileNamePath = Path.Combine(AppContext.BaseDirectory, fileNamePath);
 #endif
 			}
 
