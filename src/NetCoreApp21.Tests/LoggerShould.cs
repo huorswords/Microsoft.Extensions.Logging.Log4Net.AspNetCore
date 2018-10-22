@@ -1,20 +1,21 @@
-namespace FullFramework.Tests
+namespace NetCore2.Tests
 {
 	using System;
 	using System.Diagnostics;
+	using System.IO;
 	using System.Linq;
 
+	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.Logging;
 	using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-	using FullFramework.Tests.Listeners;
-	using System.IO;
-	using System.Collections.Generic;
-	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-
+	using NetCore2.Tests.Listeners;
+	   
 	[TestClass]
 	public class LoggerShould
 	{
+		private const string DefaultLog4NetConfigFileName = "log4net.config";
+
 		private CustomTraceListener listener;
 
 		[TestInitialize]
@@ -45,7 +46,7 @@ namespace FullFramework.Tests
 		[TestMethod]
 		public void LogCriticalMessages()
 		{
-			var provider = new Log4NetProvider("log4net.config");
+			var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
 			var logger = provider.CreateLogger("Test");
 
 			const string message = "A message";
@@ -69,11 +70,10 @@ namespace FullFramework.Tests
 			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
 		}
 
-
 		[TestMethod]
 		public void UsePatternLayoutOnExceptions()
 		{
-			var provider = new Log4NetProvider("log4net.config");
+			var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
 			var logger = provider.CreateLogger("Test");
 
 			try
@@ -89,32 +89,61 @@ namespace FullFramework.Tests
 			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("Catched message")));
 		}
 
+		[TestMethod]
+		public void ProviderShouldBeCreatedWithConfigurationSectionOverrides()
+		{
+			if (File.Exists("overrided.log"))
+			{
+				File.Delete("overrided.log");
+			}
+
+			var configuration = GetNetCoreConfiguration();
+			var provider = new Log4NetProvider(DefaultLog4NetConfigFileName, configuration.GetSection("Logging"));
+			var logger = provider.CreateLogger("test");
+			logger.LogCritical("Test file creation");
+
+			Assert.IsNotNull(provider);
+			Assert.IsTrue(File.Exists("overrided.log"));
+		}
+
+		[TestMethod]
+		public void ProviderShouldBeCreatedWithoutCoreConfigOverridesIfConfigSectionDoesNotContainData()
+		{
+			if (File.Exists("example.log"))
+			{
+				File.Delete("example.log");
+			}
+
+			var configuration = GetNetCoreConfiguration();
+			var provider = new Log4NetProvider(DefaultLog4NetConfigFileName, configuration.GetSection("LoggingEmpty"));
+			var logger = provider.CreateLogger("test");
+			logger.LogCritical("Test file creation");
+
+			Assert.IsNotNull(provider);
+			Assert.IsTrue(File.Exists("example.log"));
+		}
+
 		/// <summary>
 		/// Throws the exception, and have stacktrace to be tested by the ExceptionLayoutPattern.
 		/// </summary>
 		/// <exception cref="InvalidOperationException">A message</exception>
-		private static void ThrowException() => throw new InvalidOperationException("A message");
+		private static void ThrowException()
+			=> throw new InvalidOperationException("A message");
+
+		private static IConfigurationRoot GetNetCoreConfiguration()
+			=> new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+										 .AddJsonFile("appsettings.json")
+										 .Build();
 
 		/// <summary>
 		/// Gets the log4net provider options.
 		/// </summary>
 		/// <returns></returns>
 		private static Log4NetProviderOptions GetLog4NetProviderOptions()
-		{
-			var attributes = new Dictionary<string, string>();
-			attributes.Add("Value", "overridOH.log");
-			var nodeInfo = new NodeInfo { XPath = "" };
-			var builder = new Log4NetProviderOptions()
-			{
-				PropertyOverrides = new List<NodeInfo>
-				{
-					new NodeInfo {
-						XPath = "/log4net/appender[@name='RollingFile']/file",
-						Attributes = attributes
-					}
-				}
-			};
-			return builder;
-		}
+			=> new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+										 .AddJsonFile("appsettings.json")
+										 .Build()
+										 .GetSection("Log4NetCore")
+										 .Get<Log4NetProviderOptions>();
 	}
 }
