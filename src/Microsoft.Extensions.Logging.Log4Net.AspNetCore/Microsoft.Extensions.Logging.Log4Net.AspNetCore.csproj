@@ -16,14 +16,13 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-		<PackageReleaseNotes>Enhancements:
-- #44 / Match the Microsoft.Extensions.Logging LogLevels CRITICAL and TRACE to the corresponding log4net.Core Levels
-- Adds the possibility to configure the logging reference throught Log4NetProviderOptions.</PackageReleaseNotes>
+		<PackageReleaseNotes>Bugs:
+- #51 - The log4net.config file is not taken from the correct location when using IISexpress inprocess execution model.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>2.2.5</Version>
-		<AssemblyVersion>2.2.5.0</AssemblyVersion>
-		<FileVersion>2.2.5.0</FileVersion>
+		<Version>2.2.6</Version>
+		<AssemblyVersion>2.2.6.0</AssemblyVersion>
+		<FileVersion>2.2.6.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
