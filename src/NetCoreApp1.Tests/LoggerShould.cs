@@ -90,6 +90,20 @@ namespace NetCore1.Tests
 		}
 
 		[TestMethod]
+		public void ProviderShouldCreateLoggerUsingConfigurationFileRelativePath()
+		{
+			var provider = new Log4NetProvider("./log4net.config");
+
+			var logger = provider.CreateLogger("Test");
+
+			const string message = "A message";
+			logger.LogCritical(message);
+
+			Assert.AreEqual(1, this.listener.Messages.Count);
+			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+		}
+
+		[TestMethod]
 		public void UsePatternLayoutOnExceptions()
 		{
 			var provider = new Log4NetProvider("log4net.config");
