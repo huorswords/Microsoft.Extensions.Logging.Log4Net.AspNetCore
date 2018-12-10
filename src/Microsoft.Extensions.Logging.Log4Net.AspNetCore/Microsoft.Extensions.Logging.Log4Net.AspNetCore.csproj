@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net462;netstandard2.0;netcoreapp2.1</TargetFrameworks>
+		<TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net462;netstandard2.0;netcoreapp2.1;netcoreapp2.2</TargetFrameworks>
 	</PropertyGroup>
 	<PropertyGroup>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
