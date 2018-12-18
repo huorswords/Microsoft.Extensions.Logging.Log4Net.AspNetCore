@@ -1,28 +1,29 @@
 ﻿namespace Microsoft.Extensions.Logging
 {
-	using System;
-	using System.Collections.Concurrent;
-	using System.Collections.Generic;
-	using System.IO;
-	using System.Linq;
-	using System.Reflection;
-	using System.Xml;
-	using System.Xml.Linq;
-	using System.Xml.XPath;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Xml;
+    using System.Xml.Linq;
+    using System.Xml.XPath;
 
-	using log4net;
-	using log4net.Config;
-	using log4net.Repository;
+    using log4net;
+    using log4net.Config;
+    using log4net.Repository;
 
-	using Microsoft.Extensions.Configuration;
-	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
+    using Microsoft.Extensions.Logging.Scope;
 
-	/// <summary>
-	/// The log4net provider class.
-	/// </summary>
-	/// <seealso cref="ILoggerProvider" />
-	public class Log4NetProvider : ILoggerProvider
+    /// <summary>
+    /// The log4net provider class.
+    /// </summary>
+    /// <seealso cref="ILoggerProvider" />
+    public class Log4NetProvider : ILoggerProvider
 	{
 		/// <summary>
 		/// The log4net repository.
@@ -373,7 +374,9 @@
 
 			};
 
-			return new Log4NetLogger(options);
+            options.ScopeFactory = new Log4NetScopeFactory(new Log4NetScopeRegistry());
+
+            return new Log4NetLogger(options);
 		}
-	}
+    }
 }

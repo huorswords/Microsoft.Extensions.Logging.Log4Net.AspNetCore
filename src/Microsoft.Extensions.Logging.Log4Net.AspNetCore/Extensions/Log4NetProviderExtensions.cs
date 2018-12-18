@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Extensions.Logging
+﻿namespace Microsoft.Extensions.Logging.Extensions
 {
     using System;
     using System.Reflection;

@@ -1,7 +1,9 @@
 ﻿namespace FullFramework.Tests
 {
 	using Microsoft.Extensions.Logging;
-	using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Extensions.Logging.Extensions;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 	[TestClass]
 	public class Log4NetProviderExtensionsShould
