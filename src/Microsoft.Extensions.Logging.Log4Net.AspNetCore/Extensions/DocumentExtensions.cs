@@ -1,13 +1,9 @@
 ﻿namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
     using System.Xml;
     using System.Xml.Linq;
-    
+
     /// <summary>
     /// Class with XmlDocument and XDocument extensions.
     /// </summary>
