@@ -1,7 +1,8 @@
 namespace NetCore2.Tests
 {
 	using System;
-	using System.Diagnostics;
+    using System.Collections.Generic;
+    using System.Diagnostics;
 	using System.IO;
 	using System.Linq;
 
@@ -25,7 +26,58 @@ namespace NetCore2.Tests
 			Trace.Listeners.Add(listener);
 		}
 
-		[TestMethod]
+        [TestMethod]
+        public void Include_ScopePropertyOnMessages_When_ScopeIsString()
+        {
+            var provider = new Log4NetProvider("./log4net.config");
+            var logger = provider.CreateLogger("Test");
+
+            const string message = "A message";
+            using (var scope = logger.BeginScope("TEST_SCOPE"))
+            {
+                logger.LogCritical(message);
+            }
+
+            Assert.AreEqual(1, this.listener.Messages.Count);
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("TEST_SCOPE")));
+        }
+
+        [TestMethod]
+        public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfObjects()
+        {
+            var provider = new Log4NetProvider("./log4net.config");
+            var logger = provider.CreateLogger("Test");
+
+            const string message = "A message";
+            using (var scope = logger.BeginScope(new Dictionary<string, object>() { { "test", "SCOPED_VALUE" } }))
+            {
+                logger.LogCritical(message);
+            }
+
+            Assert.AreEqual(1, this.listener.Messages.Count);
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("SCOPED_VALUE")));
+        }
+
+        [TestMethod]
+        public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfStrings()
+        {
+            var provider = new Log4NetProvider("./log4net.config");
+            var logger = provider.CreateLogger("Test");
+
+            const string message = "A message";
+            using (var scope = logger.BeginScope(new Dictionary<string, string>() { { "test", "SCOPED_VALUE" } }))
+            {
+                logger.LogCritical(message);
+            }
+
+            Assert.AreEqual(1, this.listener.Messages.Count);
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("SCOPED_VALUE")));
+        }
+
+        [TestMethod]
 		public void ProviderShouldBeCreatedWithOptions()
 		{
 			const string OverridOHLogFilePath = "overridOH.log";

@@ -28,14 +28,30 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="log4net" Version="2.0.8" />
-		<PackageReference Include="System.Xml.XPath.XDocument" Version="4.3.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" Condition="'$(TargetFramework)' != 'netcoreapp1.1'" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" Condition="'$(TargetFramework)' != 'netcoreapp1.1'" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.2" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="System.Xml.XPath.XDocument" Version="4.3.0" />
 	</ItemGroup>
 
 </Project>
