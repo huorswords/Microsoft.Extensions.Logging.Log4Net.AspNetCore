@@ -53,6 +53,80 @@ You can found more configuration examples on [configuration documentation](/doc/
 
 ## FAQ
 
+### Using BeginScope
+
+> Associated issues #45
+
+From version 2.2.7, this nuget allow to use the `BeginScope` method from `Log4NetLogger`.
+
+```csharp
+var dictionary = new Dictionary<string, string>() { { "test", "SCOPED_VALUE" } };
+using (var scope = logger.BeginScope(dictionary))
+{
+    logger.LogCritical(message);
+}
+```
+
+The `BeginScope` method allow any object, but only some of types are handled in an special way. Those types are:
+
+* `string`
+* `IEnumerable<KeyValuePair<string, string>>`
+* `IEnumerable<KeyValuePair<string, object>>`
+
+By default, any other type will be managed as a conventional `object`.
+
+#### How it works
+
+When you use any of the `IEnumerable<KeyValuePair<,>>` allowed types, the collection will be processed and every item from this collection should be introduced to the `LogicalThreadContext` managed by the log4net library using the `Key` as the property name and the `Value` as the value to replace the placeholder on the Pattern Layout defined.
+
+This example shows how the log4net.config pattern layout could include a `%property{}` placeholder that will be matched within the corresponding scoped value from the collection argument.
+
+```xml
+<layout type="log4net.Layout.PatternLayout">
+            <!-- Print the date in ISO 8601 format -->
+            <conversionPattern value="%date [%thread] %-5level %logger %ndc - scope=%property{scope} - %property{custom_name} - %message%newline" />
+        </layout>
+```
+
+When you use the `BeginScope` method passing a collection that contains a KeyValuePair within the key `custom_name`, the logged message will contain the `SCOPED_VALUE` text on it.
+
+```csharp
+var dictionary = new Dictionary<string, string>() { { "custom_name", "SCOPED_VALUE" } };
+using (var scope = logger.BeginScope(dictionary))
+{
+    logger.LogCritical(message); // SCOPED_VALUE will replace the %property{custom_name} placeholder
+}
+```
+
+At the other hand, if the argument is not from the given `IEnumerable<KeyValuePair<,>>`, the value will be logged on the default `scope` property.
+
+```csharp
+using (var scope = logger.BeginScope("SCOPED_VALUE"))
+{
+    logger.LogCritical(message); // SCOPED_VALUE will replace the %property{scope} placeholder
+}
+
+using (var scope = logger.BeginScope(Guid.NewGuid()))
+{
+    logger.LogCritical(message); // Guid value will replace the %property{scope} placeholder
+}
+```
+
+And, when you use two chained `BeginScope` calls...
+
+
+```csharp
+using (var scope = logger.BeginScope("SCOPED_VALUE"))
+{
+    using (var scope = logger.BeginScope(Guid.NewGuid()))
+    {
+        logger.LogCritical(message); // SCOPED_VALUE and Guid value (both) will replace the %property{scope} placeholder
+    }
+}
+```
+
+For additional information about how the `LogicalThreadContext` works, please visit the [official documentation](https://logging.apache.org/log4net/release/manual/contexts.html)
+
 ### .NET Core 2.0 - Logging debug level messages
 
 > Associated issues #34 & #41
