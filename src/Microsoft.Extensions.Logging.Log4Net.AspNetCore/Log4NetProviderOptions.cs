@@ -80,5 +80,10 @@
         /// Gets or sets the scope factory.
         /// </summary>
         public Log4NetScopeFactory ScopeFactory { get; set; }
-    }
+
+        /// <summary>
+        /// Let user setup log4net externally
+        /// </summary>
+        public bool ExternalConfigurationSetup { get; set; }
+	}
 }

@@ -1,5 +1,11 @@
-﻿namespace NetCore2.Tests
+﻿
+
+namespace NetCoreApp21.Tests
 {
+	using System.Reflection;
+	using log4net;
+	using log4net.Core;
+	using log4net.Repository.Hierarchy;
 	using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,6 +13,12 @@
 	[TestClass]
 	public class Log4NetProviderExtensionsShould
 	{
+		[TestCleanup]
+		public void Cleanup()
+		{
+			LoggerManager.RepositorySelector = new DefaultRepositorySelector(typeof(Hierarchy));
+		}
+		
 		[TestMethod]
 		public void CreateLoggerWithTypeName()
 		{
@@ -16,6 +28,40 @@
 
 			Assert.IsNotNull(logger);
 			Assert.AreEqual(typeof(Log4NetProviderExtensionsShould).FullName, logger.Name);
+		}
+
+		[TestMethod]
+		public void WhenLoggerShouldBeExternallyConfigured_RepositoryIsNotConfigured()
+		{
+			LogManager.ResetConfiguration(Assembly.GetEntryAssembly());
+			
+			new Log4NetProvider(new Log4NetProviderOptions
+			{
+				ExternalConfigurationSetup = true
+			});
+
+			var repository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+			Assert.IsFalse(repository.Configured);
+		}
+		
+		[TestMethod]
+		public void WhenLoggerShouldNotBeExternallyConfigured_RepositoryIsConfigured()
+		{
+			new Log4NetProvider(new Log4NetProviderOptions());
+
+			var repository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+			Assert.IsTrue(repository.Configured);
+		}
+		
+		[TestMethod]
+		public void WhenRepositoryNameIsGivenButRepositoryIsAlreadyCreated_ProviderUsesAlreadyCreatedRepository()
+		{
+			LogManager.CreateRepository("abc");
+			
+			new Log4NetProvider(new Log4NetProviderOptions
+			{
+				LoggerRepository = "abc"
+			});
 		}
 	}
 }
