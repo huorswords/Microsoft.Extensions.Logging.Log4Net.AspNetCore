@@ -3,11 +3,12 @@
 	using System.Collections.Generic;
 
 	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+    using Microsoft.Extensions.Logging.Scope;
 
-	/// <summary>
-	/// The log4Net provider options.
-	/// </summary>
-	public sealed class Log4NetProviderOptions
+    /// <summary>
+    /// The log4Net provider options.
+    /// </summary>
+    public sealed class Log4NetProviderOptions
 	{
 		/// <summary>
 		/// The default log4 net file name
@@ -74,5 +75,10 @@
 		/// Gets or sets a value indicating whether this <see cref="Log4NetProviderOptions"/> is watch.
 		/// </summary>
 		public bool Watch { get; set; }
-	}
+
+        /// <summary>
+        /// Gets or sets the scope factory.
+        /// </summary>
+        public Log4NetScopeFactory ScopeFactory { get; set; }
+    }
 }

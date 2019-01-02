@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<AspNetCoreHostingModel>inprocess</AspNetCoreHostingModel>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,7 +20,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0-preview2-35157" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>

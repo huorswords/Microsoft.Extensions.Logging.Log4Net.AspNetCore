@@ -55,7 +55,7 @@
 		/// An IDisposable that ends the logical operation scope on dispose.
 		/// </returns>
 		public IDisposable BeginScope<TState>(TState state)
-			=> null;
+			=> options.ScopeFactory?.BeginScope(state);
 
 		/// <summary>
 		/// Determines whether the logging level is enabled.
