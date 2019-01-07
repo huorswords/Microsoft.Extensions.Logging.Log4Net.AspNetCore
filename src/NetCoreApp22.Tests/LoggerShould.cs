@@ -44,6 +44,23 @@ namespace NetCore2.Tests
         }
 
         [TestMethod]
+        public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfObjects_And_AnyValueIsNull()
+        {
+            var provider = new Log4NetProvider("./log4net.config");
+            var logger = provider.CreateLogger("Test");
+
+            const string message = "A message";
+            using (var scope = logger.BeginScope(new Dictionary<string, object>() { { "test", null } }))
+            {
+                logger.LogCritical(message);
+            }
+
+            Assert.AreEqual(1, this.listener.Messages.Count);
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("(null) (null) MESSAGE: A message")));
+        }
+
+        [TestMethod]
         public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfObjects()
         {
             var provider = new Log4NetProvider("./log4net.config");
