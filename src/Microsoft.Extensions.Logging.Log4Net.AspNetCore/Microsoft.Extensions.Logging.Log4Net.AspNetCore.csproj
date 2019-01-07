@@ -16,16 +16,13 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-		<PackageReleaseNotes>Features:
-- #45 - Implementation of BeginScope&lt;TScope&gt;(TScope scope)
-
-Bugs:
-- #54 (related): Update to be fully compatible with .NET Core 2.2. applications.</PackageReleaseNotes>
+		<PackageReleaseNotes>Bugs:
+- #60 - NullReferenceException after upgrading to 2.2.8</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>2.2.8</Version>
-		<AssemblyVersion>2.2.8.0</AssemblyVersion>
-		<FileVersion>2.2.8.0</FileVersion>
+		<Version>2.2.9</Version>
+		<AssemblyVersion>2.2.9.0</AssemblyVersion>
+		<FileVersion>2.2.9.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>
