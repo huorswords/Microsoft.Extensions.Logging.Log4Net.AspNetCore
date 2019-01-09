@@ -88,11 +88,16 @@
 			}
 			else
 			{
-				this.loggerRepository = LogManager.CreateRepository(
-					options.LoggerRepository,
-					typeof(log4net.Repository.Hierarchy.Hierarchy));
+				this.loggerRepository = LogManager.GetRepository(options.LoggerRepository) ?? LogManager.CreateRepository(
+						options.LoggerRepository,
+						typeof(log4net.Repository.Hierarchy.Hierarchy));
 			}
 
+			if (options.ExternalConfigurationSetup)
+			{
+				return;
+			}
+			
 			string fileNamePath = options.Log4NetConfigFileName;
 			if (!Path.IsPathRooted(fileNamePath))
 			{
