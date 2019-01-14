@@ -83,9 +83,9 @@ This example shows how the log4net.config pattern layout could include a `%prope
 
 ```xml
 <layout type="log4net.Layout.PatternLayout">
-            <!-- Print the date in ISO 8601 format -->
-            <conversionPattern value="%date [%thread] %-5level %logger %ndc - scope=%property{scope} - %property{custom_name} - %message%newline" />
-        </layout>
+    <!-- Print the date in ISO 8601 format -->
+    <conversionPattern value="%date [%thread] %-5level %logger %ndc - scope=%property{scope} - %property{custom_name} - %message%newline" />
+</layout>
 ```
 
 When you use the `BeginScope` method passing a collection that contains a KeyValuePair within the key `custom_name`, the logged message will contain the `SCOPED_VALUE` text on it.
@@ -113,7 +113,6 @@ using (var scope = logger.BeginScope(Guid.NewGuid()))
 ```
 
 And, when you use two chained `BeginScope` calls...
-
 
 ```csharp
 using (var scope = logger.BeginScope("SCOPED_VALUE"))
