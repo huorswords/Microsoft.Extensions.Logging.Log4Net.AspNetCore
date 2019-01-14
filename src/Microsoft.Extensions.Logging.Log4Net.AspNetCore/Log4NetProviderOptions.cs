@@ -44,6 +44,7 @@
 			this.OverrideCriticalLevelWith = string.Empty;
 			this.Name = string.Empty;
 			this.PropertyOverrides = new List<NodeInfo>();
+            this.ExternalConfigurationSetup = false;
 		}
 
 		/// <summary>
@@ -80,5 +81,10 @@
         /// Gets or sets the scope factory.
         /// </summary>
         public Log4NetScopeFactory ScopeFactory { get; set; }
-    }
+
+        /// <summary>
+        /// Let user setup log4net externally
+        /// </summary>
+        public bool ExternalConfigurationSetup { get; set; }
+	}
 }
