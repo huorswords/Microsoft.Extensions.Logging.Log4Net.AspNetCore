@@ -17,6 +17,14 @@ namespace Swords.Core.Tests
 	{
 		private const string DefaultLog4NetConfigFileName = "log4net.config";
 
+        private const string TestLoggerName = "Test";
+        
+        private const string MessageText = "A message";
+
+        private const string ScopedValueText = "TEST_SCOPE";
+
+        private const string ScopedKeyText = "test";
+
         private CustomTraceListener listener;
 
 		[TestInitialize]
@@ -30,81 +38,88 @@ namespace Swords.Core.Tests
         public void Include_ScopePropertyOnMessages_When_ScopeIsString()
         {
             var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
-            var logger = provider.CreateLogger("Test");
+            var logger = provider.CreateLogger(TestLoggerName);
 
-            const string message = "A message";
-            using (var scope = logger.BeginScope("TEST_SCOPE"))
+            using (var scope = logger.BeginScope(ScopedValueText))
             {
-                logger.LogCritical(message);
+                logger.LogCritical(MessageText);
             }
 
             Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("TEST_SCOPE")));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(MessageText)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(ScopedValueText)));
         }
 
         [TestMethod]
         public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfObjects_And_AnyValueIsNull()
         {
             var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
-            var logger = provider.CreateLogger("Test");
+            var logger = provider.CreateLogger(TestLoggerName);
 
-            const string message = "A message";
-            using (var scope = logger.BeginScope(new Dictionary<string, object>() { { "test", null } }))
+            using (var scope = logger.BeginScope(new Dictionary<string, object>() { { ScopedKeyText, null } }))
             {
-                logger.LogCritical(message);
+                logger.LogCritical(MessageText);
             }
 
             Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("(null) (null) MESSAGE: A message")));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(MessageText)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains($"(null) (null) MESSAGE: {MessageText}")));
         }
 
         [TestMethod]
         public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfObjects()
         {
-            var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
-            var logger = provider.CreateLogger("Test");
-
-            const string message = "A message";
-            using (var scope = logger.BeginScope(new Dictionary<string, object>() { { "test", "SCOPED_VALUE" } }))
+            var scopedValue = GetTestScopedKeyValuePair();
+            var scopedDictionary = new Dictionary<string, string>
             {
-                logger.LogCritical(message);
+                { scopedValue.Key, scopedValue.Value }
+            };
+
+            var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
+            var logger = provider.CreateLogger(TestLoggerName);
+
+            using (var scope = logger.BeginScope(scopedDictionary))
+            {
+                logger.LogCritical(MessageText);
             }
 
             Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("SCOPED_VALUE")));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(MessageText)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(scopedValue.Value)));
         }
 
         [TestMethod]
         public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfStrings()
         {
-            var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
-            var logger = provider.CreateLogger("Test");
-
-            const string message = "A message";
-            using (var scope = logger.BeginScope(new Dictionary<string, string>() { { "test", "SCOPED_VALUE" } }))
+            var scopedValue = GetTestScopedKeyValuePair();
+            var scopedDictionary = new Dictionary<string, string>
             {
-                logger.LogCritical(message);
+                { scopedValue.Key, scopedValue.Value }
+            };
+
+            var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
+            var logger = provider.CreateLogger(TestLoggerName);
+
+            using (var scope = logger.BeginScope(scopedDictionary))
+            {
+                logger.LogCritical(MessageText);
             }
 
             Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("SCOPED_VALUE")));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(MessageText)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(scopedValue.Value)));
         }
 
 		[TestMethod]
 		public void LogCriticalMessages()
 		{
 			var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
-			var logger = provider.CreateLogger("Test");
+			var logger = provider.CreateLogger(TestLoggerName);
 
-			const string message = "A message";
-			logger.LogCritical(message);
+			logger.LogCritical(MessageText);
 
 			Assert.AreEqual(1, this.listener.Messages.Count);
-			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(MessageText)));
         }
 
         [TestMethod]
@@ -119,7 +134,7 @@ namespace Swords.Core.Tests
             var options = GetLog4NetProviderOptions();
             var provider = new Log4NetProvider(options);
             var logger = provider.CreateLogger();
-            logger.LogCritical("Test file creation");
+            logger.LogCritical(MessageText);
 
             Assert.IsNotNull(provider);
             Assert.IsTrue(File.Exists(OverridOHLogFilePath));
@@ -130,20 +145,21 @@ namespace Swords.Core.Tests
 		{
 			var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
 
-			var logger = provider.CreateLogger("Test");
+			var logger = provider.CreateLogger(TestLoggerName);
 
-			const string message = "A message";
-			logger.LogCritical(message);
+			logger.LogCritical(MessageText);
 
 			Assert.AreEqual(1, this.listener.Messages.Count);
-			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(MessageText)));
 		}
 
 		[TestMethod]
 		public void UsePatternLayoutOnExceptions()
 		{
-			var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
-			var logger = provider.CreateLogger("Test");
+            const string CatchedMessageText = "Catched message";
+
+            var provider = new Log4NetProvider(DefaultLog4NetConfigFileName);
+			var logger = provider.CreateLogger(TestLoggerName);
 
 			try
 			{
@@ -151,19 +167,22 @@ namespace Swords.Core.Tests
 			}
 			catch (Exception ex)
 			{
-				logger.LogCritical(10, ex, "Catched message");
+				logger.LogCritical(10, ex, CatchedMessageText);
 			}
 
 			Assert.AreEqual(1, this.listener.Messages.Count);
-			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains("Catched message")));
+			Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(CatchedMessageText)));
 		}
 
-		/// <summary>
-		/// Throws the exception, and have stacktrace to be tested by the ExceptionLayoutPattern.
-		/// </summary>
-		/// <exception cref="InvalidOperationException">A message</exception>
-		private static void ThrowException()
-			=> throw new InvalidOperationException("A message");
+        private static KeyValuePair<string, string> GetTestScopedKeyValuePair() 
+            => new KeyValuePair<string, string>(ScopedKeyText, ScopedValueText);
+
+        /// <summary>
+        /// Throws the exception, and have stacktrace to be tested by the ExceptionLayoutPattern.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">A message</exception>
+        private static void ThrowException()
+			=> throw new InvalidOperationException(MessageText);
 
         protected virtual IConfigurationRoot GetNetCoreConfiguration()
             => throw new NotImplementedException();
