@@ -1,9 +1,9 @@
 # Microsoft.Extensions.Logging.Log4Net.AspNetCore
 
- ## Add the log4net.config file
+## Add the log4net.config file
 
  Here you will found an example of how your `log4net.config` file should look like.
- 
+
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <log4net>
@@ -31,7 +31,7 @@
 
 For more information about log4net configuration files, please take a look into the [configuration files section on the oficial documentation for Log4Net](https://logging.apache.org/log4net/release/manual/configuration.html)
 
- ## Basic configuration
+## Basic configuration
 
 * Install the package or reference the project into your ASP .Net Core application.
 * Add the `AddLog4Net()` call into your `Configure` method of the `Startup` class.
@@ -58,36 +58,36 @@ public class Startup
 }
 ```
 
- ## Custom configuration using `Log4NetProviderOptions`
+## Custom configuration using `Log4NetProviderOptions`
 
 * Install the package or reference the project into your ASP .Net Core 2.x application.
 * Add a new `Log4NetCore` section on your `appsettings.json` file.
 
 ```json
 {
-	"Log4NetCore": {
-		"Name": "Test",
-		"LoggerRepository": "Fantastic",
-		"OverrideCriticalLevelWith": "Fatal",
-		"Watch": false,
-		"PropertyOverrides": [
-			{
-				"XPath": "/log4net/appender[@name='RollingFile']/file",
-				"Attributes": {
-					"Value": "overridedFileName.log"
-				}
-			},
-			{
-				"XPath": "/log4net/appender[@name='RollingFile']/maximumFileSize",
-				"Attributes": {
-					"Value": "200KB"
-				}
-			},
-			{
-				"XPath": "/log4net/appender[@name='RollingFile']/file"
-			}
-		]
-	}
+    "Log4NetCore": {
+        "Name": "Test",
+        "LoggerRepository": "Fantastic",
+        "OverrideCriticalLevelWith": "Fatal",
+        "Watch": false,
+        "PropertyOverrides": [
+            {
+                "XPath": "/log4net/appender[@name='RollingFile']/file",
+                "Attributes": {
+                    "Value": "overridedFileName.log"
+                }
+            },
+            {
+                "XPath": "/log4net/appender[@name='RollingFile']/maximumFileSize",
+                "Attributes": {
+                    "Value": "200KB"
+                }
+            },
+            {
+                "XPath": "/log4net/appender[@name='RollingFile']/file"
+            }
+        ]
+    }
 }
 ```
 
@@ -102,7 +102,7 @@ public class Program
     public static void Main(string[] args)
         => CreateWebHostBuilder(args).Build().Run();
 
-    public static IWebHostBuilder CreateWebHostBuilder(string[] args) 
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args)
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -114,8 +114,8 @@ public class Program
             .UseStartup<Startup>();
     }
 }
-
 ```
+
 * Add the `AddLog4Net()` call into your `Configure` method of the `Startup` class.
 
 ```csharp
@@ -159,7 +159,7 @@ public class Startup
 }
 ```
 
-### Overwriting the native log4net XML configuration using `Log4NetProviderOptions`.
+### Overwriting the native log4net XML configuration using `Log4NetProviderOptions`
 
 Sometimes we might want to modify the value of an appender, for example, the file name of our log. This might be interesting if we want to use a different name for each environment deployed. To do this, this package includes the possibility of overwriting the information of a node or the attributes of that node using the Net Core configuration system.
 
@@ -168,30 +168,30 @@ To do this, you will need to do the following:
 * Add a property on your log4net configuration section named `PropertyOverrides`. Here, you have got an example:
 
 ```json
-{    
-	"Log4NetCore": {
-		"Name": "Test",
-		"LoggerRepository": "Fantastic",
-		"OverrideCriticalLevelWith": "Fatal",
-		"Watch": false,
-		"PropertyOverrides": [
-			{
-				"XPath": "/log4net/appender[@name='RollingFile']/file",
-				"Attributes": {
-					"Value": "overridedFileName.log"
-				}
-			},
-			{
-				"XPath": "/log4net/appender[@name='RollingFile']/maximumFileSize",
-				"Attributes": {
-					"Value": "200KB"
-				}
-			},
-			{
-				"XPath": "/log4net/appender[@name='RollingFile']/file"
-			}
-		]
-	}
+{
+    "Log4NetCore": {
+        "Name": "Test",
+        "LoggerRepository": "Fantastic",
+        "OverrideCriticalLevelWith": "Fatal",
+        "Watch": false,
+        "PropertyOverrides": [
+            {
+                "XPath": "/log4net/appender[@name='RollingFile']/file",
+                "Attributes": {
+                    "Value": "overridedFileName.log"
+                }
+            },
+            {
+                "XPath": "/log4net/appender[@name='RollingFile']/maximumFileSize",
+                "Attributes": {
+                    "Value": "200KB"
+                }
+            },
+            {
+                "XPath": "/log4net/appender[@name='RollingFile']/file"
+            }
+        ]
+    }
 }
 ```
 

@@ -17,12 +17,14 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
 		<PackageReleaseNotes>Bugs:
-- #60 - NullReferenceException after upgrading to 2.2.8</PackageReleaseNotes>
+- #57 - Let user of library decide if log4net should be configured from the outside
+
+Many thanks to @theggelund by his PR to implement it.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>2.2.9</Version>
-		<AssemblyVersion>2.2.9.0</AssemblyVersion>
-		<FileVersion>2.2.9.0</FileVersion>
+		<Version>2.2.10</Version>
+		<AssemblyVersion>2.2.10.0</AssemblyVersion>
+		<FileVersion>2.2.10.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/master/LICENSE</PackageLicenseUrl>

@@ -44,6 +44,7 @@
 			this.OverrideCriticalLevelWith = string.Empty;
 			this.Name = string.Empty;
 			this.PropertyOverrides = new List<NodeInfo>();
+            this.ExternalConfigurationSetup = false;
 		}
 
 		/// <summary>
