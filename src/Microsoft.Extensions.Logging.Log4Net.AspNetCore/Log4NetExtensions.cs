@@ -47,25 +47,7 @@
 			factory.AddProvider(new Log4NetProvider(options));
 			return factory;
 		}
-
-		/// <summary>
-		/// Adds the log4net.
-		/// </summary>
-		/// <param name="factory">The factory.</param>
-		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
-		/// <param name="configurationSection">The configuration section.</param>
-		/// <returns>The <see cref="ILoggerFactory"/> with added Log4Net provider</returns>
-		[Obsolete("Use AddLog4Net(this ILoggingBuilder builder, Log4NetProviderOptions options) instead")]
-		public static ILoggerFactory AddLog4Net(
-			this ILoggerFactory factory,
-			string log4NetConfigFile,
-			IConfigurationSection configurationSection)
-		{
-			factory.AddProvider(new Log4NetProvider(log4NetConfigFile, configurationSection));
-			return factory;
-		}
-
-
+        
 #if !NETCOREAPP1_1
         /// <summary>
         /// Adds the log4net logging provider.
@@ -114,22 +96,6 @@
         public static ILoggingBuilder AddLog4Net(this ILoggingBuilder builder, Log4NetProviderOptions options)
         {
 			builder.Services.AddSingleton<ILoggerProvider>(new Log4NetProvider(options));
-            return builder; 
-        }
-
-        /// <summary>
-        /// Adds the log4net logging provider.
-        /// </summary>
-        /// <param name="builder">The logging builder instance.</param>
-        /// <param name="log4NetConfigFile">The log4net Config File.</param>
-        /// <param name="configurationSection">The configuration section.</param>
-        /// <returns>
-        /// The <see ref="ILoggingBuilder" /> passed as parameter with the new provider registered.
-        /// </returns>
-		[Obsolete("Use AddLog4Net(this ILoggingBuilder builder, Log4NetProviderOptions options) instead")]
-        public static ILoggingBuilder AddLog4Net(this ILoggingBuilder builder, string log4NetConfigFile, IConfigurationSection configurationSection)
-        {
-            builder.Services.AddSingleton<ILoggerProvider>(new Log4NetProvider(log4NetConfigFile, configurationSection));
             return builder; 
         }
 #endif
