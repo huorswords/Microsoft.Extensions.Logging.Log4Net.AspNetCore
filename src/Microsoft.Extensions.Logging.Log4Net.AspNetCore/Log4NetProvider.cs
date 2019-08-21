@@ -30,6 +30,11 @@
         private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
 
         /// <summary>
+        /// Prevents to dispose the object more than single time.
+        /// </summary>
+        private bool disposedValue = false;
+
+        /// <summary>
         /// The log4net repository.
         /// </summary>
         private ILoggerRepository loggerRepository;
@@ -73,6 +78,14 @@
         }
 
         /// <summary>
+        /// Finalizes the instance of the <see cref="Log4NetProvider"/> object.
+        /// </summary>
+        ~Log4NetProvider()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Creates the logger.
         /// </summary>
         /// <returns>An instance of the <see cref="ILogger"/>.</returns>
@@ -102,12 +115,16 @@
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposedValue)
             {
-                return;
-            }
+                if (disposing)
+                {
+                    this.loggerRepository.Shutdown();
+                    this.loggers.Clear();
+                }
 
-            this.loggers.Clear();
+                disposedValue = true;
+            }
         }
 
         /// <summary>
