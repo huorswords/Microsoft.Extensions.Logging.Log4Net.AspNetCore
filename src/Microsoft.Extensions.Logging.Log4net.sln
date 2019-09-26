@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.Logging.Log4Net.AspNetCore", "Microsoft.Extensions.Logging.Log4Net.AspNetCore\Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj", "{A2F0571A-E90E-4030-B05E-531A4CDE084D}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreApp.v2_2.Tests", "Tests\NetCoreApp22.Tests\NetCoreApp.v2_2.Tests.csproj", "{1C22131D-0EEA-48EB-A708-4310845FFC27}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swords.Core.Tests", "Swords.Core.Tests\Swords.Core.Tests.csproj", "{514758BD-D831-483F-81C4-2928358BD4D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreAppv3_0.Tests", "Tests\NetCoreAppv3_0.Tests\NetCoreAppv3_0.Tests.csproj", "{11CD87DF-8F75-4C05-9BA7-FDDF6ECD7C43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{514758BD-D831-483F-81C4-2928358BD4D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{514758BD-D831-483F-81C4-2928358BD4D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{514758BD-D831-483F-81C4-2928358BD4D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11CD87DF-8F75-4C05-9BA7-FDDF6ECD7C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11CD87DF-8F75-4C05-9BA7-FDDF6ECD7C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11CD87DF-8F75-4C05-9BA7-FDDF6ECD7C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11CD87DF-8F75-4C05-9BA7-FDDF6ECD7C43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{38314FFA-3AAF-4397-A81B-29A3366DD540} = {533617B0-91CD-4C91-8676-36C21155D191}
 		{1C22131D-0EEA-48EB-A708-4310845FFC27} = {533617B0-91CD-4C91-8676-36C21155D191}
 		{514758BD-D831-483F-81C4-2928358BD4D7} = {533617B0-91CD-4C91-8676-36C21155D191}
+		{11CD87DF-8F75-4C05-9BA7-FDDF6ECD7C43} = {533617B0-91CD-4C91-8676-36C21155D191}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E3DFD5E-550F-4D27-BD8A-49D16DD84DB9}
