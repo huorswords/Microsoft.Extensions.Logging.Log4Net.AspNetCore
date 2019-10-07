@@ -37,6 +37,25 @@ namespace FullFramework.Tests
         }
 
         [TestMethod]
+        public void Provider_Should_InitializeLogging_When_UsingAppConfigFile()
+        {
+            var options = new Log4NetProviderOptions()
+            {
+                UseWebOrAppConfig = true
+            };
+
+            var provider = new Log4NetProvider(options);
+            var logger = provider.CreateLogger(TestLoggerName);
+
+            const string message = MessageText;
+            logger.LogCritical(message);
+
+            Assert.AreEqual(1, this.listener.Messages.Count);
+            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+            Assert.IsTrue(this.listener.Messages.Any(x => x.StartsWith("APP.CONFIG")));
+        }
+
+        [TestMethod]
         public void Include_ScopePropertyOnMessages_When_ScopeIsString()
         {
             var provider = new Log4NetProvider(Log4NetConfigFileName);

@@ -86,5 +86,10 @@
         /// Let user setup log4net externally
         /// </summary>
         public bool ExternalConfigurationSetup { get; set; }
-	}
+
+        /// <summary>
+        /// Let user setup log4net from web.config / app.config.
+        /// </summary>
+        public bool UseWebOrAppConfig { get; set; }
+    }
 }
