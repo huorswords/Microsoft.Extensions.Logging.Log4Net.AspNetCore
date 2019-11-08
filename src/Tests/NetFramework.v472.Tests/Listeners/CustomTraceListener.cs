@@ -1,4 +1,4 @@
-﻿namespace FullFramework.Tests.Listeners
+﻿namespace NetFramework.v472.Tests.Listeners
 {
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -8,7 +8,7 @@
         public CustomTraceListener()
             => this.Messages = new List<string>();
 
-        public IList<string> Messages { get; set; }
+        public IList<string> Messages { get; }
 
         public override void Write(string message)
             => this.Messages.Add(message);

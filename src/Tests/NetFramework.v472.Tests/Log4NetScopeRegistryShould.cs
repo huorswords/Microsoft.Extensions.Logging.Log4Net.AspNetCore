@@ -1,4 +1,4 @@
-﻿namespace FullFramework.Tests
+﻿namespace NetFramework.v472.Tests
 {
     using System;
     using System.Collections.Generic;

@@ -301,6 +301,12 @@
         /// <param name="assembly">The assembly to be used on the configuration.</param>
         private Log4NetProvider ConfigureLog4NetLibrary(Assembly assembly)
         {
+            if (this.options.UseWebOrAppConfig)
+            {
+                XmlConfigurator.Configure(this.loggerRepository);
+                return this;
+            }
+
             if (!this.options.ExternalConfigurationSetup)
             {
                 string fileNamePath = CreateLog4NetFilePath(assembly);

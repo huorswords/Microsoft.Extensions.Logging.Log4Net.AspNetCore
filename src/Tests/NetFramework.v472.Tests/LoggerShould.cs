@@ -1,4 +1,4 @@
-namespace FullFramework.Tests
+namespace NetFramework.v472.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace FullFramework.Tests
     using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using FullFramework.Tests.Listeners;
+    using NetFramework.v472.Tests.Listeners;
 
     [TestClass]
     public class LoggerShould
@@ -34,6 +34,26 @@ namespace FullFramework.Tests
         {
             this.listener = new CustomTraceListener();
             Trace.Listeners.Add(listener);
+        }
+
+        [TestMethod]
+        public void Provider_Should_InitializeLogging_When_UsingAppConfigFile()
+        {
+            const string message = MessageText;
+            var options = new Log4NetProviderOptions
+            {
+                UseWebOrAppConfig = true
+            };
+
+            using (var provider = new Log4NetProvider(options))
+            {
+                var logger = provider.CreateLogger(TestLoggerName);
+                logger.LogCritical(message);
+            }
+
+            Assert.AreEqual(1, listener.Messages.ToList().Count);
+            Assert.IsNotNull(listener.Messages.ToList().FirstOrDefault(x => x.Contains(message)), $"Listener should contain the logged message: {message}");
+            Assert.IsNotNull(listener.Messages.ToList().FirstOrDefault(x => x.StartsWith($"{TestLoggerName}: APP.CONFIG")), $"Listener should start with AppConfig: {message}");
         }
 
         [TestMethod]
