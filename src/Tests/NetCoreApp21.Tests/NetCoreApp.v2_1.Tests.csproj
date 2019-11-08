@@ -18,10 +18,9 @@
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Microsoft.Extensions.Logging.Log4Net.AspNetCore\Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj" />
-		<ProjectReference Include="..\..\Swords.Core.Tests\Swords.Core.Tests.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Swords.Core.Tests\Swords.Core.Tests.csproj" />
+  </ItemGroup>
 	
   <ItemGroup>
     <None Update="appsettings.json">

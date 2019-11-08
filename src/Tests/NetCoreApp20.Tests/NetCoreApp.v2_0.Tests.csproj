@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Microsoft.Extensions.Logging.Log4Net.AspNetCore\Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\Swords.Core.Tests\Swords.Core.Tests.csproj" />
+    <ProjectReference Include="..\Swords.Core.Tests\Swords.Core.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
