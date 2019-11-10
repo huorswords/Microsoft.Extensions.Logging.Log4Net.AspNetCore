@@ -1,4 +1,4 @@
-namespace NetCoreApp.v2_2.Tests
+namespace NetCoreApp.v3_0.Tests
 {
     using System.IO;
 
