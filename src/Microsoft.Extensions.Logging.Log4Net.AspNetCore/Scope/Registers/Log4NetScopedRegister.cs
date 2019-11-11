@@ -1,8 +1,8 @@
-﻿namespace Microsoft.Extensions.Logging.Scope.Registers
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace Microsoft.Extensions.Logging.Scope.Registers
+{
     public abstract class Log4NetScopedRegister
     {
         protected const string DefaultStackName = "scope";

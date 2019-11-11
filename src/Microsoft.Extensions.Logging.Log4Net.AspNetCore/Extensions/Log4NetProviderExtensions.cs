@@ -1,10 +1,10 @@
-﻿namespace Microsoft.Extensions.Logging.Extensions
+﻿using System;
+using System.Reflection;
+
+using log4net;
+
+namespace Microsoft.Extensions.Logging.Extensions
 {
-    using System;
-    using System.Reflection;
-
-    using log4net;
-
     /// <summary>
     /// Log4Net provider extensions.
     /// </summary>

@@ -1,12 +1,12 @@
-﻿namespace Swords.Core.Tests
+﻿using log4net;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Extensions;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Reflection;
+
+namespace Swords.Core.Tests
 {
-    using log4net;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Extensions;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.Reflection;
-
     [TestClass]
     public class Log4NetProviderExtensionsShould
     {

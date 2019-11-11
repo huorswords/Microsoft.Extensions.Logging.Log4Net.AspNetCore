@@ -1,13 +1,12 @@
-﻿namespace Microsoft.Extensions.Logging.Scope.Registers
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+
+using log4net;
+
+namespace Microsoft.Extensions.Logging.Scope.Registers
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
-    using log4net;
-
     public sealed class Log4NetEnumerableScopedRegister : Log4NetScopedRegister
     {
         public Log4NetEnumerableScopedRegister()
@@ -17,8 +16,7 @@
 
         public override IEnumerable<IDisposable> AddToScope(object state)
         {
-            var col = state as IEnumerable;
-            if (col != null)
+            if (state is IEnumerable col)
             {
                 foreach (var item in col)
                 {

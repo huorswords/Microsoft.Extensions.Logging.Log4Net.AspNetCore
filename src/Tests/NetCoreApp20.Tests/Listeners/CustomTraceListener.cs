@@ -1,8 +1,8 @@
-﻿namespace NetCoreApp.v2_0.Tests.Listeners
-{
-	using System.Collections.Generic;
-	using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
+namespace NetCoreApp.v2_0.Tests.Listeners
+{
 	internal class CustomTraceListener : TraceListener
 	{
 		public CustomTraceListener()
