@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace NetCore1.Tests.Listeners
+namespace Swords.Core.Tests.Listeners
 {
 	internal class CustomTraceListener : TraceListener
 	{

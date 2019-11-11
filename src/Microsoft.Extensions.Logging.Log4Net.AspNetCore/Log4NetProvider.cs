@@ -1,23 +1,23 @@
-﻿namespace Microsoft.Extensions.Logging
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
+
+using log4net;
+using log4net.Config;
+using log4net.Repository;
+
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
+using Microsoft.Extensions.Logging.Scope;
+
+namespace Microsoft.Extensions.Logging
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Xml;
-    using System.Xml.Linq;
-    using System.Xml.XPath;
-
-    using log4net;
-    using log4net.Config;
-    using log4net.Repository;
-
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
-    using Microsoft.Extensions.Logging.Scope;
-
     /// <summary>
     /// The log4net provider class.
     /// </summary>
@@ -301,6 +301,12 @@
         /// <param name="assembly">The assembly to be used on the configuration.</param>
         private Log4NetProvider ConfigureLog4NetLibrary(Assembly assembly)
         {
+            if (this.options.UseWebOrAppConfig)
+            {
+                XmlConfigurator.Configure(this.loggerRepository);
+                return this;
+            }
+
             if (!this.options.ExternalConfigurationSetup)
             {
                 string fileNamePath = CreateLog4NetFilePath(assembly);

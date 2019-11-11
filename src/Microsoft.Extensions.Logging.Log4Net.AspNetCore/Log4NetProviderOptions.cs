@@ -1,10 +1,10 @@
-﻿namespace Microsoft.Extensions.Logging
+﻿using System.Collections.Generic;
+
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+using Microsoft.Extensions.Logging.Scope;
+
+namespace Microsoft.Extensions.Logging
 {
-	using System.Collections.Generic;
-
-	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-    using Microsoft.Extensions.Logging.Scope;
-
     /// <summary>
     /// The log4Net provider options.
     /// </summary>
@@ -86,5 +86,10 @@
         /// Let user setup log4net externally
         /// </summary>
         public bool ExternalConfigurationSetup { get; set; }
-	}
+
+        /// <summary>
+        /// Let user setup log4net from web.config / app.config.
+        /// </summary>
+        public bool UseWebOrAppConfig { get; set; }
+    }
 }

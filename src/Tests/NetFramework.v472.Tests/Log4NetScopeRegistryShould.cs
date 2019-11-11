@@ -1,14 +1,14 @@
-﻿namespace FullFramework.Tests
+﻿using System;
+using System.Collections.Generic;
+
+using Microsoft.Extensions.Logging.Scope;
+using Microsoft.Extensions.Logging.Scope.Registers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Moq;
+
+namespace NetFramework.v472.Tests
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Microsoft.Extensions.Logging.Scope;
-    using Microsoft.Extensions.Logging.Scope.Registers;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Moq;
-
     [TestClass]
     public class Log4NetScopeRegistryShould
     {

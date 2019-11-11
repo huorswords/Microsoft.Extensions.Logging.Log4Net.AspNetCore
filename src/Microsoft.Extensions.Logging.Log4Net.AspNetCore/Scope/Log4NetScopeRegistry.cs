@@ -1,14 +1,14 @@
-﻿namespace Microsoft.Extensions.Logging.Scope
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+using log4net;
+
+using Microsoft.Extensions.Logging.Scope.Registers;
+
+namespace Microsoft.Extensions.Logging.Scope
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
-    using log4net;
-    using Microsoft.Extensions.Logging.Scope.Registers;
-
     public class Log4NetScopeRegistry
     {
         private readonly IDictionary<Type, Func<object, IEnumerable<IDisposable>>> registry = new Dictionary<Type, Func<object, IEnumerable<IDisposable>>>();
@@ -36,7 +36,7 @@
             return this.registry[typeof(object)];
         }
 
-        public Log4NetScopeRegistry SetRegister(Log4NetScopedRegister property) 
+        public Log4NetScopeRegistry SetRegister(Log4NetScopedRegister property)
             => this.SetRegister(property.Type, property.AddToScope);
 
         public Log4NetScopeRegistry SetRegister(Type type, Func<object, IEnumerable<IDisposable>> register)

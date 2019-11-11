@@ -70,6 +70,7 @@ public class Startup
         "LoggerRepository": "Fantastic",
         "OverrideCriticalLevelWith": "Fatal",
         "Watch": false,
+        "UseWebOrAppConfig": false,
         "PropertyOverrides": [
             {
                 "XPath": "/log4net/appender[@name='RollingFile']/file",
@@ -158,6 +159,16 @@ public class Startup
     }
 }
 ```
+
+### Log4NetProviderOptions 'specials' reference
+
+| Property | Description | Default value | Notes |
+|-|-|-|-|
+| UseWebOrAppConfig | Flag to indicate if the log4net configuration section is located on the app.config / web.config file. | `false` | Not compatible with `ExternalConfigurationSetup`, `Watch`, `PropertyOverrides`, `Log4NetConfigFileName` |
+| ExternalConfigurationSetup | Indicates to the `Log4NetProvider` that the `log4net` library have been configured outside of the extension using `XmlConfigurator` | `false` | Not compatible with `UseWebOrAppConfig`, `Watch`, `PropertyOverrides`, `Log4NetConfigFileName` |
+| Watch | Indicates that the `log4net.config` file will be opened in watch mode, aka any change will reload `log4net` configuration. | `false` | Not compatible with `UseWebOrAppConfig`,`ExternalConfigurationSetup`, `PropertyOverrides` |
+| OverrideCriticalLevelWith | Allows to setup the Critical Level message written with another Level category. | `empty` (could be `Fatal`)| |
+| PropertyOverrides| Json values that allow define value replacements during the `log4net` initialization. | `null` | Not compatible with `UseWebOrAppConfig`, `ExternalConfigurationSetup`, `Watch` |
 
 ### Overwriting the native log4net XML configuration using `Log4NetProviderOptions`
 

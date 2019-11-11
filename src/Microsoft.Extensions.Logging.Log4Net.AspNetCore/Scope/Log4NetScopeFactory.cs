@@ -1,8 +1,9 @@
-﻿namespace Microsoft.Extensions.Logging.Scope
-{
-    using Microsoft.Extensions.Logging.Scope.Registers;
-    using System;
+﻿using System;
 
+using Microsoft.Extensions.Logging.Scope.Registers;
+
+namespace Microsoft.Extensions.Logging.Scope
+{
     public class Log4NetScopeFactory
     {
         private readonly Log4NetScopeRegistry registry;

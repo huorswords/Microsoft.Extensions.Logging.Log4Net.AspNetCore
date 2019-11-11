@@ -1,12 +1,14 @@
-﻿namespace Swords.Core.Tests
+﻿using System.Reflection;
+
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Extensions;
+
+using log4net;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace NetFramework.v472.Tests
 {
-    using log4net;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Extensions;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.Reflection;
-
     [TestClass]
     public class Log4NetProviderExtensionsShould
     {
@@ -14,7 +16,8 @@
         public void CreateLoggerWithTypeName()
         {
             var provider = new Log4NetProvider();
-            var logger = provider.CreateLogger<Log4NetProviderExtensionsShould>() as Log4NetLogger;
+
+            Log4NetLogger logger = provider.CreateLogger<Log4NetProviderExtensionsShould>() as Log4NetLogger;
 
             Assert.IsNotNull(logger);
             Assert.AreEqual(typeof(Log4NetProviderExtensionsShould).FullName, logger.Name);
@@ -34,14 +37,14 @@
         [TestMethod]
         public void WhenLoggerShouldBeExternallyConfigured_RepositoryIsNotConfigured()
         {
-            LogManager.ResetConfiguration(Assembly.GetEntryAssembly());
+            LogManager.ResetConfiguration(Assembly.GetExecutingAssembly());
 
             new Log4NetProvider(new Log4NetProviderOptions
             {
                 ExternalConfigurationSetup = true
             });
 
-            var repository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            var repository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
             Assert.IsFalse(repository.Configured);
         }
 
@@ -50,7 +53,7 @@
         {
             new Log4NetProvider(new Log4NetProviderOptions());
 
-            var repository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            var repository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
             Assert.IsTrue(repository.Configured);
         }
 

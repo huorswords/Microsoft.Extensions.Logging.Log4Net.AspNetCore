@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Microsoft.Extensions.Logging.Log4Net.AspNetCore\Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>
