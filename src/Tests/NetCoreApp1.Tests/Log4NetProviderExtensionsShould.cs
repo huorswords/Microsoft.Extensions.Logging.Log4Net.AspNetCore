@@ -1,13 +1,13 @@
-﻿namespace NetCoreApp.v1_x.Tests
-{
-	using System.Reflection;
-	using log4net;
-	using log4net.Core;
-	using log4net.Repository.Hierarchy;
-	using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Extensions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Reflection;
+using log4net;
+using log4net.Core;
+using log4net.Repository.Hierarchy;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Extensions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+namespace NetCoreApp.v1_x.Tests
+{
 	[TestClass]
 	public class Log4NetProviderExtensionsShould
 	{

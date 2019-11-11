@@ -1,14 +1,14 @@
-﻿namespace Swords.Core.Tests
+﻿using System;
+using System.Collections.Generic;
+
+using Microsoft.Extensions.Logging.Scope;
+using Microsoft.Extensions.Logging.Scope.Registers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Moq;
+
+namespace Swords.Core.Tests
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Microsoft.Extensions.Logging.Scope;
-    using Microsoft.Extensions.Logging.Scope.Registers;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Moq;
-
     [TestClass]
     public class Log4NetScopeRegistryShould
     {

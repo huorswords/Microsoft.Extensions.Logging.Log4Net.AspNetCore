@@ -1,10 +1,10 @@
-﻿namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions
-{
-	using System;
-	using System.Collections.Generic;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 
+namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions
+{
 	/// <summary>
 	/// class containing extensions for IConfigurationSection interface.
 	/// </summary>

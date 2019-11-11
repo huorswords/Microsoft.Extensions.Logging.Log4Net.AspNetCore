@@ -1,11 +1,11 @@
+using System.IO;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace NetCoreApp.v3_0.Tests
 {
-    using System.IO;
-
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
 	public class LoggerShould : Swords.Core.Tests.LoggerShould
     {

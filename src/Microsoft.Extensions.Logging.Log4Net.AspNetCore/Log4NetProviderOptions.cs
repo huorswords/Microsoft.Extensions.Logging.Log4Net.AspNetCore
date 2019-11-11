@@ -1,10 +1,10 @@
-﻿namespace Microsoft.Extensions.Logging
+﻿using System.Collections.Generic;
+
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+using Microsoft.Extensions.Logging.Scope;
+
+namespace Microsoft.Extensions.Logging
 {
-	using System.Collections.Generic;
-
-	using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-    using Microsoft.Extensions.Logging.Scope;
-
     /// <summary>
     /// The log4Net provider options.
     /// </summary>

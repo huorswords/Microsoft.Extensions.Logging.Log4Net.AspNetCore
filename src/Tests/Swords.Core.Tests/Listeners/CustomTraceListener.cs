@@ -1,8 +1,8 @@
-﻿namespace Swords.Core.Tests.Listeners
-{
-	using System.Collections.Generic;
-	using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
+namespace Swords.Core.Tests.Listeners
+{
 	internal class CustomTraceListener : TraceListener
 	{
 		public CustomTraceListener()

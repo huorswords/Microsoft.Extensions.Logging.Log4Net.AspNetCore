@@ -1,9 +1,7 @@
-﻿namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
+﻿using System.Collections.Generic;
 
+namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities
+{
     /// <summary>
     ///  Class to store information of a log4net xml config file node.
     /// </summary>

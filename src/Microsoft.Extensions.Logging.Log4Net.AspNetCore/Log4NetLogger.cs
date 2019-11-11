@@ -1,11 +1,11 @@
-﻿namespace Microsoft.Extensions.Logging
+﻿using System;
+
+using log4net;
+
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
+
+namespace Microsoft.Extensions.Logging
 {
-    using System;
-
-    using log4net;
-
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
-
     /// <summary>
     /// The log4net logger class.
     /// </summary>

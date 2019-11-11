@@ -1,14 +1,14 @@
-﻿namespace NetFramework.v472.Tests
+﻿using System.Reflection;
+
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Extensions;
+
+using log4net;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace NetFramework.v472.Tests
 {
-    using System.Reflection;
-
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Extensions;
-
-    using log4net;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class Log4NetProviderExtensionsShould
     {

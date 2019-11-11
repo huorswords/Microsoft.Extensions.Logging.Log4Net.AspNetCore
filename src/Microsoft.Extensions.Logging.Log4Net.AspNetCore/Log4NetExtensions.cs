@@ -1,9 +1,9 @@
-﻿namespace Microsoft.Extensions.Logging
-{
-	using System;
-	using Microsoft.Extensions.Configuration;
-	using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
+namespace Microsoft.Extensions.Logging
+{
 	/// <summary>
 	/// The log4net extensions class.
 	/// </summary>

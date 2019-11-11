@@ -1,8 +1,8 @@
-﻿namespace Microsoft.Extensions.Logging.Scope
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace Microsoft.Extensions.Logging.Scope
+{
     public class Log4NetScope : IDisposable
     {
         private bool disposedValue = false; // To detect redundant calls

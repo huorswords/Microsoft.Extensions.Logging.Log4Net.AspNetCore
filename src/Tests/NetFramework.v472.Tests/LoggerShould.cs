@@ -1,17 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using NetFramework.v472.Tests.Listeners;
+
 namespace NetFramework.v472.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using NetFramework.v472.Tests.Listeners;
-
     [TestClass]
     public class LoggerShould
     {

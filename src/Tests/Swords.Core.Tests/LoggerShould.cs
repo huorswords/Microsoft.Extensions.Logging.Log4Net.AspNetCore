@@ -1,17 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Swords.Core.Tests.Listeners;
+
 namespace Swords.Core.Tests
 {
-	using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-	using System.IO;
-	using System.Linq;
-
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Swords.Core.Tests.Listeners;
-
     [TestClass]
 	public class LoggerShould
 	{

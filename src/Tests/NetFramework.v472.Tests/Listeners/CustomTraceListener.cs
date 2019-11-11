@@ -1,8 +1,8 @@
-﻿namespace NetFramework.v472.Tests.Listeners
-{
-    using System.Collections.Generic;
-    using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
+namespace NetFramework.v472.Tests.Listeners
+{
     internal class CustomTraceListener : TraceListener
     {
         public CustomTraceListener()
