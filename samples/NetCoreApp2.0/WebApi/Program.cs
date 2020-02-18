@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Samples.WebApi.NetCore22
 {
@@ -7,7 +8,14 @@ namespace Samples.WebApi.NetCore22
     {
         public static void Main(string[] args)
         {
+            var configuration = new ConfigurationBuilder()
+                                    .AddJsonFile("appsettings.json")
+                                    .AddJsonFile("appsettings.development.json")
+                                    .AddEnvironmentVariables()
+                                    .Build();
+
             CreateHostBuilder(args)
+                .UseConfiguration(configuration)
                 .Build()
                 .Run();
         }
