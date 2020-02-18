@@ -2,9 +2,9 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace Samples.WebApi.NetCore20
+namespace Sample.WebApi.NetCore22
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

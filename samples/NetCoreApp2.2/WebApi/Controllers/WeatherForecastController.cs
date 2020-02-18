@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Samples.WebApi.NetCore20.Controllers
+namespace Sample.WebApi.NetCore22.Controllers
 {
+    [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : Controller
+    public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {

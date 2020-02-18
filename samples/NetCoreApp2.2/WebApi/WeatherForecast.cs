@@ -1,6 +1,6 @@
 using System;
 
-namespace Samples.WebApi.NetCore20
+namespace Sample.WebApi.NetCore22
 {
     public class WeatherForecast
     {
