@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetFramework.v472.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swords.Core.Tests", "Tests\Swords.Core.Tests\Swords.Core.Tests.csproj", "{B619A288-6272-46AC-BF6A-438DD50F8B7F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreAppv3_1.Tests", "Tests\NetCoreAppv3_1.Tests\NetCoreAppv3_1.Tests.csproj", "{0048ED70-2C25-468C-9B80-588DAB468958}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{B619A288-6272-46AC-BF6A-438DD50F8B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B619A288-6272-46AC-BF6A-438DD50F8B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B619A288-6272-46AC-BF6A-438DD50F8B7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0048ED70-2C25-468C-9B80-588DAB468958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0048ED70-2C25-468C-9B80-588DAB468958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0048ED70-2C25-468C-9B80-588DAB468958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0048ED70-2C25-468C-9B80-588DAB468958}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{11CD87DF-8F75-4C05-9BA7-FDDF6ECD7C43} = {533617B0-91CD-4C91-8676-36C21155D191}
 		{D95C132A-FC07-4628-930D-4EFF9DD7F7E4} = {533617B0-91CD-4C91-8676-36C21155D191}
 		{B619A288-6272-46AC-BF6A-438DD50F8B7F} = {533617B0-91CD-4C91-8676-36C21155D191}
+		{0048ED70-2C25-468C-9B80-588DAB468958} = {533617B0-91CD-4C91-8676-36C21155D191}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E3DFD5E-550F-4D27-BD8A-49D16DD84DB9}
