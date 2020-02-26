@@ -11,6 +11,7 @@ namespace Microsoft.Extensions.Logging.Scope.Registers
         {
             base.Type = typeof(object);
         }
+
         public override IEnumerable<IDisposable> AddToScope(object state)
         {
             if (state != null)
