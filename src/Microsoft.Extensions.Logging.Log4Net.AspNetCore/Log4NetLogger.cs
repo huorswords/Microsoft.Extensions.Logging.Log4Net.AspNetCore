@@ -24,15 +24,6 @@ namespace Microsoft.Extensions.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
         /// </summary>
-        /// <param name="loggerRepository">The repository name.</param>
-        /// <param name="name">The logger's name.</param>
-        [Obsolete("Use Log4NetLogger(Log4NetLoggerOptions) instead")]
-        public Log4NetLogger(string loggerRepository, string name)
-            => this.log = LogManager.GetLogger(loggerRepository, name);
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
-        /// </summary>
         /// <param name="options">The log4net provider options.</param>
         public Log4NetLogger(Log4NetProviderOptions options)
         {
