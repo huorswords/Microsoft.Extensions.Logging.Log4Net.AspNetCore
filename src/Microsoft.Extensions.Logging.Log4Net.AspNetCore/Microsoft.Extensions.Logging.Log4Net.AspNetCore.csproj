@@ -16,7 +16,9 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-		<PackageReleaseNotes>* Add compatibility with netcoreapp3.1</PackageReleaseNotes>
+		<PackageReleaseNotes>* Add compatibility with netcoreapp3.1
+* Remove compatibility wit net462
+* Remove obsolete code</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
 		<Version>3.1.0</Version>
