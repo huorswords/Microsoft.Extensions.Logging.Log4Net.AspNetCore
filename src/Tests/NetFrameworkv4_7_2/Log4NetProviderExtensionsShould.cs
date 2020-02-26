@@ -1,40 +1,36 @@
-﻿using System.Reflection;
-
+﻿using log4net;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Extensions;
+using System.Reflection;
+using Xunit;
 
-using log4net;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace NetFramework.v472.Tests
+namespace NetFrameworkv4_7_2.Tests
 {
-    [TestClass]
     public class Log4NetProviderExtensionsShould
     {
-        [TestMethod]
+        [Fact]
         public void CreateLoggerWithTypeName()
         {
             var provider = new Log4NetProvider();
 
             Log4NetLogger logger = provider.CreateLogger<Log4NetProviderExtensionsShould>() as Log4NetLogger;
 
-            Assert.IsNotNull(logger);
-            Assert.AreEqual(typeof(Log4NetProviderExtensionsShould).FullName, logger.Name);
+            Assert.NotNull(logger);
+            Assert.Equal(typeof(Log4NetProviderExtensionsShould).FullName, logger.Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateDefaultLoggerWithoutTypeName()
         {
             var provider = new Log4NetProvider();
 
             var logger = provider.CreateLogger() as Log4NetLogger;
 
-            Assert.IsNotNull(logger);
-            Assert.AreEqual(string.Empty, logger.Name);
+            Assert.NotNull(logger);
+            Assert.Equal(string.Empty, logger.Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void WhenLoggerShouldBeExternallyConfigured_RepositoryIsNotConfigured()
         {
             LogManager.ResetConfiguration(Assembly.GetExecutingAssembly());
@@ -45,19 +41,19 @@ namespace NetFramework.v472.Tests
             });
 
             var repository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
-            Assert.IsFalse(repository.Configured);
+            Assert.False(repository.Configured);
         }
 
-        [TestMethod]
+        [Fact]
         public void WhenLoggerShouldNotBeExternallyConfigured_RepositoryIsConfigured()
         {
             new Log4NetProvider(new Log4NetProviderOptions());
 
             var repository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
-            Assert.IsTrue(repository.Configured);
+            Assert.True(repository.Configured);
         }
 
-        [TestMethod]
+        [Fact]
         public void WhenRepositoryNameIsGivenButRepositoryIsAlreadyCreated_ProviderUsesAlreadyCreatedRepository()
         {
             LogManager.CreateRepository("abc");

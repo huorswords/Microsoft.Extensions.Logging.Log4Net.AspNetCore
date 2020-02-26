@@ -1,18 +1,15 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+using NetFrameworkv4_7_2.Tests.Listeners;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Xunit;
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using NetFramework.v472.Tests.Listeners;
-
-namespace NetFramework.v472.Tests
+namespace NetFrameworkv4_7_2.Tests
 {
-    [TestClass]
     public class LoggerShould
     {
         private const string Log4NetConfigFileName = "log4net.config";
@@ -29,14 +26,13 @@ namespace NetFramework.v472.Tests
 
         private CustomTraceListener listener;
 
-        [TestInitialize]
-        public void Setup()
+        public LoggerShould()
         {
             this.listener = new CustomTraceListener();
             Trace.Listeners.Add(listener);
         }
 
-        [TestMethod]
+        [Fact]
         public void Provider_Should_InitializeLogging_When_UsingAppConfigFile()
         {
             const string message = MessageText;
@@ -51,12 +47,13 @@ namespace NetFramework.v472.Tests
                 logger.LogCritical(message);
             }
 
-            Assert.AreEqual(1, listener.Messages.ToList().Count);
-            Assert.IsNotNull(listener.Messages.ToList().FirstOrDefault(x => x.Contains(message)), $"Listener should contain the logged message: {message}");
-            Assert.IsNotNull(listener.Messages.ToList().FirstOrDefault(x => x.StartsWith($"{TestLoggerName}: APP.CONFIG")), $"Listener should start with AppConfig: {message}");
+            List<string> messages = listener.Messages.ToList();
+            Assert.Single(messages);
+            Assert.NotNull(messages.FirstOrDefault(x => x.Contains(message)));
+            Assert.NotNull(messages.FirstOrDefault(x => x.StartsWith($"{TestLoggerName}: APP.CONFIG")));
         }
 
-        [TestMethod]
+        [Fact]
         public void Include_ScopePropertyOnMessages_When_ScopeIsString()
         {
             var provider = new Log4NetProvider(Log4NetConfigFileName);
@@ -68,12 +65,12 @@ namespace NetFramework.v472.Tests
                 logger.LogCritical(message);
             }
 
-            Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(ScopedValueText)));
+            Assert.Equal(1, this.listener.Messages.Count);
+            Assert.Contains(this.listener.Messages, x => x.Contains(message));
+            Assert.Contains(this.listener.Messages, x => x.Contains(ScopedValueText));
         }
 
-        [TestMethod]
+        [Fact]
         public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfObjects_And_AnyValueIsNull()
         {
             var provider = new Log4NetProvider(Log4NetConfigFileName);
@@ -84,12 +81,12 @@ namespace NetFramework.v472.Tests
                 logger.LogCritical(MessageText);
             }
 
-            Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(MessageText)));
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains($"(null) (null) MESSAGE: {MessageText}")));
+            Assert.Equal(1, this.listener.Messages.Count);
+            Assert.Contains(this.listener.Messages, x => x.Contains(MessageText));
+            Assert.Contains(this.listener.Messages, x => x.Contains($"(null) (null) MESSAGE: {MessageText}"));
         }
 
-        [TestMethod]
+        [Fact]
         public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfObjects()
         {
             var provider = new Log4NetProvider(Log4NetConfigFileName);
@@ -100,12 +97,12 @@ namespace NetFramework.v472.Tests
                 logger.LogCritical(MessageText);
             }
 
-            Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(MessageText)));
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(ScopedValueText)));
+            Assert.Equal(1, this.listener.Messages.Count);
+            Assert.Contains(this.listener.Messages, x => x.Contains(MessageText));
+            Assert.Contains(this.listener.Messages, x => x.Contains(ScopedValueText));
         }
 
-        [TestMethod]
+        [Fact]
         public void Include_ScopePropertyOnMessages_When_ScopeIsDictionaryOfStrings()
         {
             var provider = new Log4NetProvider(Log4NetConfigFileName);
@@ -117,12 +114,12 @@ namespace NetFramework.v472.Tests
                 logger.LogCritical(message);
             }
 
-            Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(ScopedValueText)));
+            Assert.Equal(1, this.listener.Messages.Count);
+            Assert.Contains(this.listener.Messages, x => x.Contains(message));
+            Assert.Contains(this.listener.Messages, x => x.Contains(ScopedValueText));
         }
 
-        [TestMethod]
+        [Fact]
         public void ProviderShouldBeCreatedWithOptions()
         {
             const string OverridOHLogFilePath = LogFileOverrideName;
@@ -136,11 +133,11 @@ namespace NetFramework.v472.Tests
             var logger = provider.CreateLogger();
             logger.LogCritical(MessageText);
 
-            Assert.IsNotNull(provider);
-            Assert.IsTrue(File.Exists(OverridOHLogFilePath));
+            Assert.NotNull(provider);
+            Assert.True(File.Exists(OverridOHLogFilePath));
         }
 
-        [TestMethod]
+        [Fact]
         public void LogCriticalMessages()
         {
             var provider = new Log4NetProvider(Log4NetConfigFileName);
@@ -149,11 +146,11 @@ namespace NetFramework.v472.Tests
             const string message = MessageText;
             logger.LogCritical(message);
 
-            Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+            Assert.Equal(1, this.listener.Messages.Count);
+            Assert.Contains(this.listener.Messages, x => x.Contains(message));
         }
 
-        [TestMethod]
+        [Fact]
         public void ProviderShouldCreateLoggerUsingConfigurationFileRelativePath()
         {
             var provider = new Log4NetProvider(Log4NetConfigFileName);
@@ -163,11 +160,11 @@ namespace NetFramework.v472.Tests
             const string message = MessageText;
             logger.LogCritical(message);
 
-            Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(this.listener.Messages.Any(x => x.Contains(message)));
+            Assert.Equal(1, this.listener.Messages.Count);
+            Assert.Contains(this.listener.Messages, x => x.Contains(message));
         }
 
-        [TestMethod]
+        [Fact]
         public void UsePatternLayoutOnExceptions()
         {
             const string Message = "Catched message";
@@ -184,8 +181,8 @@ namespace NetFramework.v472.Tests
                 logger.LogCritical(10, ex, Message);
             }
 
-            Assert.AreEqual(1, this.listener.Messages.Count);
-            Assert.IsTrue(listener.Messages.Any(x => x.Contains(Message)));
+            Assert.Equal(1, this.listener.Messages.Count);
+            Assert.Contains(listener.Messages, x => x.Contains(Message));
         }
 
         /// <summary>

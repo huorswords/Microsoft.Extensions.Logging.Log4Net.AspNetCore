@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace NetFramework.v472.Tests.Listeners
+namespace NetFrameworkv4_7_2.Tests.Listeners
 {
     internal class CustomTraceListener : TraceListener
     {
