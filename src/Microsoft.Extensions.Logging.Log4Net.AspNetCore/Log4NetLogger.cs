@@ -1,7 +1,9 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using log4net;
-
+using log4net.Util;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
 
 namespace Microsoft.Extensions.Logging
@@ -101,8 +103,33 @@ namespace Microsoft.Extensions.Logging
 
             EnsureValidFormatter(formatter);
 
-            string message = formatter(state, exception);
-            bool shouldLogSomething = !string.IsNullOrEmpty(message) || exception != null;
+            object message;
+            if (state is IEnumerable<KeyValuePair<string, object>> keyValuePairs && keyValuePairs.Count() > 1)
+            {
+                string format = string.Empty;
+                var args = new List<object>();
+
+                foreach (var keyValuePair in keyValuePairs)
+                {
+                    if (keyValuePair.Key == "{OriginalFormat}")
+                    {
+                        format = keyValuePair.Value.ToString();
+                    }
+                    else
+                    {
+                        args.Add(keyValuePair.Value);
+                    }
+                }
+
+                message = new SystemStringFormat(CultureInfo.InvariantCulture, format, args.ToArray());
+
+            }
+            else
+            {
+                message = formatter(state, exception);
+            }
+
+            bool shouldLogSomething = state != null || exception != null;
             if (shouldLogSomething)
             {
                 switch (logLevel)
@@ -147,7 +174,7 @@ namespace Microsoft.Extensions.Logging
 
                     default:
                         this.log.Warn($"Encountered unknown log level {logLevel}, writing out as Info.");
-                        this.log.Info(message, exception);
+                        this.log.Info(state, exception);
                         break;
                 }
             }
