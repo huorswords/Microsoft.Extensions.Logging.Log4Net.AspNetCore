@@ -174,7 +174,7 @@ namespace Microsoft.Extensions.Logging
 
                     default:
                         this.log.Warn($"Encountered unknown log level {logLevel}, writing out as Info.");
-                        this.log.Info(state, exception);
+                        this.log.Info(message, exception);
                         break;
                 }
             }
