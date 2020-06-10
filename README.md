@@ -147,6 +147,18 @@ public static IWebHost BuildWebHost(string[] args) =>
             .Build();
 ```
 
+Also note that when trying to allow for levels messages below the Information level for a development build you must make allowances for it in the `appsettings.Development.json` as illustrated below:
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+	  ...
+    }
+  }
+}
+```
+
 ## Special thanks
 
 Thank you very much to all contributors & users by its collaboration, and specially to:
