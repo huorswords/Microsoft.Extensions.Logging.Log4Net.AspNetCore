@@ -153,7 +153,7 @@ Also note that when trying to allow for levels messages below the Information le
   "Logging": {
     "LogLevel": {
       "Default": "Debug",
-	  ...
+	  "...":"..."
     }
   }
 }
