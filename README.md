@@ -155,7 +155,6 @@ Also note that when trying to allow for levels messages below the Information le
 {
   "Logging": {
     "LogLevel": {
-	  //Allows for the Default category to allow for Debug Level log messages and above.
       "Default": "Debug",
 	  "...":"..."
     }
