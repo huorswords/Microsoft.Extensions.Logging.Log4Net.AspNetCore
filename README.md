@@ -146,7 +146,7 @@ public static IWebHost BuildWebHost(string[] args) =>
             })
             .Build();
 ```
-### Logging messages lower than the Information level in development
+### Logging lower than the Information Level
 
 > Associated issues #85
 
