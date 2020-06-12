@@ -22,7 +22,7 @@ namespace Unit.Tests.Target.Netcore31
         [Fact]
         public void Should_AddLog4Net_With_Options()
         {
-            var options = Context.ConfigureOptions(Log4NetFileOption.TestAppender);
+            var options = Context.ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             var host = Host.CreateDefaultBuilder()
                 .ConfigureLogging(builder =>
                 {

@@ -63,7 +63,7 @@ namespace Unit.Tests.Target.Netcore31.Fixtures
 
         private static ILoggerRepository GetOrCreateRepository()
         {
-            var repositoryName = "Test";
+            var repositoryName = "log4net-default-repository";
             ILoggerRepository repository = null;
             var repositories = LogManager.GetAllRepositories();
             if (repositories.Any(x => x.Name.Equals(repositoryName, StringComparison.InvariantCultureIgnoreCase)))
@@ -100,7 +100,7 @@ namespace Unit.Tests.Target.Netcore31.Fixtures
 
             var options = new Log4NetProviderOptions()
             {
-                Log4NetConfigFileName = $"Resources/log4net.{log4NetFile}.config",
+                Log4NetConfigFileName = GetLog4netFilePath(log4NetFile),
                 LoggerRepository = RepositoryName,
                 Name = RepositoryName
             };
@@ -109,6 +109,9 @@ namespace Unit.Tests.Target.Netcore31.Fixtures
 
             return options;
         }
+
+        public string GetLog4netFilePath(Log4NetFileOption log4NetFile) 
+            => $"Resources/log4net.{log4NetFile}.config";
 
         private static void SetupLog4NetRepository(Log4NetProviderOptions options)
         {

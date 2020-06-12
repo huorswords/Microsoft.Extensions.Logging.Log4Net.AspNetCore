@@ -6,7 +6,8 @@
         FatalOrHigher,
         DebugOrHigher,
         All,
-        TestAppender,
+        TestAppenderTrace,
+        TestAppenderWarn,
         TraceOrHigher
     }
 }

@@ -58,7 +58,7 @@ namespace Unit.Tests.Target.Netcore31
         [ClassData(typeof(TestLogMethodData))]
         public void Log_Should_AddMessage_With_ExpectedLevel(LogLevel logLevel, Level eventLevel)
         {
-            var options = ConfigureOptions(Log4NetFileOption.TestAppender);
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             var testAppender = GetTestAppender(options);
 
             var sut = new Log4NetLogger(options);
@@ -84,7 +84,7 @@ namespace Unit.Tests.Target.Netcore31
         [Fact]
         public void Log_Should_AddMessageAsCritical_When_LogLevelCritical_And_OverrideCriticalLevelWithIsSet()
         {
-            var options = ConfigureOptions(Log4NetFileOption.TestAppender);
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             options.OverrideCriticalLevelWith = "Critical";
 
             var testAppender = GetTestAppender(options);
@@ -111,7 +111,7 @@ namespace Unit.Tests.Target.Netcore31
         [Fact]
         public void Log_Should_AddMessageAsCritical_When_LogException()
         {
-            var options = ConfigureOptions(Log4NetFileOption.TestAppender);
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             options.OverrideCriticalLevelWith = "Critical";
 
             var testAppender = GetTestAppender(options);
@@ -138,7 +138,7 @@ namespace Unit.Tests.Target.Netcore31
         [Fact]
         public void Log_Should_IgnoreMessage_When_Empty()
         {
-            Log4NetProviderOptions options = ConfigureOptions(Log4NetFileOption.TestAppender);
+            Log4NetProviderOptions options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             var testAppender = GetTestAppender(options);
 
             var sut = new Log4NetLogger(options);
@@ -153,7 +153,7 @@ namespace Unit.Tests.Target.Netcore31
         [Fact]
         public void Log_Should_IgnoreMessage_With_LevelNone()
         {
-            var options = ConfigureOptions(Log4NetFileOption.TestAppender);
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             var testAppender = GetTestAppender(options);
 
             var sut = new Log4NetLogger(options);
@@ -168,7 +168,7 @@ namespace Unit.Tests.Target.Netcore31
         [Fact]
         public void Log_Should_Throw_When_FormaterIsInvalid()
         {
-            var options = ConfigureOptions(Log4NetFileOption.TestAppender);
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             var testAppender = GetTestAppender(options);
 
             var sut = new Log4NetLogger(options);
@@ -179,7 +179,7 @@ namespace Unit.Tests.Target.Netcore31
         [Fact]
         public void Log_Should_Throw_When_LogLevelIsNotValid()
         {
-            var options = ConfigureOptions(Log4NetFileOption.TestAppender);
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             var testAppender = GetTestAppender(options);
 
             var sut = new Log4NetLogger(options);
@@ -195,7 +195,7 @@ namespace Unit.Tests.Target.Netcore31
             mockedFactory.Setup(x => x.BeginScope(It.IsAny<string>()))
                          .Returns(new Log4NetScope(CustomScope, new Log4NetScopeRegistry()));
 
-            var options = ConfigureOptions(Log4NetFileOption.TestAppender);
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
             options.ScopeFactory = mockedFactory.Object;
             var testAppender = GetTestAppender(options);
 

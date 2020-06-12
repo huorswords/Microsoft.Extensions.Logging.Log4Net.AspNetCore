@@ -13,16 +13,20 @@
     <None Remove="log4net.NoAppenders.config" />
     <None Remove="log4net.TestAppender.config" />
     <None Remove="log4net.TraceOrHigher.config" />
+    <None Remove="Resources\log4net.TestAppenderWarn.config" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\log4net.TestAppenderWarn.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\log4net.TraceOrHigher.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\log4net.TestAppender.config">
+    <Content Include="Resources\log4net.TestAppenderTrace.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\log4net.All.config">
