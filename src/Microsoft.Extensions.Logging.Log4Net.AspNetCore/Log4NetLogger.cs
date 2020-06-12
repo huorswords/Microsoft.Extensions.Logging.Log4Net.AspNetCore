@@ -1,8 +1,12 @@
-﻿using System;
-
-using log4net;
-
+﻿using log4net;
+using log4net.Core;
+using log4net.Util;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Microsoft.Extensions.Logging
 {
@@ -60,8 +64,9 @@ namespace Microsoft.Extensions.Logging
             {
                 case LogLevel.Critical:
                     return this.log.IsFatalEnabled;
-                case LogLevel.Debug:
                 case LogLevel.Trace:
+                    return this.log.Logger.IsEnabledFor(Level.Trace);
+                case LogLevel.Debug:
                     return this.log.IsDebugEnabled;
                 case LogLevel.Error:
                     return this.log.IsErrorEnabled;
@@ -71,7 +76,6 @@ namespace Microsoft.Extensions.Logging
                     return this.log.IsWarnEnabled;
                 case LogLevel.None:
                     return false;
-
                 default:
                     throw new ArgumentOutOfRangeException(nameof(logLevel));
             }
@@ -99,58 +103,53 @@ namespace Microsoft.Extensions.Logging
                 return;
             }
 
-            EnsureValidFormatter(formatter);
+            var message = PrepareMessage(state, logLevel, exception, formatter);
+            LogMessage(message);
+        }
 
-            string message = formatter(state, exception);
-            bool shouldLogSomething = !string.IsNullOrEmpty(message) || exception != null;
-            if (shouldLogSomething)
+        private void LogMessage(MessageCandidate candidate)
+        {
+            if (candidate.IsValid())
             {
-                switch (logLevel)
+                switch (candidate.LogLevel)
                 {
                     case LogLevel.Critical:
                         string overrideCriticalLevelWith = options.OverrideCriticalLevelWith;
                         if (!string.IsNullOrEmpty(overrideCriticalLevelWith)
                             && overrideCriticalLevelWith.Equals(LogLevel.Critical.ToString(), StringComparison.OrdinalIgnoreCase))
                         {
-                            this.log.Critical(message, exception);
+                            this.log.Critical(candidate.Message, candidate.Exception);
                         }
                         else
                         {
-                            this.log.Fatal(message, exception);
+                            this.log.Fatal(candidate.Message, candidate.Exception);
                         }
 
                         break;
-
                     case LogLevel.Debug:
-                        this.log.Debug(message, exception);
+                        this.log.Debug(candidate.Message, candidate.Exception);
                         break;
-
                     case LogLevel.Error:
-                        this.log.Error(message, exception);
+                        this.log.Error(candidate.Message, candidate.Exception);
                         break;
-
                     case LogLevel.Information:
-                        this.log.Info(message, exception);
+                        this.log.Info(candidate.Message, candidate.Exception);
                         break;
-
                     case LogLevel.Warning:
-                        this.log.Warn(message, exception);
+                        this.log.Warn(candidate.Message, candidate.Exception);
                         break;
-
                     case LogLevel.Trace:
-                        this.log.Trace(message, exception);
-                        break;
-
-                    case LogLevel.None:
-                        // Just ignore the message. But this option shouldn't be reached.
-                        break;
-
-                    default:
-                        this.log.Warn($"Encountered unknown log level {logLevel}, writing out as Info.");
-                        this.log.Info(message, exception);
+                        this.log.Trace(candidate.Message, candidate.Exception);
                         break;
                 }
             }
+        }
+
+        private static MessageCandidate PrepareMessage<TState>(TState state, LogLevel logLevel, Exception exception, Func<TState, Exception, string> formatter)
+        {
+            EnsureValidFormatter(formatter);
+            object message = formatter(state, exception);
+            return new MessageCandidate(logLevel, message, exception);
         }
 
         private static void EnsureValidFormatter<TState>(Func<TState, Exception, string> formatter)

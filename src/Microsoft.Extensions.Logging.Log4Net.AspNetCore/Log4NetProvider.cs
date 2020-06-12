@@ -191,7 +191,7 @@ namespace Microsoft.Extensions.Logging
         /// <returns>The <see cref="XmlElement"/> with the log4net XML element.</returns>
         private static XmlDocument ParseLog4NetConfigFile(string filename)
         {
-            using (FileStream fp = File.OpenRead(filename))
+            using (FileStream stream = File.OpenRead(filename))
             {
                 var settings = new XmlReaderSettings
                 {
@@ -199,7 +199,7 @@ namespace Microsoft.Extensions.Logging
                 };
 
                 var log4netConfig = new XmlDocument();
-                using (var reader = XmlReader.Create(fp, settings))
+                using (var reader = XmlReader.Create(stream, settings))
                 {
                     log4netConfig.Load(reader);
                 }

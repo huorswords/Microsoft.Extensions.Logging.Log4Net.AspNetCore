@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swords.Core.Tests", "Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreAppv3_1.Tests", "Tests\NetCoreAppv3_1.Tests\NetCoreAppv3_1.Tests.csproj", "{0048ED70-2C25-468C-9B80-588DAB468958}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit.Tests.Target.Netcore31", "..\tests\Unit.Tests.Target.Netcore31\Unit.Tests.Target.Netcore31.csproj", "{9D126A4C-9A1C-463D-8BEE-479B928E43DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{0048ED70-2C25-468C-9B80-588DAB468958}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0048ED70-2C25-468C-9B80-588DAB468958}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0048ED70-2C25-468C-9B80-588DAB468958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D126A4C-9A1C-463D-8BEE-479B928E43DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D126A4C-9A1C-463D-8BEE-479B928E43DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D126A4C-9A1C-463D-8BEE-479B928E43DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D126A4C-9A1C-463D-8BEE-479B928E43DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{11CD87DF-8F75-4C05-9BA7-FDDF6ECD7C43} = {533617B0-91CD-4C91-8676-36C21155D191}
 		{B619A288-6272-46AC-BF6A-438DD50F8B7F} = {533617B0-91CD-4C91-8676-36C21155D191}
 		{0048ED70-2C25-468C-9B80-588DAB468958} = {533617B0-91CD-4C91-8676-36C21155D191}
+		{9D126A4C-9A1C-463D-8BEE-479B928E43DA} = {533617B0-91CD-4C91-8676-36C21155D191}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E3DFD5E-550F-4D27-BD8A-49D16DD84DB9}
