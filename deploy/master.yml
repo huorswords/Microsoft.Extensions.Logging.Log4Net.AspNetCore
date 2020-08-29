@@ -1,0 +1,87 @@
+pool:
+  name: Azure Pipelines
+variables:
+  BuildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 1.1.x'
+  inputs:
+    version: 1.1.x
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 2.x'
+  inputs:
+    version: 2.x
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 3.0.x'
+  inputs:
+    version: 3.0.x
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 3.1.x'
+  inputs:
+    version: 3.1.x
+
+- bash: |
+   git clone https://$SYSTEM_ACCESSTOKEN@swords.visualstudio.com/DefaultCollection/Microsoft.Extensions.Logging.Log4Net.AspNetCore/_git/Log4Net.Cert
+   cd Log4Net.Cert
+   cp Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk $BUILD_SOURCESDIRECTORY/src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
+  displayName: 'Bash Script'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: 'src/Tests/NetFrameworkv4_7_2/packages.config'
+    restoreDirectory: '$(Build.SourcesDirectory)\packages'
+  enabled: false
+
+- task: VSBuild@1
+  displayName: 'Build solution src/Tests/NetFrameworkv4_7_2/NetFrameworkv4_7_2.Tests.csproj'
+  inputs:
+    solution: 'src/Tests/NetFrameworkv4_7_2/NetFrameworkv4_7_2.Tests.csproj'
+    msbuildArgs: '-property:SolutionDir=$(Build.SourcesDirectory)'
+  enabled: false
+
+- task: VSTest@2
+  displayName: 'VsTest - testAssemblies'
+  inputs:
+    testAssemblyVer2: '**\NetFrameworkv4_7_2.Tests.dll'
+  enabled: false
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: restore
+    projects: 'src/**/*csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    projects: |
+     src/**/*csproj
+     !src/**/NetFrameworkv4_7_2/*.csproj
+    arguments: '--configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: test
+    projects: |
+     tests/**/*Tests.csproj
+     !src/**/NetFramework.v472.Tests/*.csproj
+    arguments: '--configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
+  inputs:
+    command: pack
+    packagesToPack: '**/Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: nuget'
+  inputs:
+    ArtifactName: nuget
+
+
