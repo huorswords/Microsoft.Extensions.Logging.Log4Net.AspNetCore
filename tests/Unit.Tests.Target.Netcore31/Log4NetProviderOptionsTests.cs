@@ -48,7 +48,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.ExternalConfigurationSetup.Should().BeFalse();
             sut.Log4NetConfigFileName.Should().Be(Log4NetFileName);
             sut.LoggerRepository.Should().BeNull();
-            sut.Name.Should().BeEmpty();
+            sut.Name.Should().BeEmpty(); 
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
             sut.ScopeFactory.Should().BeNull();
@@ -66,7 +66,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.ExternalConfigurationSetup.Should().BeFalse();
             sut.Log4NetConfigFileName.Should().Be("log4net.config");
             sut.LoggerRepository.Should().BeNull();
-            sut.Name.Should().BeEmpty();
+            sut.Name.Should().BeEmpty(); 
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
             sut.ScopeFactory.Should().BeNull();
