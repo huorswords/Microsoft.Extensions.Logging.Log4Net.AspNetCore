@@ -1,9 +1,10 @@
 pool:
-  name: Azure Pipelines
-variables:
-  BuildConfiguration: 'Release'
+  name: 'Azure Pipelines'
 trigger:
 - master
+
+variables:
+  BuildConfiguration: 'Release'
 
 steps:
 - task: UseDotNet@2
