@@ -71,7 +71,7 @@ steps:
   inputs:
     command: test
     projects: |
-     tests/**/*Tests.csproj
+     tests/**/*.csproj
      !src/**/NetFramework.v472.Tests/*.csproj
     arguments: '--configuration $(BuildConfiguration)'
 
