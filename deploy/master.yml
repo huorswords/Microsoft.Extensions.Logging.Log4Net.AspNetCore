@@ -32,7 +32,7 @@ steps:
 - checkout: git://Microsoft.Extensions.Logging.Log4Net.AspNetCore/Log4Net.Cert
 - bash: |
     cd Log4Net.Cert
-    cp Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk $BUILD_SOURCESDIRECTORY/src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
+    cp Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk $BUILD_SOURCESDIRECTORY/Microsoft.Extensions.Logging.Log4Net.AspNetCore/src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
   displayName: 'Bash Script'
 
 - task: NuGetCommand@2
