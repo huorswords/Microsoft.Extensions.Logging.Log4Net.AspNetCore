@@ -16,14 +16,12 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-		<PackageReleaseNotes>* #92 - Update reference to latest log4net library
-* #84 - Fix OverrideCriticalLevelWith not work
-* #86 - FAQ Logging in Development</PackageReleaseNotes>
+		<PackageReleaseNotes>* #92 - Update reference to latest log4net library</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>3.1.3</Version>
-		<AssemblyVersion>3.1.3.0</AssemblyVersion>
-		<FileVersion>3.1.3.0</FileVersion>
+		<Version>3.1.4</Version>
+		<AssemblyVersion>3.1.4.0</AssemblyVersion>
+		<FileVersion>3.1.4.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseExpression></PackageLicenseExpression>
