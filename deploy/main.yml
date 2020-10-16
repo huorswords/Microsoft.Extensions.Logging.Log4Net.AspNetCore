@@ -41,14 +41,14 @@ steps:
   displayName: 'dotnet restore'
   inputs:
     command: restore
-    projects: '$(Build.SourcesDirectory)/src/**/*csproj'
+    projects: '$(Build.SourcesDirectory)/**/*csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
     projects: |
-     $(Build.SourcesDirectory)/src/**/*csproj
-     !$(Build.SourcesDirectory)/src/**/NetFrameworkv4_7_2/*.csproj
+     $(Build.SourcesDirectory)/**/*csproj
+     !$(Build.SourcesDirectory)/**/NetFrameworkv4_7_2/*.csproj
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
@@ -56,8 +56,8 @@ steps:
   inputs:
     command: test
     projects: |
-     $(Build.SourcesDirectory)/tests/**/*.csproj
-     !$(Build.SourcesDirectory)/src/**/NetFramework.v472.Tests/*.csproj
+     $(Build.SourcesDirectory)/**/*.csproj
+     !$(Build.SourcesDirectory)/**/NetFramework.v472.Tests/*.csproj
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
