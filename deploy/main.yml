@@ -39,7 +39,6 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet restore'
-  dependsOn: [ 'Use .NET Core sdk 3.1.x', 'Use .NET Core sdk 3.0.x', 'Use .NET Core sdk 2.x', 'Use .NET Core sdk 1.1.x' ]
   inputs:
     command: restore
     projects: '/src/**/*csproj'
