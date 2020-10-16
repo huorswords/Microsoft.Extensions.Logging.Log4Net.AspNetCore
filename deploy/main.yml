@@ -32,12 +32,9 @@ steps:
   name: snkFile # The name with which to reference the secure file's path on the agent, like $(snkFile.secureFilePath)
   inputs:
     secureFile: Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk
-    
-- checkout: git://Microsoft.Extensions.Logging.Log4Net.AspNetCore/Log4Net.Cert
 
 - bash: |
-    cd Log4Net.Cert
-    cp $(snkFile.secureFilePath) $(Build.SourcesDirectory)/src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
+    cp $SNKFILE_SECUREFILEPATH $BUILD_SOURCESDIRECTORY/src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
   displayName: 'Bash Script'
 
 - task: DotNetCoreCLI@2
