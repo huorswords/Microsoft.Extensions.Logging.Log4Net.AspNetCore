@@ -64,6 +64,7 @@ steps:
   displayName: 'dotnet pack'
   inputs:
     command: pack
+    includesymbols: true
     packagesToPack: '$(Build.SourcesDirectory)/**/Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj'
 
 - task: PublishBuildArtifacts@1
