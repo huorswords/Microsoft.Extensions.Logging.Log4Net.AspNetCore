@@ -41,14 +41,14 @@ steps:
   displayName: 'dotnet restore'
   inputs:
     command: restore
-    projects: '/src/**/*csproj'
+    projects: '$(Build.SourcesDirectory)/src/**/*csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
     projects: |
-     ../src/**/*csproj
-     !../src/**/NetFrameworkv4_7_2/*.csproj
+     $(Build.SourcesDirectory)/src/**/*csproj
+     !$(Build.SourcesDirectory)/src/**/NetFrameworkv4_7_2/*.csproj
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
@@ -56,15 +56,15 @@ steps:
   inputs:
     command: test
     projects: |
-     ../tests/**/*.csproj
-     !../src/**/NetFramework.v472.Tests/*.csproj
+     $(Build.SourcesDirectory)/tests/**/*.csproj
+     !$(Build.SourcesDirectory)/src/**/NetFramework.v472.Tests/*.csproj
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack'
   inputs:
     command: pack
-    packagesToPack: '../**/Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj'
+    packagesToPack: '$(Build.SourcesDirectory)/**/Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: nuget'
