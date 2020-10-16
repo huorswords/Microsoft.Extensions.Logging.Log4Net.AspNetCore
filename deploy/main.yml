@@ -10,32 +10,28 @@ variables:
 steps:
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 1.1.x'
-  dependsOn: []
   inputs:
     version: 1.1.x
 
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 2.x'
-  dependsOn: []
   inputs:
     version: 2.x
 
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 3.0.x'
-  dependsOn: []
   inputs:
     version: 3.0.x
 
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 3.1.x'
-  dependsOn: []
   inputs:
     version: 3.1.x
 
 - checkout: git://Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCore
-  dependsOn: []
+
 - checkout: git://Microsoft.Extensions.Logging.Log4Net.AspNetCore/Log4Net.Cert
-  dependsOn: []
+
 - bash: |
     cd Log4Net.Cert
     cp Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk $BUILD_SOURCESDIRECTORY/Microsoft.Extensions.Logging.Log4Net.AspNetCore/src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
