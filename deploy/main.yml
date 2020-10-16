@@ -28,8 +28,6 @@ steps:
   inputs:
     version: 3.1.x
 
-- checkout: git://Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCore
-
 - checkout: git://Microsoft.Extensions.Logging.Log4Net.AspNetCore/Log4Net.Cert
 
 - bash: |
