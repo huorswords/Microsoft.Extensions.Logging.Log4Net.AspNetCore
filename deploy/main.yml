@@ -10,56 +10,43 @@ variables:
 steps:
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 1.1.x'
+  dependsOn: []
   inputs:
     version: 1.1.x
 
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 2.x'
+  dependsOn: []
   inputs:
     version: 2.x
 
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 3.0.x'
+  dependsOn: []
   inputs:
     version: 3.0.x
 
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 3.1.x'
+  dependsOn: []
   inputs:
     version: 3.1.x
 
 - checkout: git://Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCore
+  dependsOn: []
 - checkout: git://Microsoft.Extensions.Logging.Log4Net.AspNetCore/Log4Net.Cert
+  dependsOn: []
 - bash: |
     cd Log4Net.Cert
     cp Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk $BUILD_SOURCESDIRECTORY/Microsoft.Extensions.Logging.Log4Net.AspNetCore/src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
   displayName: 'Bash Script'
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: 'src/Tests/NetFrameworkv4_7_2/packages.config'
-    restoreDirectory: '$(Build.SourcesDirectory)\packages'
-  enabled: false
-
-- task: VSBuild@1
-  displayName: 'Build solution src/Tests/NetFrameworkv4_7_2/NetFrameworkv4_7_2.Tests.csproj'
-  inputs:
-    solution: 'src/Tests/NetFrameworkv4_7_2/NetFrameworkv4_7_2.Tests.csproj'
-    msbuildArgs: '-property:SolutionDir=$(Build.SourcesDirectory)'
-  enabled: false
-
-- task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
-  inputs:
-    testAssemblyVer2: '**\NetFrameworkv4_7_2.Tests.dll'
-  enabled: false
-
 - task: DotNetCoreCLI@2
   displayName: 'dotnet restore'
+  dependsOn: [ 'Use .NET Core sdk 3.1.x', 'Use .NET Core sdk 3.0.x', 'Use .NET Core sdk 2.x', 'Use .NET Core sdk 1.1.x' ]
   inputs:
     command: restore
-    projects: '../src/**/*csproj'
+    projects: '/src/**/*csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
