@@ -146,6 +146,21 @@ public static IWebHost BuildWebHost(string[] args) =>
             })
             .Build();
 ```
+### Logging lower than the Information Level
+
+> Associated issues #85
+
+Also note that when trying to allow for levels messages below the Information level for a development build you must make allowances for it in the `appsettings.Development.json` as specified in the [documentation](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1#configure-logging "Microsoft's Information on Logging providers' Configuration") and illustrated below:
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+	  "...":"..."
+    }
+  }
+}
+```
 
 ## Special thanks
 
