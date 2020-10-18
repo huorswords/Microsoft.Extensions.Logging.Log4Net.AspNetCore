@@ -245,10 +245,9 @@ namespace Microsoft.Extensions.Logging
             {
                 Name = name,
                 LoggerRepository = this.loggerRepository.Name,
-                OverrideCriticalLevelWith = this.options.OverrideCriticalLevelWith
+                OverrideCriticalLevelWith = this.options.OverrideCriticalLevelWith,
+                ScopeFactory = this.options.ScopeFactory ?? new Log4NetScopeFactory(new Log4NetScopeRegistry())
             };
-
-            loggerOptions.ScopeFactory = new Log4NetScopeFactory(new Log4NetScopeRegistry());
 
             return new Log4NetLogger(loggerOptions);
         }
