@@ -241,16 +241,16 @@ namespace Microsoft.Extensions.Logging
         /// <returns>The <see cref="Log4NetLogger"/> instance.</returns>
         private Log4NetLogger CreateLoggerImplementation(string name)
         {
-            var options = new Log4NetProviderOptions
+            var loggerOptions = new Log4NetProviderOptions
             {
                 Name = name,
                 LoggerRepository = this.loggerRepository.Name,
                 OverrideCriticalLevelWith = this.options.OverrideCriticalLevelWith
             };
 
-            options.ScopeFactory = new Log4NetScopeFactory(new Log4NetScopeRegistry());
+            loggerOptions.ScopeFactory = new Log4NetScopeFactory(new Log4NetScopeRegistry());
 
-            return new Log4NetLogger(options);
+            return new Log4NetLogger(loggerOptions);
         }
 
         /// <summary>
