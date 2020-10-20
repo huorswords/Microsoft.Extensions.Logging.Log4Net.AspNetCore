@@ -152,6 +152,12 @@ namespace Microsoft.Extensions.Logging
             return new MessageCandidate(logLevel, message, exception);
         }
 
+        /// <summary>
+        /// A get-only property for accessing the <see cref="Log4NetProviderOptions"/>
+        /// within the instance.
+        /// </summary>
+        internal Log4NetProviderOptions Options => this.options;
+
         private static void EnsureValidFormatter<TState>(Func<TState, Exception, string> formatter)
         {
             if (formatter == null)

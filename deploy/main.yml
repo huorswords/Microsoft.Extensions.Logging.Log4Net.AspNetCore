@@ -2,7 +2,7 @@ pool:
   vmimage: windows-latest
 
 trigger:
-- master
+- main
 
 variables:
   BuildConfiguration: 'Release'

@@ -19,9 +19,9 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<PackageReleaseNotes>* #92 - Update reference to latest log4net library</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>3.1.4</Version>
-		<AssemblyVersion>3.1.4.0</AssemblyVersion>
-		<FileVersion>3.1.4.0</FileVersion>
+		<Version>3.1.5</Version>
+		<AssemblyVersion>3.1.5.0</AssemblyVersion>
+		<FileVersion>3.1.5.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseExpression></PackageLicenseExpression>
@@ -35,7 +35,7 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -81,10 +81,10 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.9" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.9" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.9" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.*" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.11" />
@@ -95,6 +95,9 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
