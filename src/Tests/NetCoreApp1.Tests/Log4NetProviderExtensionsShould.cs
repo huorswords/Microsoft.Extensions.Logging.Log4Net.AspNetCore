@@ -1,10 +1,11 @@
-﻿using System.Reflection;
-using log4net;
+﻿using log4net;
 using log4net.Core;
 using log4net.Repository.Hierarchy;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Extensions;
+using Microsoft.Extensions.Logging.Scope;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Reflection;
 
 namespace NetCoreApp.v1_x.Tests
 {
@@ -72,5 +73,36 @@ namespace NetCoreApp.v1_x.Tests
 				LoggerRepository = "abc"
 			});
 		}
+
+        [TestMethod]
+        public void WhenScopeFactoryIsNullOnProviderOptions_ThenDefaultLog4NetScopeFactoryIsUsed()
+        {
+            var options = new Log4NetProviderOptions
+            {
+                ScopeFactory = null
+            };
+            var provider = new Log4NetProvider(options);
+
+            var logger = provider.CreateLogger("test") as Log4NetLogger;
+
+            Assert.IsNotNull(logger?.Options?.ScopeFactory, "Scope factory on logger's options should not be null.");
+        }
+
+        [TestMethod]
+        public void WhenScopeFactoryIsProvidedInProviderOptions_ThenLoggerUsesProvidedScopeFactory()
+        {
+            var expectedFactory = new Log4NetScopeFactory(new Log4NetScopeRegistry());
+            var options = new Log4NetProviderOptions
+            {
+                ScopeFactory = expectedFactory
+            };
+            var provider = new Log4NetProvider(options);
+
+            var logger = provider.CreateLogger("test") as Log4NetLogger;
+
+            Assert.IsNotNull(logger?.Options?.ScopeFactory, "Scope factory on logger's options should not be null.");
+            Assert.AreSame(expectedFactory, logger.Options.ScopeFactory,
+                "Scope factory on logger does not match factory from provider options.");
+        }
 	}
 }
