@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging.Scope.Registers;
 
 namespace Microsoft.Extensions.Logging.Scope
 {
-    public class Log4NetScopeFactory
+    public class Log4NetScopeFactory : ILog4NetScopeFactory
     {
         private readonly Log4NetScopeRegistry registry;
 
