@@ -1,4 +1,10 @@
-﻿using System;
+﻿using log4net;
+using log4net.Config;
+using log4net.Repository;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
+using Microsoft.Extensions.Logging.Scope;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -7,14 +13,6 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-
-using log4net;
-using log4net.Config;
-using log4net.Repository;
-
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
-using Microsoft.Extensions.Logging.Scope;
 
 namespace Microsoft.Extensions.Logging
 {

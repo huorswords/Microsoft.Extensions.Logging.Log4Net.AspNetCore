@@ -1,12 +1,8 @@
 ﻿using log4net;
 using log4net.Core;
-using log4net.Util;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace Microsoft.Extensions.Logging
 {

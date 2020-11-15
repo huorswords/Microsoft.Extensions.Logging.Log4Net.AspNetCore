@@ -1,11 +1,9 @@
-﻿using System;
+﻿using log4net;
+using Microsoft.Extensions.Logging.Scope.Registers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-using log4net;
-
-using Microsoft.Extensions.Logging.Scope.Registers;
 
 namespace Microsoft.Extensions.Logging.Scope
 {

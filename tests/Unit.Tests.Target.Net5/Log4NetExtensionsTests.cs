@@ -67,7 +67,7 @@ namespace Unit.Tests.Target.Netcore31
 
         [Fact]
         public void AddLog4Net_When_UsedOverILoggingBuilder_And_PassingFilename_And_Watch_Then_Call_ILoggerFactory_AddProvider()
-        {   
+        {
             var host = Host.CreateDefaultBuilder()
                 .ConfigureLogging(builder =>
                 {

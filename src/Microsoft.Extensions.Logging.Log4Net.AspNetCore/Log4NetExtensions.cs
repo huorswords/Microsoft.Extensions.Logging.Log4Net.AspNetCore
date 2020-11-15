@@ -1,53 +1,51 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Extensions.Logging
 {
-	/// <summary>
-	/// The log4net extensions class.
-	/// </summary>
-	public static class Log4NetExtensions
-	{
-		/// <summary>
-		/// Adds the log4net.
-		/// </summary>
-		/// <param name="factory">The factory.</param>
-		/// <returns>The <see cref="ILoggerFactory"/> with added Log4Net provider</returns>
-		public static ILoggerFactory AddLog4Net(this ILoggerFactory factory)
-			=> factory.AddLog4Net(new Log4NetProviderOptions());
+    /// <summary>
+    /// The log4net extensions class.
+    /// </summary>
+    public static class Log4NetExtensions
+    {
+        /// <summary>
+        /// Adds the log4net.
+        /// </summary>
+        /// <param name="factory">The factory.</param>
+        /// <returns>The <see cref="ILoggerFactory"/> with added Log4Net provider</returns>
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory)
+            => factory.AddLog4Net(new Log4NetProviderOptions());
 
-		/// <summary>
-		/// Adds the log4net.
-		/// </summary>
-		/// <param name="factory">The factory.</param>
-		/// <param name="log4NetConfigFile">The log4net Config File.</param>
-		/// <returns>The <see cref="ILoggerFactory"/> after adding the log4net provider.</returns>
-		public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile)
-			=> factory.AddLog4Net(log4NetConfigFile, false);
+        /// <summary>
+        /// Adds the log4net.
+        /// </summary>
+        /// <param name="factory">The factory.</param>
+        /// <param name="log4NetConfigFile">The log4net Config File.</param>
+        /// <returns>The <see cref="ILoggerFactory"/> after adding the log4net provider.</returns>
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile)
+            => factory.AddLog4Net(log4NetConfigFile, false);
 
-		/// <summary>
-		/// Adds the log4net logging provider.
-		/// </summary>
-		/// <param name="factory">The factory.</param>
-		/// <param name="log4NetConfigFile">The log4 net configuration file.</param>
-		/// <param name="watch">if set to <c>true</c> [watch].</param>
-		/// <returns>The <see cref="ILoggerFactory"/> after adding the log4net provider.</returns>
-		public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile, bool watch)
-			=> factory.AddLog4Net(new Log4NetProviderOptions(log4NetConfigFile, watch));
+        /// <summary>
+        /// Adds the log4net logging provider.
+        /// </summary>
+        /// <param name="factory">The factory.</param>
+        /// <param name="log4NetConfigFile">The log4 net configuration file.</param>
+        /// <param name="watch">if set to <c>true</c> [watch].</param>
+        /// <returns>The <see cref="ILoggerFactory"/> after adding the log4net provider.</returns>
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string log4NetConfigFile, bool watch)
+            => factory.AddLog4Net(new Log4NetProviderOptions(log4NetConfigFile, watch));
 
-		/// <summary>
-		/// Adds the log4net logging provider.
-		/// </summary>
-		/// <param name="factory">The logger factory.</param>
-		/// <param name="options">The options for log4net provider.</param>
-		/// <returns>The <see cref="ILoggerFactory"/> after adding the log4net provider.</returns>
-		public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, Log4NetProviderOptions options)
-		{
-			factory.AddProvider(new Log4NetProvider(options));
-			return factory;
-		}
-        
+        /// <summary>
+        /// Adds the log4net logging provider.
+        /// </summary>
+        /// <param name="factory">The logger factory.</param>
+        /// <param name="options">The options for log4net provider.</param>
+        /// <returns>The <see cref="ILoggerFactory"/> after adding the log4net provider.</returns>
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, Log4NetProviderOptions options)
+        {
+            factory.AddProvider(new Log4NetProvider(options));
+            return factory;
+        }
+
 #if !NETCOREAPP1_1
         /// <summary>
         /// Adds the log4net logging provider.
@@ -99,5 +97,5 @@ namespace Microsoft.Extensions.Logging
             return builder; 
         }
 #endif
-	}
+    }
 }

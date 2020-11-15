@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.Loggin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{533617B0-91CD-4C91-8676-36C21155D191}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unit.Tests.Target.Netcore31", "..\tests\Unit.Tests.Target.Netcore31\Unit.Tests.Target.Netcore31.csproj", "{9D126A4C-9A1C-463D-8BEE-479B928E43DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unit.Tests.Target.Net5", "..\tests\Unit.Tests.Target.Net5\Unit.Tests.Target.Net5.csproj", "{9D126A4C-9A1C-463D-8BEE-479B928E43DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
