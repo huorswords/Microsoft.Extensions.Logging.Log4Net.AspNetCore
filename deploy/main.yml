@@ -28,6 +28,11 @@ steps:
   inputs:
     version: 3.1.x
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 5.0.x'
+  inputs:
+    version: 5.0.x
+
 - task: DownloadSecureFile@1
   name: snkFile # The name with which to reference the secure file's path on the agent, like $(snkFile.secureFilePath)
   inputs:
