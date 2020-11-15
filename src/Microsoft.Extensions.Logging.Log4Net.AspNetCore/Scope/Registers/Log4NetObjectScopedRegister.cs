@@ -1,7 +1,6 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
-
-using log4net;
 
 namespace Microsoft.Extensions.Logging.Scope.Registers
 {

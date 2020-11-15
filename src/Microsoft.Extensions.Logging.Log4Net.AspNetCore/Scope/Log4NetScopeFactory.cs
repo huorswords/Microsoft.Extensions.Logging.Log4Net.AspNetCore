@@ -1,6 +1,5 @@
-﻿using System;
-
-using Microsoft.Extensions.Logging.Scope.Registers;
+﻿using Microsoft.Extensions.Logging.Scope.Registers;
+using System;
 
 namespace Microsoft.Extensions.Logging.Scope
 {
