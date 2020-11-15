@@ -110,7 +110,7 @@ namespace Unit.Tests.Target.Netcore31.Fixtures
             return options;
         }
 
-        public string GetLog4netFilePath(Log4NetFileOption log4NetFile) 
+        public string GetLog4netFilePath(Log4NetFileOption log4NetFile)
             => $"Resources/log4net.{log4NetFile}.config";
 
         private static void SetupLog4NetRepository(Log4NetProviderOptions options)
