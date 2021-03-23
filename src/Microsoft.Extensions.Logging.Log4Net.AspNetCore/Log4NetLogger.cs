@@ -1,7 +1,6 @@
 ﻿using log4net;
 using log4net.Core;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
 using System;
 
 namespace Microsoft.Extensions.Logging
@@ -14,7 +13,7 @@ namespace Microsoft.Extensions.Logging
         /// <summary>
         /// The log.
         /// </summary>
-        private readonly log4net.Core.ILogger log;
+        private readonly log4net.Core.ILogger logger;
 
         /// <summary>
         /// The provider options.
@@ -28,14 +27,20 @@ namespace Microsoft.Extensions.Logging
         public Log4NetLogger(Log4NetProviderOptions options)
         {
             this.options = options ?? throw new ArgumentNullException(nameof(options));
-            this.log = LogManager.GetLogger(options.LoggerRepository, options.Name).Logger;
+            this.logger = LogManager.GetLogger(options.LoggerRepository, options.Name).Logger;
         }
 
         /// <summary>
         /// Gets the name.
         /// </summary>
         public string Name
-            => this.log.Name;
+            => this.logger.Name;
+
+        /// <summary>
+        /// A get-only property for accessing the <see cref="Log4NetProviderOptions"/>
+        /// within the instance.
+        /// </summary>
+        internal Log4NetProviderOptions Options => this.options;
 
         /// <summary>
         /// Begins a logical operation scope.
@@ -59,17 +64,17 @@ namespace Microsoft.Extensions.Logging
             switch (logLevel)
             {
                 case LogLevel.Critical:
-                    return this.log.IsEnabledFor(Level.Fatal);
+                    return this.logger.IsEnabledFor(Level.Fatal);
                 case LogLevel.Trace:
-                    return this.log.IsEnabledFor(Level.Trace);
+                    return this.logger.IsEnabledFor(Level.Trace);
                 case LogLevel.Debug:
-                    return this.log.IsEnabledFor(Level.Debug);
+                    return this.logger.IsEnabledFor(Level.Debug);
                 case LogLevel.Error:
-                    return this.log.IsEnabledFor(Level.Error);
+                    return this.logger.IsEnabledFor(Level.Error);
                 case LogLevel.Information:
-                    return this.log.IsEnabledFor(Level.Info);
+                    return this.logger.IsEnabledFor(Level.Info);
                 case LogLevel.Warning:
-                    return this.log.IsEnabledFor(Level.Warn);
+                    return this.logger.IsEnabledFor(Level.Warn);
                 case LogLevel.None:
                     return false;
                 default:
@@ -107,38 +112,50 @@ namespace Microsoft.Extensions.Logging
         {
             if (candidate.IsValid())
             {
-                switch (candidate.LogLevel)
+                var level = SelectLevel(candidate);
+                if (level != null)
                 {
-                    case LogLevel.Critical:
-                        string overrideCriticalLevelWith = options.OverrideCriticalLevelWith;
-                        if (!string.IsNullOrEmpty(overrideCriticalLevelWith)
-                            && overrideCriticalLevelWith.Equals(LogLevel.Critical.ToString(), StringComparison.OrdinalIgnoreCase))
-                        {
-                            this.log.Log(typeof(Microsoft.Extensions.Logging.LoggerExtensions), Level.Critical, candidate.Message, candidate.Exception);
-                        }
-                        else
-                        {
-                            this.log.Log(typeof(Microsoft.Extensions.Logging.LoggerExtensions), Level.Fatal, candidate.Message, candidate.Exception);
-                        }
-
-                        break;
-                    case LogLevel.Debug:
-                        this.log.Log(typeof(Microsoft.Extensions.Logging.LoggerExtensions), Level.Debug, candidate.Message, candidate.Exception);
-                        break;
-                    case LogLevel.Error:
-                        this.log.Log(typeof(Microsoft.Extensions.Logging.LoggerExtensions), Level.Error, candidate.Message, candidate.Exception);
-                        break;
-                    case LogLevel.Information:
-                        this.log.Log(typeof(Microsoft.Extensions.Logging.LoggerExtensions), Level.Info, candidate.Message, candidate.Exception);
-                        break;
-                    case LogLevel.Warning:
-                        this.log.Log(typeof(Microsoft.Extensions.Logging.LoggerExtensions), Level.Warn, candidate.Message, candidate.Exception);
-                        break;
-                    case LogLevel.Trace:
-                        this.log.Log(typeof(Microsoft.Extensions.Logging.LoggerExtensions), Level.Trace, candidate.Message, candidate.Exception);
-                        break;
+                    Log(candidate, level);
                 }
             }
+        }
+
+        private Level SelectLevel(MessageCandidate candidate)
+        {
+            Level level = null;
+            switch (candidate.LogLevel)
+            {
+                case LogLevel.Critical:
+                    string overrideCriticalLevelWith = options.OverrideCriticalLevelWith;
+                    level = !string.IsNullOrEmpty(overrideCriticalLevelWith)
+                            && overrideCriticalLevelWith.Equals(LogLevel.Critical.ToString(), StringComparison.OrdinalIgnoreCase)
+                                ? Level.Critical
+                                : Level.Fatal;
+                    break;
+                case LogLevel.Debug:
+                    level = Level.Debug;
+                    break;
+                case LogLevel.Error:
+                    level = Level.Error;
+                    break;
+                case LogLevel.Information:
+                    level = Level.Info;
+                    break;
+                case LogLevel.Warning:
+                    level = Level.Warn;
+                    break;
+                case LogLevel.Trace:
+                    level = Level.Trace;
+                    break;
+            }
+
+            return level;
+        }
+
+        private void Log(MessageCandidate candidate, Level level)
+        {
+            var callerStackBoundaryDeclaringType = typeof(LoggerExtensions);
+            this.logger.Log(callerStackBoundaryDeclaringType, level, candidate.Message, candidate.Exception);
         }
 
         private static MessageCandidate PrepareMessage<TState>(TState state, LogLevel logLevel, Exception exception, Func<TState, Exception, string> formatter)
@@ -147,12 +164,6 @@ namespace Microsoft.Extensions.Logging
             object message = formatter(state, exception);
             return new MessageCandidate(logLevel, message, exception);
         }
-
-        /// <summary>
-        /// A get-only property for accessing the <see cref="Log4NetProviderOptions"/>
-        /// within the instance.
-        /// </summary>
-        internal Log4NetProviderOptions Options => this.options;
 
         private static void EnsureValidFormatter<TState>(Func<TState, Exception, string> formatter)
         {
