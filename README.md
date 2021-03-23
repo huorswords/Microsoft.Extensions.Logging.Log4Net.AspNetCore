@@ -170,3 +170,4 @@ Thank you very much to all contributors & users by its collaboration, and specia
 * [@sBoff](https://github.com/sBoff) by the fix of the mutiple calls to XmlConfigurator.Configure issue.
 * [@kastwey](https://github.com/kastwey) by the feature to allow to replace values of log4net.config using the *Microsoft.Extensions.Configuration*.
 * [@willwolfram18](https://github.com/willwolfram18) by bugfixing `Log4NetScopeFactory` usage when provided in `Log4NetProviderOptions`.
+* [@lscorcia](https://github.com/lscorcia) by the fix of incorrect call stack when logging.
