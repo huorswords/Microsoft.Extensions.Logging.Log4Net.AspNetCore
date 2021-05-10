@@ -151,6 +151,21 @@ namespace Unit.Tests.Target.Netcore31
         }
 
         [Fact]
+        public void Log_Should_Not_IgnoreMessage_When_Empty_For_Non_Null_Exception()
+        {
+            Log4NetProviderOptions options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
+            var testAppender = GetTestAppender(options);
+
+            var sut = new Log4NetLogger(options);
+
+            sut.Log(LogLevel.Trace, _eventId, string.Empty, new Exception("Something went wrong"), (message, exception) => message);
+
+            testAppender.GetEvents()
+                        .Should()
+                        .NotBeEmpty();
+        }
+
+        [Fact]
         public void Log_Should_IgnoreMessage_With_LevelNone()
         {
             var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
