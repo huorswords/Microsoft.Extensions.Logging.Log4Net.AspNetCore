@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.Logging.Scope.Registers
     {
         public Log4NetStringScopedRegister()
         {
-            base.Type = typeof(string);
+            Type = typeof(string);
         }
 
         public override IEnumerable<IDisposable> AddToScope(object state)

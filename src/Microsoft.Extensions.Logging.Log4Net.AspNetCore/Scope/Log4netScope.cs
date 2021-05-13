@@ -43,13 +43,13 @@ namespace Microsoft.Extensions.Logging.Scope
             {
                 if (disposing)
                 {
-                    while (this.disposables.Count > 0)
+                    while (disposables.Count > 0)
                     {
-                        var item = this.disposables.Pop();
+                        var item = disposables.Pop();
                         item.Dispose();
                     }
 
-                    this.disposables.Clear();
+                    disposables.Clear();
                 }
 
                 disposedValue = true;

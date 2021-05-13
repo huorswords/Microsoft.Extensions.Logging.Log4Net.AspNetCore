@@ -1,6 +1,7 @@
-﻿using log4net;
-using System;
+﻿using System;
+#if NETCOREAPP1_1
 using System.Reflection;
+#endif
 
 namespace Microsoft.Extensions.Logging.Extensions
 {
@@ -24,7 +25,7 @@ namespace Microsoft.Extensions.Logging.Extensions
 
             if (!self.GetType().IsAssignableFrom(typeof(Log4NetProvider)))
             {
-                throw new ArgumentOutOfRangeException(nameof(self), "The ILoggerProvider should be of type Log4NetProvider.");
+                throw new ArgumentOutOfRangeException(nameof(self), $"The {nameof(ILoggerProvider)} should be of type {nameof(Log4NetProvider)}.");
             }
 
             return self.CreateLogger(typeof(TName).FullName);

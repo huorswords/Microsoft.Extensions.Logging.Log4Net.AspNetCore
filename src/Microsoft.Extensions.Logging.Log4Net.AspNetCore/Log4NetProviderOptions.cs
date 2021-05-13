@@ -37,13 +37,13 @@ namespace Microsoft.Extensions.Logging
         /// <param name="log4NetConfigFileName">Name of the log4net configuration file.</param>
         public Log4NetProviderOptions(string log4NetConfigFileName, bool watch)
         {
-            this.Log4NetConfigFileName = log4NetConfigFileName;
-            this.Watch = watch;
+            Log4NetConfigFileName = log4NetConfigFileName;
+            Watch = watch;
 
-            this.OverrideCriticalLevelWith = string.Empty;
-            this.Name = string.Empty;
-            this.PropertyOverrides = new List<NodeInfo>();
-            this.ExternalConfigurationSetup = false;
+            OverrideCriticalLevelWith = string.Empty;
+            Name = string.Empty;
+            PropertyOverrides = new List<NodeInfo>();
+            ExternalConfigurationSetup = false;
         }
 
         /// <summary>
