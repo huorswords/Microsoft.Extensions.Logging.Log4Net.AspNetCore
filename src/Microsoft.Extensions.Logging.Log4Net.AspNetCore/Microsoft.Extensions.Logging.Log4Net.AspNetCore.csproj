@@ -96,6 +96,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="log4net" Version="2.0.12" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
 		<PackageReference Include="System.Xml.XPath.XDocument" Version="4.3.0" />
 	</ItemGroup>
 	<ItemGroup>
