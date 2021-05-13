@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if NETCOREAPP1_1
 using System.Reflection;
+#endif
 
 namespace Microsoft.Extensions.Logging.Scope.Registers
 {
@@ -10,7 +12,7 @@ namespace Microsoft.Extensions.Logging.Scope.Registers
     {
         public Log4NetEnumerableScopedRegister()
         {
-            this.Type = typeof(IEnumerable);
+            Type = typeof(IEnumerable);
         }
 
         public override IEnumerable<IDisposable> AddToScope(object state)
