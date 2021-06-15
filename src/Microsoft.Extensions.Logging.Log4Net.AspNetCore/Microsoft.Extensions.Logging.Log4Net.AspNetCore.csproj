@@ -9,21 +9,20 @@
 		<Authors>Huor Swords</Authors>
 		<Company></Company>
 		<Product>Microsoft.Extensions.Logging.Log4Net.AspNetCore</Product>
-		<Description>
-			Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.NET Core application.
+		<Description>Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.NET Core application.
 
-			Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/
-		</Description>
+Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/</Description>
 		<Copyright></Copyright>
 		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-		<PackageReleaseNotes>#97 - Log4net in asp.net core gives wrong logging output for class' method name</PackageReleaseNotes>
+		<PackageReleaseNotes>#104 - Do not discard message candidate when the logged message is not string and exception is not null.
+#106 - Remove XML package dependency on target framework greater than netcoreapp1.1</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>5.0.1</Version>
-		<AssemblyVersion>5.0.1.0</AssemblyVersion>
-		<FileVersion>5.0.1.0</FileVersion>
+		<Version>5.0.3</Version>
+		<AssemblyVersion>5.0.3.0</AssemblyVersion>
+		<FileVersion>5.0.3.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseExpression></PackageLicenseExpression>
