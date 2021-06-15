@@ -215,20 +215,20 @@ namespace Microsoft.Extensions.Logging
 #if NETCOREAPP1_1
             return null;
 #else
-			var stackTrace = new System.Diagnostics.StackTrace(2);
+            var stackTrace = new System.Diagnostics.StackTrace(2);
 
-			for (int i = 0; i < stackTrace.FrameCount; i++)
-			{
-				var frame = stackTrace.GetFrame(i);
-				var type = frame.GetMethod()?.DeclaringType;
+            for (int i = 0; i < stackTrace.FrameCount; i++)
+            {
+                var frame = stackTrace.GetFrame(i);
+                var type = frame.GetMethod()?.DeclaringType;
 
-				if (string.Equals(type?.Name, "Startup", StringComparison.OrdinalIgnoreCase))
-				{
-					return type.Assembly;
-				}
-			}
+                if (string.Equals(type?.Name, "Startup", StringComparison.OrdinalIgnoreCase))
+                {
+                    return type.Assembly;
+                }
+            }
 
-			return null;
+            return null;
 #endif
         }
 
@@ -347,7 +347,7 @@ namespace Microsoft.Extensions.Logging
                     fileNamePath = Path.Combine(Path.GetDirectoryName(assembly.Location), fileNamePath);
                 }
 #else
-				fileNamePath = Path.Combine(AppContext.BaseDirectory, fileNamePath);
+                fileNamePath = Path.Combine(AppContext.BaseDirectory, fileNamePath);
 #endif
             }
 

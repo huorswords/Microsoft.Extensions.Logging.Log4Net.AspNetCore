@@ -54,8 +54,8 @@ namespace Microsoft.Extensions.Logging
         /// <returns>The <see ref="ILoggingBuilder" /> passed as parameter with the new provider registered.</returns>
         public static ILoggingBuilder AddLog4Net(this ILoggingBuilder builder)
         {
-			var options = new Log4NetProviderOptions();
-			return builder.AddLog4Net(options);
+            var options = new Log4NetProviderOptions();
+            return builder.AddLog4Net(options);
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace Microsoft.Extensions.Logging
         /// <returns>The <see ref="ILoggingBuilder" /> passed as parameter with the new provider registered.</returns>
         public static ILoggingBuilder AddLog4Net(this ILoggingBuilder builder, string log4NetConfigFile)
         {
-			var options = new Log4NetProviderOptions(log4NetConfigFile);
-			return builder.AddLog4Net(options);
-		}
+            var options = new Log4NetProviderOptions(log4NetConfigFile);
+            return builder.AddLog4Net(options);
+        }
 
         /// <summary>
         /// Adds the log4net logging provider.
@@ -81,9 +81,9 @@ namespace Microsoft.Extensions.Logging
         /// </returns>
         public static ILoggingBuilder AddLog4Net(this ILoggingBuilder builder, string log4NetConfigFile, bool watch)
         {
-			var options = new Log4NetProviderOptions(log4NetConfigFile, watch);
-			return builder.AddLog4Net(options);
-		}
+            var options = new Log4NetProviderOptions(log4NetConfigFile, watch);
+            return builder.AddLog4Net(options);
+        }
 
         /// <summary>
         /// Adds the log4net logging provider.
@@ -93,8 +93,8 @@ namespace Microsoft.Extensions.Logging
         /// <returns>The <see ref="ILoggingBuilder" /> passed as parameter with the new provider registered.</returns>
         public static ILoggingBuilder AddLog4Net(this ILoggingBuilder builder, Log4NetProviderOptions options)
         {
-			builder.Services.AddSingleton<ILoggerProvider>(new Log4NetProvider(options));
-            return builder; 
+            builder.Services.AddSingleton<ILoggerProvider>(new Log4NetProvider(options));
+            return builder;
         }
 #endif
     }
