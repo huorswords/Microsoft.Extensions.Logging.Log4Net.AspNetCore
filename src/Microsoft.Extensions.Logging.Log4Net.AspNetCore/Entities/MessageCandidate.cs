@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities
 
         public bool IsValid()
         {
-            if (Message is string text)
+            if (Message is string text && Exception == null)
             {
                 return !string.IsNullOrEmpty(text);
             }
