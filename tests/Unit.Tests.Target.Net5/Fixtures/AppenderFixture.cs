@@ -102,7 +102,8 @@ namespace Unit.Tests.Target.Netcore31.Fixtures
             {
                 Log4NetConfigFileName = GetLog4netFilePath(log4NetFile),
                 LoggerRepository = RepositoryName,
-                Name = RepositoryName
+                Name = RepositoryName,
+                LoggingEventFactory = new Log4NetLoggingEventFactory(),
             };
 
             SetupLog4NetRepository(options);

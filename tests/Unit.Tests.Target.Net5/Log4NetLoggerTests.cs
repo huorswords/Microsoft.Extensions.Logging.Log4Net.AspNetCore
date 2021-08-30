@@ -2,6 +2,7 @@
 using log4net.Appender;
 using log4net.Core;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Scope;
 using Moq;
 using System;
@@ -178,6 +179,66 @@ namespace Unit.Tests.Target.Netcore31
             testAppender.GetEvents()
                         .Should()
                         .BeEmpty();
+        }
+
+        [Fact]
+        public void Log_Should_Emit_LoggingEvents_Created_By_Custom_LoggingEventFactory()
+        {
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
+
+            var callStackBoundary = typeof(Log4NetLoggerTests);
+            var exspectedRepository = log4net.LogManager.GetRepository(options.LoggerRepository);
+            var exspectedLoggerName = "testLogger";
+            var exspectedLoggingLevel = Level.Info;
+            var exspectedLoggingMessage = "testMessage";
+            var exspectedException = new InvalidOperationException("testException");
+
+            var mockedFactory = new Mock<ILog4NetLoggingEventFactory>();
+            mockedFactory
+                .Setup(
+                    f => f.CreateLoggingEvent(It.IsAny<MessageCandidate<string>>(), It.IsAny<log4net.Core.ILogger>(), options)
+                )
+                .Returns(
+                new LoggingEvent(
+                        callStackBoundary,
+                        exspectedRepository,
+                        exspectedLoggerName,
+                        exspectedLoggingLevel,
+                        exspectedLoggingMessage,
+                        exspectedException
+                     )
+                );
+
+            options.LoggingEventFactory = mockedFactory.Object;
+            var testAppender = GetTestAppender(options);
+            var sut = new Log4NetLogger(options);
+
+            sut.Log(LogLevel.Debug, _eventId, _logState, null, (message, exception) => message);
+
+            testAppender.GetEvents()
+                        .Should()
+                        .NotBeEmpty()
+                        .And
+                        .HaveCount(1);
+
+            var loggingEvent = testAppender.GetEvents()
+                                           .First();
+
+            loggingEvent.Repository
+                        .Should()
+                        .Be(exspectedRepository);
+            loggingEvent.LoggerName
+                        .Should()
+                        .Be(exspectedLoggerName);
+            loggingEvent.Level
+                        .Should()
+                        .Be(exspectedLoggingLevel);
+            loggingEvent.MessageObject
+                        .Should()
+                        .Be(exspectedLoggingMessage);
+            loggingEvent.ExceptionObject
+                        .Should()
+                        .Be(exspectedException);
         }
 
         [Fact]

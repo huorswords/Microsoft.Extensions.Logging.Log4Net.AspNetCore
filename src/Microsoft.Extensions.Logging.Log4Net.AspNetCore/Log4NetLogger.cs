@@ -61,25 +61,18 @@ namespace Microsoft.Extensions.Logging
         /// <exception cref="ArgumentOutOfRangeException">Throws when <paramref name="logLevel"/> is outside allowed range</exception>
         public bool IsEnabled(LogLevel logLevel)
         {
-            switch (logLevel)
+            Level translatedLogLevel = GetTranslatedLog4NetLevel(logLevel, this.options);
+            if (translatedLogLevel != null)
             {
-                case LogLevel.Critical:
-                    return this.logger.IsEnabledFor(Level.Fatal);
-                case LogLevel.Trace:
-                    return this.logger.IsEnabledFor(Level.Trace);
-                case LogLevel.Debug:
-                    return this.logger.IsEnabledFor(Level.Debug);
-                case LogLevel.Error:
-                    return this.logger.IsEnabledFor(Level.Error);
-                case LogLevel.Information:
-                    return this.logger.IsEnabledFor(Level.Info);
-                case LogLevel.Warning:
-                    return this.logger.IsEnabledFor(Level.Warn);
-                case LogLevel.None:
-                    return false;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(logLevel));
+                return this.logger.IsEnabledFor(translatedLogLevel);
             }
+
+            if (logLevel == LogLevel.None)
+            {
+                return false;
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(logLevel));
         }
 
         /// <summary>
@@ -108,22 +101,16 @@ namespace Microsoft.Extensions.Logging
             LogMessage(message);
         }
 
-        private void LogMessage(MessageCandidate candidate)
-        {
-            if (candidate.IsValid())
-            {
-                var level = SelectLevel(candidate);
-                if (level != null)
-                {
-                    Log(candidate, level);
-                }
-            }
-        }
-
-        private Level SelectLevel(MessageCandidate candidate)
+        /// <summary>
+        /// Translates a <see cref="LogLevel"/> to a log4net <see cref="Level"/> based on the provided options.
+        /// </summary>
+        /// <param name="logLevel">The log level to translate.</param>
+        /// <param name="options">The log4net provider options influencing the translation.</param>
+        /// <returns>The corresponding log level for log4net.</returns>
+        public static Level GetTranslatedLog4NetLevel(LogLevel logLevel, Log4NetProviderOptions options)
         {
             Level level = null;
-            switch (candidate.LogLevel)
+            switch (logLevel)
             {
                 case LogLevel.Critical:
                     string overrideCriticalLevelWith = options.OverrideCriticalLevelWith;
@@ -152,17 +139,33 @@ namespace Microsoft.Extensions.Logging
             return level;
         }
 
-        private void Log(MessageCandidate candidate, Level level)
+        /// <summary>
+        /// Selects a log4net <see cref="Level"/> for a <see cref="MessageCandidate{TState}"/>.
+        /// </summary>
+        /// <typeparam name="TState">Type of the state object that is used to format the log message inside the candidate.</typeparam>
+        /// <param name="candidate">The message candidate for the log.</param>
+        /// <param name="options">The log4net provider options influencing the translation.</param>
+        /// <returns>The log4net log level this message candidate should be logged with.</returns>
+        public static Level SelectLevel<TState>(MessageCandidate<TState> candidate, Log4NetProviderOptions options)
         {
-            var callerStackBoundaryDeclaringType = typeof(LoggerExtensions);
-            this.logger.Log(callerStackBoundaryDeclaringType, level, candidate.Message, candidate.Exception);
+            Level level = GetTranslatedLog4NetLevel(candidate.LogLevel, options);
+            return level;
         }
 
-        private static MessageCandidate PrepareMessage<TState>(TState state, LogLevel logLevel, Exception exception, Func<TState, Exception, string> formatter)
+        private void LogMessage<TState>(MessageCandidate<TState> candidate)
+        {
+            LoggingEvent loggingEvent = options.LoggingEventFactory.CreateLoggingEvent(candidate, logger, options);
+
+            if (loggingEvent == null)
+                return;
+
+            this.logger.Log(loggingEvent);
+        }
+
+        private static MessageCandidate<TState> PrepareMessage<TState>(TState state, LogLevel logLevel, Exception exception, Func<TState, Exception, string> formatter)
         {
             EnsureValidFormatter(formatter);
-            object message = formatter(state, exception);
-            return new MessageCandidate(logLevel, message, exception);
+            return new MessageCandidate<TState>(state, logLevel, exception, formatter);
         }
 
         private static void EnsureValidFormatter<TState>(Func<TState, Exception, string> formatter)

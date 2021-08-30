@@ -1,5 +1,7 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore;
+using Moq;
 using Xunit;
 
 namespace Unit.Tests.Target.Netcore31
@@ -19,6 +21,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.PropertyOverrides.Should().BeEmpty();
             sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
+            sut.LoggingEventFactory.Should().BeNull();
         }
 
         [Fact]
@@ -36,6 +39,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.PropertyOverrides.Should().BeEmpty();
             sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
+            sut.LoggingEventFactory.Should().BeNull();
         }
 
         [Fact]
@@ -53,6 +57,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.PropertyOverrides.Should().BeEmpty();
             sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeTrue();
+            sut.LoggingEventFactory.Should().BeNull();
         }
 
         [Fact]
@@ -72,6 +77,29 @@ namespace Unit.Tests.Target.Netcore31
             sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeTrue();
+            sut.LoggingEventFactory.Should().BeNull();
+        }
+
+        [Fact]
+        public void LoggingEventFactory_Should_BeEditable()
+        {
+            var loggingEventFactory = new Mock<ILog4NetLoggingEventFactory>().Object;
+
+            var sut = new Log4NetProviderOptions
+            {
+                LoggingEventFactory = loggingEventFactory
+            };
+
+            sut.ExternalConfigurationSetup.Should().BeFalse();
+            sut.Log4NetConfigFileName.Should().Be("log4net.config");
+            sut.LoggerRepository.Should().BeNull();
+            sut.Name.Should().BeEmpty();
+            sut.OverrideCriticalLevelWith.Should().Be("");
+            sut.PropertyOverrides.Should().BeEmpty();
+            sut.ScopeFactory.Should().BeNull();
+            sut.Watch.Should().BeFalse();
+            sut.UseWebOrAppConfig.Should().BeFalse();
+            sut.LoggingEventFactory.Should().Be(loggingEventFactory);
         }
     }
 }
