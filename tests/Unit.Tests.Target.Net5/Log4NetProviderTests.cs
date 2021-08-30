@@ -71,6 +71,43 @@ namespace Unit.Tests.Target.Netcore31
                                                  .And.Be(expectedFactory, "Scope factory on logger does not match factory from provider options.");
         }
 
+        [Fact]
+        public void WhenLoggingEventFactoryIsNullOnProviderOptions_ThenDefaultLog4NetLoggingEventFactoryIsUsed()
+        {
+            var options = new Log4NetProviderOptions
+            {
+                LoggingEventFactory = null
+            };
+
+            var sut = new Log4NetProvider(options);
+            var logger = sut.CreateLogger("test") as Log4NetLogger;
+
+            var internalOptions = GetInternalOptions(logger);
+
+            internalOptions.Should().NotBeNull();
+            internalOptions.LoggingEventFactory.Should().NotBeNull("a default LoggingEventFactory is needed to create LoggingEvents")
+                                                        .And.BeOfType<Log4NetLoggingEventFactory>("because this is the default factory type");
+        }
+
+        [Fact]
+        public void WhenLoggingEventFactoryIsProvidedInProviderOptions_ThenDefaultLog4NetLoggingEventFactoryIsUsed()
+        {
+            var expectedFactory = new Log4NetLoggingEventFactory();
+            var options = new Log4NetProviderOptions
+            {
+                LoggingEventFactory = expectedFactory
+            };
+
+            var sut = new Log4NetProvider(options);
+            var logger = sut.CreateLogger("test") as Log4NetLogger;
+
+            var internalOptions = GetInternalOptions(logger);
+
+            internalOptions.Should().NotBeNull();
+            internalOptions.LoggingEventFactory.Should().NotBeNull("a LoggingEventFactory was provided in the options")
+                                                        .And.Be(expectedFactory, "this LoggingEventFactory was provided in the options");
+        }
+
         private Log4NetProviderOptions GetInternalOptions(Log4NetLogger logger)
         {
             return logger.GetType()

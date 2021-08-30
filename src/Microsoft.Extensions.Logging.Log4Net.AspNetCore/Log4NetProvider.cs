@@ -1,6 +1,7 @@
 ﻿using log4net;
 using log4net.Config;
 using log4net.Repository;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
 using Microsoft.Extensions.Logging.Scope;
@@ -244,7 +245,8 @@ namespace Microsoft.Extensions.Logging
                 Name = name,
                 LoggerRepository = this.loggerRepository.Name,
                 OverrideCriticalLevelWith = this.options.OverrideCriticalLevelWith,
-                ScopeFactory = this.options.ScopeFactory ?? new Log4NetScopeFactory(new Log4NetScopeRegistry())
+                ScopeFactory = this.options.ScopeFactory ?? new Log4NetScopeFactory(new Log4NetScopeRegistry()),
+                LoggingEventFactory = this.options.LoggingEventFactory ?? new Log4NetLoggingEventFactory(),
             };
 
             return new Log4NetLogger(loggerOptions);

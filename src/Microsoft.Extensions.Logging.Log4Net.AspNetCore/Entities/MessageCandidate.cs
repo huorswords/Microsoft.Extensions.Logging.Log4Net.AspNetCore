@@ -2,29 +2,26 @@
 
 namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities
 {
-    internal class MessageCandidate
+    /// <summary>
+    /// Represents a candidate for a log message that should be printed. This candidate will either be accepted or denied by the logger that is trying to print it.
+    /// </summary>
+    /// <typeparam name="TState">Type of the state that is used to format the error message.</typeparam>
+    public class MessageCandidate<TState>
     {
-        public MessageCandidate(LogLevel logLevel, object message, Exception exception)
+        public MessageCandidate(TState state, LogLevel logLevel, Exception exception, Func<TState, Exception, string> formatter)
         {
+            State = state;
             LogLevel = logLevel;
-            Message = message;
             Exception = exception;
+            Formatter = formatter;
         }
+
+        public TState State { get; }
 
         public LogLevel LogLevel { get; }
 
-        public object Message { get; }
-
         public Exception Exception { get; }
 
-        public bool IsValid()
-        {
-            if (Message is string text && Exception == null)
-            {
-                return !string.IsNullOrEmpty(text);
-            }
-
-            return Message != null || Exception != null;
-        }
+        public Func<TState, Exception, string> Formatter { get; }
     }
 }
