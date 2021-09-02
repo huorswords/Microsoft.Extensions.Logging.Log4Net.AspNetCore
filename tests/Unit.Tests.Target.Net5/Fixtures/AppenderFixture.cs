@@ -104,6 +104,7 @@ namespace Unit.Tests.Target.Netcore31.Fixtures
                 LoggerRepository = RepositoryName,
                 Name = RepositoryName,
                 LoggingEventFactory = new Log4NetLoggingEventFactory(),
+                LogLevelTranslator = new Log4NetLogLevelTranslator(),
             };
 
             SetupLog4NetRepository(options);
