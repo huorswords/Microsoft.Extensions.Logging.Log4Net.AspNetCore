@@ -22,6 +22,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
             sut.LoggingEventFactory.Should().BeNull();
+            sut.LogLevelTranslator.Should().BeNull();
         }
 
         [Fact]
@@ -40,6 +41,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
             sut.LoggingEventFactory.Should().BeNull();
+            sut.LogLevelTranslator.Should().BeNull();
         }
 
         [Fact]
@@ -58,6 +60,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeTrue();
             sut.LoggingEventFactory.Should().BeNull();
+            sut.LogLevelTranslator.Should().BeNull();
         }
 
         [Fact]
@@ -78,6 +81,7 @@ namespace Unit.Tests.Target.Netcore31
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeTrue();
             sut.LoggingEventFactory.Should().BeNull();
+            sut.LogLevelTranslator.Should().BeNull();
         }
 
         [Fact]
@@ -100,6 +104,30 @@ namespace Unit.Tests.Target.Netcore31
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeFalse();
             sut.LoggingEventFactory.Should().Be(loggingEventFactory);
+            sut.LogLevelTranslator.Should().BeNull();
+        }
+
+        [Fact]
+        public void LogLevelTranslator_Should_BeEditable()
+        {
+            var logLevelTranslator = new Mock<ILog4NetLogLevelTranslator>().Object;
+
+            var sut = new Log4NetProviderOptions
+            {
+                LogLevelTranslator = logLevelTranslator
+            };
+
+            sut.ExternalConfigurationSetup.Should().BeFalse();
+            sut.Log4NetConfigFileName.Should().Be("log4net.config");
+            sut.LoggerRepository.Should().BeNull();
+            sut.Name.Should().BeEmpty();
+            sut.OverrideCriticalLevelWith.Should().Be("");
+            sut.PropertyOverrides.Should().BeEmpty();
+            sut.ScopeFactory.Should().BeNull();
+            sut.Watch.Should().BeFalse();
+            sut.UseWebOrAppConfig.Should().BeFalse();
+            sut.LoggingEventFactory.Should().BeNull();
+            sut.LogLevelTranslator.Should().Be(logLevelTranslator);
         }
     }
 }

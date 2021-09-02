@@ -58,10 +58,10 @@ namespace Microsoft.Extensions.Logging
         /// </summary>
         /// <param name="logLevel">The log level.</param>
         /// <returns>The <see cref="bool"/> value indicating whether the logging level is enabled.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Throws when <paramref name="logLevel"/> is outside allowed range</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Throws when <paramref name="logLevel"/> is outside allowed range.</exception>
         public bool IsEnabled(LogLevel logLevel)
         {
-            Level translatedLogLevel = GetTranslatedLog4NetLevel(logLevel, this.options);
+            Level translatedLogLevel = this.options.LogLevelTranslator.TranslateLogLevel(logLevel, Options);
             if (translatedLogLevel != null)
             {
                 return this.logger.IsEnabledFor(translatedLogLevel);
@@ -97,59 +97,8 @@ namespace Microsoft.Extensions.Logging
                 return;
             }
 
-            var message = PrepareMessage(state, logLevel, exception, formatter);
+            var message = PrepareMessage(logLevel, eventId, state, exception, formatter);
             LogMessage(message);
-        }
-
-        /// <summary>
-        /// Translates a <see cref="LogLevel"/> to a log4net <see cref="Level"/> based on the provided options.
-        /// </summary>
-        /// <param name="logLevel">The log level to translate.</param>
-        /// <param name="options">The log4net provider options influencing the translation.</param>
-        /// <returns>The corresponding log level for log4net.</returns>
-        public static Level GetTranslatedLog4NetLevel(LogLevel logLevel, Log4NetProviderOptions options)
-        {
-            Level level = null;
-            switch (logLevel)
-            {
-                case LogLevel.Critical:
-                    string overrideCriticalLevelWith = options.OverrideCriticalLevelWith;
-                    level = !string.IsNullOrEmpty(overrideCriticalLevelWith)
-                            && overrideCriticalLevelWith.Equals(LogLevel.Critical.ToString(), StringComparison.OrdinalIgnoreCase)
-                                ? Level.Critical
-                                : Level.Fatal;
-                    break;
-                case LogLevel.Debug:
-                    level = Level.Debug;
-                    break;
-                case LogLevel.Error:
-                    level = Level.Error;
-                    break;
-                case LogLevel.Information:
-                    level = Level.Info;
-                    break;
-                case LogLevel.Warning:
-                    level = Level.Warn;
-                    break;
-                case LogLevel.Trace:
-                    level = Level.Trace;
-                    break;
-            }
-
-            return level;
-        }
-
-        /// <summary>
-        /// Selects a log4net <see cref="Level"/> for a <see cref="MessageCandidate{TState}"/>.
-        /// </summary>
-        /// <typeparam name="TState">Type of the state object that is used to format the log message inside the candidate.</typeparam>
-        /// <param name="candidate">The message candidate for the log.</param>
-        /// <param name="options">The log4net provider options influencing the translation.</param>
-        /// <returns>The log4net log level this message candidate should be logged with.</returns>
-        public static Level SelectLevel<TState>(MessageCandidate<TState> candidate, Log4NetProviderOptions options)
-        {
-            Level level = GetTranslatedLog4NetLevel(candidate.LogLevel, options);
-            return level;
         }
 
         private void LogMessage<TState>(MessageCandidate<TState> candidate)
@@ -162,10 +111,10 @@ namespace Microsoft.Extensions.Logging
             this.logger.Log(loggingEvent);
         }
 
-        private static MessageCandidate<TState> PrepareMessage<TState>(TState state, LogLevel logLevel, Exception exception, Func<TState, Exception, string> formatter)
+        private static MessageCandidate<TState> PrepareMessage<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             EnsureValidFormatter(formatter);
-            return new MessageCandidate<TState>(state, logLevel, exception, formatter);
+            return new MessageCandidate<TState>(logLevel, eventId, state, exception, formatter);
         }
 
         private static void EnsureValidFormatter<TState>(Func<TState, Exception, string> formatter)

@@ -90,7 +90,7 @@ namespace Unit.Tests.Target.Netcore31
         }
 
         [Fact]
-        public void WhenLoggingEventFactoryIsProvidedInProviderOptions_ThenDefaultLog4NetLoggingEventFactoryIsUsed()
+        public void WhenLoggingEventFactoryIsProvidedInProviderOptions_ThenLoggerUsesProvidedLoggingEventFactory()
         {
             var expectedFactory = new Log4NetLoggingEventFactory();
             var options = new Log4NetProviderOptions
@@ -106,6 +106,43 @@ namespace Unit.Tests.Target.Netcore31
             internalOptions.Should().NotBeNull();
             internalOptions.LoggingEventFactory.Should().NotBeNull("a LoggingEventFactory was provided in the options")
                                                         .And.Be(expectedFactory, "this LoggingEventFactory was provided in the options");
+        }
+
+        [Fact]
+        public void WhenLogLevelTranslatorIsNullOnProviderOptions_ThenDefaultLog4NetLogLevelTranslatorIsUsed()
+        {
+            var options = new Log4NetProviderOptions
+            {
+                LogLevelTranslator = null
+            };
+
+            var sut = new Log4NetProvider(options);
+            var logger = sut.CreateLogger("test") as Log4NetLogger;
+
+            var internalOptions = GetInternalOptions(logger);
+
+            internalOptions.Should().NotBeNull();
+            internalOptions.LogLevelTranslator.Should().NotBeNull("a default LogLevelTranslator is needed to create LoggingEvents")
+                                                        .And.BeOfType<Log4NetLogLevelTranslator>("because this is the default translator type");
+        }
+
+        [Fact]
+        public void WhenLogLevelTranslatorIsProvidedInProviderOptions_ThenLoggerUsesProvidedLogLevelTranslator()
+        {
+            var expectedTranslator = new Log4NetLogLevelTranslator();
+            var options = new Log4NetProviderOptions
+            {
+                LogLevelTranslator = expectedTranslator
+            };
+
+            var sut = new Log4NetProvider(options);
+            var logger = sut.CreateLogger("test") as Log4NetLogger;
+
+            var internalOptions = GetInternalOptions(logger);
+
+            internalOptions.Should().NotBeNull();
+            internalOptions.LogLevelTranslator.Should().NotBeNull("a LogLevelTranslator was provided in the options")
+                                                        .And.Be(expectedTranslator, "this LogLevelTranslator was provided in the options");
         }
 
         private Log4NetProviderOptions GetInternalOptions(Log4NetLogger logger)

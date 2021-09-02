@@ -5,7 +5,7 @@ using System;
 namespace Microsoft.Extensions.Logging
 {
     /// <inheritdoc cref="ILog4NetLoggingEventFactory"/>
-    public class Log4NetLoggingEventFactory
+    public sealed class Log4NetLoggingEventFactory
         : ILog4NetLoggingEventFactory
     {
         /// <inheritdoc/>
@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.Logging
         {
             Type callerStackBoundaryDeclaringType = typeof(LoggerExtensions);
             string message = messageCandidate.Formatter(messageCandidate.State, messageCandidate.Exception);
-            Level logLevel = Log4NetLogger.SelectLevel(messageCandidate, options);
+            Level logLevel = options.LogLevelTranslator.TranslateLogLevel(messageCandidate.LogLevel, options);
 
             if (logLevel == null || (string.IsNullOrEmpty(message) && messageCandidate.Exception == null))
                 return null;
