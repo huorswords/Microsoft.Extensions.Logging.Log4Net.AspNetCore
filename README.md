@@ -162,6 +162,9 @@ Also note that when trying to allow for levels messages below the Information le
 }
 ```
 
+### Modifying logging behaviour
+In many cases you can modfiy the logging behaviour of the provider to fit your own needs. See [modifying logging behaviour](/doc/ModifyingLoggingBehaviour.md) for more information.
+
 ## Special thanks
 
 Thank you very much to all contributors & users by its collaboration, and specially to:
