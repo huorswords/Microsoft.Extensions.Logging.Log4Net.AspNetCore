@@ -4,11 +4,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Linq;
-using Unit.Tests.Target.Netcore31.Fixtures;
-using Unit.Tests.Target.Netcore31.Models;
+using Unit.Tests.Target.Net5.Fixtures;
+using Unit.Tests.Target.Net5.Models;
 using Xunit;
 
-namespace Unit.Tests.Target.Netcore31
+namespace Unit.Tests.Target.Net5
 {
     [Collection("AppenderCollection")]
     public class Log4NetExtensionsTests

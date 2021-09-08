@@ -1,7 +1,6 @@
 ﻿using log4net;
 using log4net.Config;
 using log4net.Repository;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
 using Microsoft.Extensions.Logging.Scope;
