@@ -16,13 +16,13 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-		<PackageReleaseNotes>#104 - Do not discard message candidate when the logged message is not string and exception is not null.
-#106 - Remove XML package dependency on target framework greater than netcoreapp1.1</PackageReleaseNotes>
+		<PackageReleaseNotes>#110 - Add configurable factory for log4net LoggingEvents
+#111 - Update documentation with new configuration feature</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>5.0.3</Version>
-		<AssemblyVersion>5.0.3.0</AssemblyVersion>
-		<FileVersion>5.0.3.0</FileVersion>
+		<Version>5.0.4</Version>
+		<AssemblyVersion>5.0.4.0</AssemblyVersion>
+		<FileVersion>5.0.4.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseExpression></PackageLicenseExpression>
