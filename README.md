@@ -162,6 +162,9 @@ Also note that when trying to allow for levels messages below the Information le
 }
 ```
 
+### Modifying logging behaviour
+In many cases you can modfiy the logging behaviour of the provider to fit your own needs. See [modifying logging behaviour](/doc/ModifyingLoggingBehaviour.md) for more information.
+
 ## Special thanks
 
 Thank you very much to all contributors & users by its collaboration, and specially to:
@@ -171,3 +174,4 @@ Thank you very much to all contributors & users by its collaboration, and specia
 * [@kastwey](https://github.com/kastwey) by the feature to allow to replace values of log4net.config using the *Microsoft.Extensions.Configuration*.
 * [@willwolfram18](https://github.com/willwolfram18) by bugfixing `Log4NetScopeFactory` usage when provided in `Log4NetProviderOptions`.
 * [@lscorcia](https://github.com/lscorcia) by the fix of incorrect call stack when logging.
+* [@JustusGreiberORGADATA](https://github.com/JustusGreiberORGADATA) by the inclusion of a configurable logging event factory.

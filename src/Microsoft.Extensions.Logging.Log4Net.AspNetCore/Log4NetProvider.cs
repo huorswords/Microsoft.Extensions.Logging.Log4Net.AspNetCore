@@ -244,7 +244,9 @@ namespace Microsoft.Extensions.Logging
                 Name = name,
                 LoggerRepository = this.loggerRepository.Name,
                 OverrideCriticalLevelWith = this.options.OverrideCriticalLevelWith,
-                ScopeFactory = this.options.ScopeFactory ?? new Log4NetScopeFactory(new Log4NetScopeRegistry())
+                ScopeFactory = this.options.ScopeFactory ?? new Log4NetScopeFactory(new Log4NetScopeRegistry()),
+                LoggingEventFactory = this.options.LoggingEventFactory ?? new Log4NetLoggingEventFactory(),
+                LogLevelTranslator = this.options.LogLevelTranslator ?? new Log4NetLogLevelTranslator(),
             };
 
             return new Log4NetLogger(loggerOptions);

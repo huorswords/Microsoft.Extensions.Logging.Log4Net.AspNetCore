@@ -9,10 +9,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Unit.Tests.Target.Netcore31.Models;
+using Unit.Tests.Target.Net5.Models;
 using Xunit;
 
-namespace Unit.Tests.Target.Netcore31.Fixtures
+namespace Unit.Tests.Target.Net5.Fixtures
 {
     [CollectionDefinition("AppenderCollection")]
     public class AppenderCollection : ICollectionFixture<AppenderFixture>
@@ -102,7 +102,9 @@ namespace Unit.Tests.Target.Netcore31.Fixtures
             {
                 Log4NetConfigFileName = GetLog4netFilePath(log4NetFile),
                 LoggerRepository = RepositoryName,
-                Name = RepositoryName
+                Name = RepositoryName,
+                LoggingEventFactory = new Log4NetLoggingEventFactory(),
+                LogLevelTranslator = new Log4NetLogLevelTranslator(),
             };
 
             SetupLog4NetRepository(options);

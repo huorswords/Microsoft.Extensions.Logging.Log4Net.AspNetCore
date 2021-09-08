@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections;
 using System.Collections.Generic;
-using Unit.Tests.Target.Netcore31.Models;
+using Unit.Tests.Target.Net5.Models;
 
-namespace Unit.Tests.Target.Netcore31.Fixtures
+namespace Unit.Tests.Target.Net5.Fixtures
 {
     internal class IsEnabledClassData : IEnumerable<object[]>
     {

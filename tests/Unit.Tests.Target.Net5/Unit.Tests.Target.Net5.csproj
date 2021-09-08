@@ -1,74 +1,74 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
 
-    <IsPackable>false</IsPackable>
+		<IsPackable>false</IsPackable>
 
-    <SignAssembly>false</SignAssembly>
+		<SignAssembly>false</SignAssembly>
 
-    <AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="log4net.config" />
-    <None Remove="log4net.DebugOrHigher.config" />
-    <None Remove="log4net.FatalOrHigher.config" />
-    <None Remove="log4net.NoAppenders.config" />
-    <None Remove="log4net.TestAppender.config" />
-    <None Remove="log4net.TraceOrHigher.config" />
-    <None Remove="Resources\log4net.TestAppenderWarn.config" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="log4net.config" />
+		<None Remove="log4net.DebugOrHigher.config" />
+		<None Remove="log4net.FatalOrHigher.config" />
+		<None Remove="log4net.NoAppenders.config" />
+		<None Remove="log4net.TestAppender.config" />
+		<None Remove="log4net.TraceOrHigher.config" />
+		<None Remove="Resources\log4net.TestAppenderWarn.config" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="log4net.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\log4net.TestAppenderWarn.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\log4net.TraceOrHigher.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\log4net.TestAppenderTrace.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\log4net.All.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\log4net.DebugOrHigher.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\log4net.FatalOrHigher.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\log4net.NoAppenders.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="log4net.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\log4net.TestAppenderWarn.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\log4net.TraceOrHigher.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\log4net.TestAppenderTrace.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\log4net.All.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\log4net.DebugOrHigher.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\log4net.FatalOrHigher.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\log4net.NoAppenders.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" Version="2.9.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="FluentAssertions" Version="5.10.3" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-    <PackageReference Include="Moq" Version="4.15.1" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="1.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentAssertions" Version="6.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+		<PackageReference Include="Moq" Version="4.16.1" />
+		<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.msbuild" Version="3.1.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="3.1.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Microsoft.Extensions.Logging.Log4Net.AspNetCore\Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Microsoft.Extensions.Logging.Log4Net.AspNetCore\Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -2,16 +2,17 @@
 using log4net.Appender;
 using log4net.Core;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Scope;
 using Moq;
 using System;
 using System.IO;
 using System.Linq;
-using Unit.Tests.Target.Netcore31.Fixtures;
-using Unit.Tests.Target.Netcore31.Models;
+using Unit.Tests.Target.Net5.Fixtures;
+using Unit.Tests.Target.Net5.Models;
 using Xunit;
 
-namespace Unit.Tests.Target.Netcore31
+namespace Unit.Tests.Target.Net5
 {
     [Collection("AppenderCollection")]
     public class Log4NetLoggerTests
@@ -178,6 +179,113 @@ namespace Unit.Tests.Target.Netcore31
             testAppender.GetEvents()
                         .Should()
                         .BeEmpty();
+        }
+
+        [Fact]
+        public void Log_Should_Emit_LoggingEvents_Created_By_Custom_LoggingEventFactory()
+        {
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
+
+            var callStackBoundary = typeof(Log4NetLoggerTests);
+            var expectedRepository = log4net.LogManager.GetRepository(options.LoggerRepository);
+            var expectedLoggerName = "testLogger";
+            var expectedLoggingLevel = Level.Info;
+            var expectedLoggingMessage = "testMessage";
+            var expectedException = new InvalidOperationException("testException");
+
+            var mockedFactory = new Mock<ILog4NetLoggingEventFactory>();
+            mockedFactory
+                .Setup(
+                    f => f.CreateLoggingEvent(It.IsAny<MessageCandidate<string>>(), It.IsAny<log4net.Core.ILogger>(), options)
+                )
+                .Returns(
+                new LoggingEvent(
+                        callStackBoundary,
+                        expectedRepository,
+                        expectedLoggerName,
+                        expectedLoggingLevel,
+                        expectedLoggingMessage,
+                        expectedException
+                     )
+                );
+
+            options.LoggingEventFactory = mockedFactory.Object;
+            var testAppender = GetTestAppender(options);
+            var sut = new Log4NetLogger(options);
+
+            sut.Log(LogLevel.Debug, _eventId, _logState, null, (message, exception) => message);
+
+            testAppender.GetEvents()
+                        .Should()
+                        .NotBeEmpty()
+                        .And
+                        .HaveCount(1);
+
+            var loggingEvent = testAppender.GetEvents()
+                                           .First();
+
+            loggingEvent.Repository
+                        .Should()
+                        .Be(expectedRepository);
+            loggingEvent.LoggerName
+                        .Should()
+                        .Be(expectedLoggerName);
+            loggingEvent.Level
+                        .Should()
+                        .Be(expectedLoggingLevel);
+            loggingEvent.MessageObject
+                        .Should()
+                        .Be(expectedLoggingMessage);
+            loggingEvent.ExceptionObject
+                        .Should()
+                        .Be(expectedException);
+        }
+
+        [Fact]
+        public void Log_Should_Emit_At_LogLevels_Translate_By_LogLevelTranslator()
+        {
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
+
+            var expectedWarningLevel = new Level(100000, "Custom Level");
+            var expectedErrorLevel = Level.Emergency;
+
+            var mockedTranslator = new Mock<ILog4NetLogLevelTranslator>();
+            mockedTranslator
+                .Setup(
+                    f => f.TranslateLogLevel(LogLevel.Warning, options)
+                )
+                .Returns(expectedWarningLevel);
+
+            mockedTranslator.Setup(
+                    f => f.TranslateLogLevel(LogLevel.Error, options)
+                )
+                .Returns(expectedErrorLevel);
+
+
+            options.LogLevelTranslator = mockedTranslator.Object;
+            var testAppender = GetTestAppender(options);
+            var sut = new Log4NetLogger(options);
+
+            sut.Log(LogLevel.Warning, _eventId, _logState, null, (message, exception) => message);
+            sut.Log(LogLevel.Error, _eventId, _logState, null, (message, exception) => message);
+
+            testAppender.GetEvents()
+                        .Should()
+                        .NotBeEmpty()
+                        .And
+                        .HaveCount(2);
+
+            testAppender.GetEvents()
+                        .First()
+                        .Level
+                        .Should()
+                        .Be(expectedWarningLevel);
+
+            testAppender.GetEvents()
+                        .ElementAt(1)
+                        .Level
+                        .Should()
+                        .Be(expectedErrorLevel);
         }
 
         [Fact]

@@ -1,4 +1,4 @@
-﻿namespace Unit.Tests.Target.Netcore31.Models
+﻿namespace Unit.Tests.Target.Net5.Models
 {
     public enum Log4NetFileOption
     {

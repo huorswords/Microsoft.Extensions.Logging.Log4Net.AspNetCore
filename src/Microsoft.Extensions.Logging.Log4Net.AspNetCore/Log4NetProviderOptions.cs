@@ -90,5 +90,15 @@ namespace Microsoft.Extensions.Logging
         /// Let user setup log4net from web.config / app.config.
         /// </summary>
         public bool UseWebOrAppConfig { get; set; }
+
+        /// <summary>
+        /// Gets or sets the factory for the log4net <see cref="log4net.Core.LoggingEvent"/>."/>.
+        /// </summary>
+        public ILog4NetLoggingEventFactory LoggingEventFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the translator between the <see cref="LogLevel"/> and the log4net <see cref="log4net.Core.Level"/>.
+        /// </summary>
+        public ILog4NetLogLevelTranslator LogLevelTranslator { get; set; }
     }
 }
