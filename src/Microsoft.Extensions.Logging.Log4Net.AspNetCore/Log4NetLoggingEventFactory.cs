@@ -1,6 +1,6 @@
-﻿using log4net.Core;
+﻿using System;
+using log4net.Core;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using System;
 
 namespace Microsoft.Extensions.Logging
 {
@@ -18,13 +18,31 @@ namespace Microsoft.Extensions.Logging
             if (logLevel == null || (string.IsNullOrEmpty(message) && messageCandidate.Exception == null))
                 return null;
 
-            return new LoggingEvent(
+            var loggingEvent = new LoggingEvent(
                 callerStackBoundaryDeclaringType: callerStackBoundaryDeclaringType,
                 repository: logger.Repository,
                 loggerName: logger.Name,
                 level: logLevel,
                 message: message,
                 exception: messageCandidate.Exception);
+
+            foreach (var scope in messageCandidate.Scopes)
+            {
+                if(scope.Properties != null)
+                {
+                    foreach (var scopeProperty in scope.Properties)
+                    {
+                        loggingEvent.Properties[scopeProperty.Key] = scopeProperty.Value;
+                    }
+                }
+                if (!String.IsNullOrEmpty(scope.Text))
+                {
+                    loggingEvent.Properties["scope"] = scope.Text;
+                }
+
+            }
+
+            return loggingEvent;
         }
     }
 }

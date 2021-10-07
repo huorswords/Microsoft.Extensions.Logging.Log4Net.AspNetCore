@@ -70,14 +70,12 @@ using (var scope = logger.BeginScope(dictionary))
 The `BeginScope` method allow any object, but only some of types are handled in an special way. Those types are:
 
 * `string`
-* `IEnumerable<KeyValuePair<string, string>>`
 * `IEnumerable<KeyValuePair<string, object>>`
 
-By default, any other type will be managed as a conventional `object`.
 
 #### How it works
 
-When you use any of the `IEnumerable<KeyValuePair<,>>` allowed types, the collection will be processed and every item from this collection should be introduced to the `LogicalThreadContext` managed by the log4net library using the `Key` as the property name and the `Value` as the value to replace the placeholder on the Pattern Layout defined.
+When you use any of the `IEnumerable<KeyValuePair<,>>` allowed types, the collection will be processed and every item from this collection should be introduced to the [`ExternalScopeProvider`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loggerexternalscopeprovider) using the `Key` as the property name and the `Value` as the value to replace the placeholder on the Pattern Layout defined.
 
 This example shows how the log4net.config pattern layout could include a `%property{}` placeholder that will be matched within the corresponding scoped value from the collection argument.
 
@@ -124,7 +122,6 @@ using (var scope = logger.BeginScope("SCOPED_VALUE"))
 }
 ```
 
-For additional information about how the `LogicalThreadContext` works, please visit the [official documentation](https://logging.apache.org/log4net/release/manual/contexts.html)
 
 ### .NET Core 2.0 - Logging debug level messages
 
@@ -157,7 +154,11 @@ Also note that when trying to allow for levels messages below the Information le
     "LogLevel": {
       "Default": "Debug",
 	  "...":"..."
-    }
+    },
+    "Log4Net": {
+      "Default": "Debug",
+	  "...":"..."
+	}
   }
 }
 ```

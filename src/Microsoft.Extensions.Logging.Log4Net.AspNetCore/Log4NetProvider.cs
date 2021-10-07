@@ -3,7 +3,6 @@ using log4net.Config;
 using log4net.Repository;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
-using Microsoft.Extensions.Logging.Scope;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -20,12 +19,14 @@ namespace Microsoft.Extensions.Logging
     /// The log4net provider class.
     /// </summary>
     /// <seealso cref="ILoggerProvider" />
-    public partial class Log4NetProvider : ILoggerProvider
+    [ProviderAlias("Log4Net")]
+    public partial class Log4NetProvider : ILoggerProvider, ISupportExternalScope
     {
         /// <summary>
         /// The loggers collection.
         /// </summary>
         private readonly ConcurrentDictionary<string, Log4NetLogger> loggers = new ConcurrentDictionary<string, Log4NetLogger>();
+        private IExternalScopeProvider _scopeProvider = new LoggerExternalScopeProvider();
 
         /// <summary>
         /// Prevents to dispose the object more than single time.
@@ -244,7 +245,6 @@ namespace Microsoft.Extensions.Logging
                 Name = name,
                 LoggerRepository = this.loggerRepository.Name,
                 OverrideCriticalLevelWith = this.options.OverrideCriticalLevelWith,
-                ScopeFactory = this.options.ScopeFactory ?? new Log4NetScopeFactory(new Log4NetScopeRegistry()),
                 LoggingEventFactory = this.options.LoggingEventFactory ?? new Log4NetLoggingEventFactory(),
                 LogLevelTranslator = this.options.LogLevelTranslator ?? new Log4NetLogLevelTranslator(),
             };
@@ -394,6 +394,16 @@ namespace Microsoft.Extensions.Logging
             }
 
             return this;
+        }
+
+        public void SetScopeProvider(IExternalScopeProvider scopeProvider)
+        {
+            _scopeProvider = scopeProvider;
+
+            foreach (KeyValuePair<string, Log4NetLogger> logger in loggers)
+            {
+                logger.Value.ScopeProvider = _scopeProvider;
+            }
         }
     }
 }

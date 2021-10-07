@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp1.1;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+		<TargetFrameworks>netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;netstandard2.1;net5.0</TargetFrameworks>
 	</PropertyGroup>
 	<PropertyGroup>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -24,7 +24,7 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<AssemblyVersion>5.0.4.0</AssemblyVersion>
 		<FileVersion>5.0.4.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
+		<!--<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>-->
 		<PackageLicenseExpression></PackageLicenseExpression>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 
@@ -35,60 +35,48 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<!--<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.0.0" PrivateAssets="All" />
-	</ItemGroup>
+	</ItemGroup>-->
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
-	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.0.0" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="1.1.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.*" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.*" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.*" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.*" />
-	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.*" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.0.3" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.18" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.18" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.18" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.18" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.18" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
@@ -96,9 +84,9 @@ Original code proposal by @anuraj --&gt; https://dotnetthoughts.net/how-to-use-l
 	<ItemGroup>
 		<PackageReference Include="log4net" Version="2.0.12" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
+	<!--<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
 		<PackageReference Include="System.Xml.XPath.XDocument" Version="4.3.0" />
-	</ItemGroup>
+	</ItemGroup>-->
 	<ItemGroup>
 		<None Include="..\..\LICENSE">
 			<Pack>True</Pack>

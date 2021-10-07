@@ -1,13 +1,12 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.IO;
+using System.Linq;
+using FluentAssertions;
 using log4net.Appender;
 using log4net.Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using Microsoft.Extensions.Logging.Scope;
 using Moq;
-using System;
-using System.IO;
-using System.Linq;
 using Unit.Tests.Target.Net5.Fixtures;
 using Unit.Tests.Target.Net5.Models;
 using Xunit;
@@ -314,15 +313,12 @@ namespace Unit.Tests.Target.Net5
         {
             const string CustomScope = "CustomScope";
 
-            var mockedFactory = new Mock<ILog4NetScopeFactory>(MockBehavior.Default);
-            mockedFactory.Setup(x => x.BeginScope(It.IsAny<string>()))
-                         .Returns(new Log4NetScope(CustomScope, new Log4NetScopeRegistry()));
 
             var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
-            options.ScopeFactory = mockedFactory.Object;
             var testAppender = GetTestAppender(options);
 
             var sut = new Log4NetLogger(options);
+            sut.ScopeProvider = new LoggerExternalScopeProvider();
 
             using (var scope = sut.BeginScope(CustomScope))
             {

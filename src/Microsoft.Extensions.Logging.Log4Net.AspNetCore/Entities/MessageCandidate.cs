@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities
 {
@@ -8,13 +9,14 @@ namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities
     /// <typeparam name="TState">Type of the state that is used to format the error message.</typeparam>
     public class MessageCandidate<TState>
     {
-        public MessageCandidate(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public MessageCandidate(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter, IList<ScopeInfo> scopes)
         {
             State = state;
             LogLevel = logLevel;
             EventId = eventId;
             Exception = exception;
             Formatter = formatter;
+            Scopes = scopes;
         }
 
         /// <summary>
@@ -41,5 +43,7 @@ namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities
         /// The message formatter. Can be called with the state and exception to generate the string representation of the error message.
         /// </summary>
         public Func<TState, Exception, string> Formatter { get; }
+
+        public IList<ScopeInfo> Scopes { get;  } 
     }
 }

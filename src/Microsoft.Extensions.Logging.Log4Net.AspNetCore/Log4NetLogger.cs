@@ -1,7 +1,8 @@
-﻿using log4net;
+﻿using System;
+using System.Collections.Generic;
+using log4net;
 using log4net.Core;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using System;
 
 namespace Microsoft.Extensions.Logging
 {
@@ -13,12 +14,14 @@ namespace Microsoft.Extensions.Logging
         /// <summary>
         /// The log.
         /// </summary>
-        private readonly log4net.Core.ILogger logger;
+        private readonly log4net.Core.ILogger logger; 
 
         /// <summary>
         /// The provider options.
         /// </summary>
         private readonly Log4NetProviderOptions options;
+
+        public IExternalScopeProvider ScopeProvider { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
@@ -51,7 +54,7 @@ namespace Microsoft.Extensions.Logging
         /// An IDisposable that ends the logical operation scope on dispose.
         /// </returns>
         public IDisposable BeginScope<TState>(TState state)
-            => options.ScopeFactory?.BeginScope(state);
+            => ScopeProvider.Push(state);
 
         /// <summary>
         /// Determines whether the logging level is enabled.
@@ -97,24 +100,54 @@ namespace Microsoft.Extensions.Logging
                 return;
             }
 
-            var message = PrepareMessage(logLevel, eventId, state, exception, formatter);
+            var message = PrepareMessage(logLevel, eventId, state, exception, formatter, ScopeProvider);
             LogMessage(message);
         }
 
         private void LogMessage<TState>(MessageCandidate<TState> candidate)
         {
             LoggingEvent loggingEvent = options.LoggingEventFactory.CreateLoggingEvent(candidate, logger, options);
-
+            
             if (loggingEvent == null)
                 return;
 
             this.logger.Log(loggingEvent);
         }
 
-        private static MessageCandidate<TState> PrepareMessage<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        private static MessageCandidate<TState> PrepareMessage<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter, IExternalScopeProvider externalScopeProvider)
         {
             EnsureValidFormatter(formatter);
-            return new MessageCandidate<TState>(logLevel, eventId, state, exception, formatter);
+
+            var scopes = new List<ScopeInfo>(10);
+
+            // gather info about scope(s), if any
+            if (externalScopeProvider != null)
+            {
+                externalScopeProvider.ForEachScope((value, loggingProps) =>
+                {
+                    var scope = new ScopeInfo();
+                    scopes.Add(scope);
+
+                    if (value is string)
+                    {
+                        scope.Text = value.ToString();
+                    }
+                    else if (value is IEnumerable<KeyValuePair<string, object>> props)
+                    {
+                        if (scope.Properties == null)
+                            scope.Properties = new Dictionary<string, object>();
+
+                        foreach (var pair in props)
+                        {
+                            scope.Properties[pair.Key] = pair.Value;
+                        }
+                    }
+                },
+                state);
+
+            }
+
+            return new MessageCandidate<TState>(logLevel, eventId, state, exception, formatter, scopes);
         }
 
         private static void EnsureValidFormatter<TState>(Func<TState, Exception, string> formatter)
