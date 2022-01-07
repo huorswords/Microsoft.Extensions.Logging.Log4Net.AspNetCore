@@ -212,9 +212,6 @@ namespace Microsoft.Extensions.Logging
         /// <returns>Null for NetCoreApp 1.1, otherwise, Assembly of Startup type if found in stack trace.</returns>
         private static Assembly GetCallingAssemblyFromStartup()
         {
-#if NETCOREAPP1_1
-            return null;
-#else
             var stackTrace = new System.Diagnostics.StackTrace(2);
 
             for (int i = 0; i < stackTrace.FrameCount; i++)
@@ -229,7 +226,6 @@ namespace Microsoft.Extensions.Logging
             }
 
             return null;
-#endif
         }
 
         /// <summary>
@@ -260,11 +256,8 @@ namespace Microsoft.Extensions.Logging
         {
             Assembly assembly = null;
 
-#if NETCOREAPP1_1
-            assembly = Assembly.GetEntryAssembly();
-#else
             assembly = Assembly.GetExecutingAssembly();
-#endif
+
             return assembly ?? GetCallingAssemblyFromStartup();
         }
 
@@ -343,14 +336,7 @@ namespace Microsoft.Extensions.Logging
             string fileNamePath = this.options.Log4NetConfigFileName;
             if (!Path.IsPathRooted(fileNamePath))
             {
-#if NETCOREAPP1_1
-                if (!File.Exists(fileNamePath))
-                {
-                    fileNamePath = Path.Combine(Path.GetDirectoryName(assembly.Location), fileNamePath);
-                }
-#else
                 fileNamePath = Path.Combine(AppContext.BaseDirectory, fileNamePath);
-#endif
             }
 
             return Path.GetFullPath(fileNamePath);
