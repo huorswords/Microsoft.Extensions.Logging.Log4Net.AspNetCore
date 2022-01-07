@@ -4,15 +4,14 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Repository;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Unit.Tests.Target.Net5.Models;
+using Unit.Tests.Models;
 using Xunit;
 
-namespace Unit.Tests.Target.Net5.Fixtures
+namespace Unit.Tests.Fixtures
 {
     [CollectionDefinition("AppenderCollection")]
     public class AppenderCollection : ICollectionFixture<AppenderFixture>
@@ -119,7 +118,13 @@ namespace Unit.Tests.Target.Net5.Fixtures
         {
             ILoggerRepository repository = GetOrCreateRepository(options);
 
-            var assemblyFile = new FileInfo(Assembly.GetCallingAssembly().GetAssemblyLocation());
+#if NETCOREAPP3_1_OR_GREATER
+            var assemblyFile = new FileInfo(Assembly.GetCallingAssembly().Location);
+#else
+            var codeBaseUrl = new Uri(Assembly.GetExecutingAssembly().CodeBase);
+            var codeBasePath = Uri.UnescapeDataString(codeBaseUrl.AbsolutePath);
+            var assemblyFile = new FileInfo(codeBasePath);
+#endif
             string path = Path.Combine(assemblyFile.Directory.FullName, options.Log4NetConfigFileName);
 
             XmlConfigurator.Configure(repository, File.OpenRead(path));

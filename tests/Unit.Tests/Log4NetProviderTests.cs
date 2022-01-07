@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Scope;
 using System.Reflection;
-using Unit.Tests.Target.Net5.Fixtures;
+using Unit.Tests.Fixtures;
 using Xunit;
 
-namespace Unit.Tests.Target.Net5
+namespace Unit.Tests
 {
     [Collection("AppenderCollection")]
     public class Log4NetProviderTests
