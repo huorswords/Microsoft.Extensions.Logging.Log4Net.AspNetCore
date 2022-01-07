@@ -4,11 +4,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Linq;
-using Unit.Tests.Target.Net5.Fixtures;
-using Unit.Tests.Target.Net5.Models;
+using Unit.Tests.Fixtures;
+using Unit.Tests.Models;
 using Xunit;
 
-namespace Unit.Tests.Target.Net5
+namespace Unit.Tests
 {
     [Collection("AppenderCollection")]
     public class Log4NetExtensionsTests
@@ -19,6 +19,9 @@ namespace Unit.Tests.Target.Net5
         }
 
         private AppenderFixture Context { get; }
+
+// .NET Framework does not use generic host builder like this so we can only test it for our .NET Core targets
+#if NETCOREAPP3_1_OR_GREATER
 
         [Fact]
         public void AddLog4Net_When_UsedOverILoggingBuilder_And_PassingOptions_Then_Call_ILoggerFactory_AddProvider()
@@ -108,6 +111,8 @@ namespace Unit.Tests.Target.Net5
             events.First().RenderedMessage.Should()
                                           .Contain("value");
         }
+
+#endif
 
         [Fact]
         public void AddLog4Net_When_UsedOverILoggerFactory_Then_Call_ILoggerFactory_AddProvider()

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Unit.Tests.Target.Net5.Fixtures
+namespace Unit.Tests.Fixtures
 {
     internal class TestLogMethodData : IEnumerable<object[]>
     {

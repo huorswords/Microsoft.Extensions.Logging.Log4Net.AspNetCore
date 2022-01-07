@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+    <!--
+      We can't target/test .NET Standard here because xUnit does not support it.
+      But netcoreapp3.1 and net461 and higher implement all .NET Standard versions we support.
+      See: https://xunit.net/docs/why-no-netstandard
+      See: https://docs.microsoft.com/en-us/dotnet/standard/net-standard
+    -->
+		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net461;net462;net47;net471;net472;net48</TargetFrameworks>
 		<IsPackable>false</IsPackable>
 		<SignAssembly>false</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
@@ -40,16 +46,30 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+
+  <!-- .NET Framework versions contain no dot in the TFM. -->
+  <ItemGroup Condition="!'$(TargetFramework.Contains(`.`))'">
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework.Contains(`.`))'">
+    <!--
+      This will cause Microsoft.Extensions.Hosting to be loaded from the shared framework,
+      which is used starting with ASP.NET Core 3.1.
+      This is probably the best version to test against because it is likely used by the most amount of people.
+    -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  
 	<ItemGroup>
-		<PackageReference Include="FluentAssertions" Version="6.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-		<PackageReference Include="Moq" Version="4.16.1" />
-		<PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-			<PrivateAssets>all</PrivateAssets>
+      <PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+		<PackageReference Include="FluentAssertions" Version="6.2.0" />
+		<PackageReference Include="Moq" Version="4.16.1" />
 		<PackageReference Include="coverlet.msbuild" Version="3.1.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

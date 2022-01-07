@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging.Log4Net.AspNetCore;
 using Moq;
 using Xunit;
 
-namespace Unit.Tests.Target.Net5
+namespace Unit.Tests
 {
     public class Log4NetProviderOptionsTests
     {
