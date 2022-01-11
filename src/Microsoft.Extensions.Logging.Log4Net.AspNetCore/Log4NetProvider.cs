@@ -3,7 +3,7 @@ using log4net.Config;
 using log4net.Repository;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Extensions;
-using Microsoft.Extensions.Logging.Scope;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Scope;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.Logging
     /// The log4net provider class.
     /// </summary>
     /// <seealso cref="ILoggerProvider" />
-    public partial class Log4NetProvider : ILoggerProvider
+    public class Log4NetProvider : ILoggerProvider, ISupportExternalScope
     {
         /// <summary>
         /// The loggers collection.
@@ -41,6 +41,16 @@ namespace Microsoft.Extensions.Logging
         /// The provider options.
         /// </summary>
         private Log4NetProviderOptions options;
+
+        /// <summary>
+        /// The external logging scope provider.
+        /// </summary>
+        /// <remarks>
+        /// Reading the offical logging implementations, it seems like we need to handle the case that this might never be set.
+        /// We handle it with a NullScopeProvider instead of null checks, to make the process of implementing interfaces like
+        /// <see cref="ILog4NetLoggingEventFactory"/> less error prone for consumers.
+        /// </remarks>
+        public IExternalScopeProvider ExternalScopeProvider { get; private set; } = NullScopeProvider.Instance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetProvider"/> class.
@@ -240,12 +250,11 @@ namespace Microsoft.Extensions.Logging
                 Name = name,
                 LoggerRepository = this.loggerRepository.Name,
                 OverrideCriticalLevelWith = this.options.OverrideCriticalLevelWith,
-                ScopeFactory = this.options.ScopeFactory ?? new Log4NetScopeFactory(new Log4NetScopeRegistry()),
                 LoggingEventFactory = this.options.LoggingEventFactory ?? new Log4NetLoggingEventFactory(),
                 LogLevelTranslator = this.options.LogLevelTranslator ?? new Log4NetLogLevelTranslator(),
             };
 
-            return new Log4NetLogger(loggerOptions);
+            return new Log4NetLogger(loggerOptions, ExternalScopeProvider);
         }
 
         /// <summary>
@@ -380,6 +389,11 @@ namespace Microsoft.Extensions.Logging
             }
 
             return this;
+        }
+
+        public void SetScopeProvider(IExternalScopeProvider scopeProvider)
+        {
+            ExternalScopeProvider = scopeProvider;
         }
     }
 }

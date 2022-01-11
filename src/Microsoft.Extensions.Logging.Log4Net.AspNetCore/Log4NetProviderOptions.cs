@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using Microsoft.Extensions.Logging.Scope;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Scope;
 using System.Collections.Generic;
 
 namespace Microsoft.Extensions.Logging
@@ -75,11 +75,6 @@ namespace Microsoft.Extensions.Logging
         /// Gets or sets a value indicating whether this <see cref="Log4NetProviderOptions"/> is watch.
         /// </summary>
         public bool Watch { get; set; }
-
-        /// <summary>
-        /// Gets or sets the scope factory.
-        /// </summary>
-        public ILog4NetScopeFactory ScopeFactory { get; set; }
 
         /// <summary>
         /// Let user setup log4net externally

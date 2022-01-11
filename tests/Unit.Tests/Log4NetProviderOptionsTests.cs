@@ -19,7 +19,6 @@ namespace Unit.Tests
             sut.Name.Should().BeEmpty();
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
-            sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
             sut.LoggingEventFactory.Should().BeNull();
             sut.LogLevelTranslator.Should().BeNull();
@@ -38,7 +37,6 @@ namespace Unit.Tests
             sut.Name.Should().BeEmpty();
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
-            sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
             sut.LoggingEventFactory.Should().BeNull();
             sut.LogLevelTranslator.Should().BeNull();
@@ -57,7 +55,6 @@ namespace Unit.Tests
             sut.Name.Should().BeEmpty();
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
-            sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeTrue();
             sut.LoggingEventFactory.Should().BeNull();
             sut.LogLevelTranslator.Should().BeNull();
@@ -77,7 +74,6 @@ namespace Unit.Tests
             sut.Name.Should().BeEmpty();
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
-            sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeTrue();
             sut.LoggingEventFactory.Should().BeNull();
@@ -100,7 +96,6 @@ namespace Unit.Tests
             sut.Name.Should().BeEmpty();
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
-            sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeFalse();
             sut.LoggingEventFactory.Should().Be(loggingEventFactory);
@@ -123,7 +118,6 @@ namespace Unit.Tests
             sut.Name.Should().BeEmpty();
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
-            sut.ScopeFactory.Should().BeNull();
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeFalse();
             sut.LoggingEventFactory.Should().BeNull();
