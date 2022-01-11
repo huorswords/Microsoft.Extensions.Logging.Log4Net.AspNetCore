@@ -16,6 +16,10 @@ namespace Microsoft.Extensions.Logging
         /// <param name="logger">The logger the event is created for.</param>
         /// <param name="options">The options of the log4net logging provider.</param>
         /// <returns>A <see cref="log4net.Core.LoggingEvent"/> that is ready to be logged with the provided logger or null if the candidate should be dropped.</returns>
-        LoggingEvent CreateLoggingEvent<TState>(MessageCandidate<TState> messageCandidate, log4net.Core.ILogger logger, Log4NetProviderOptions options);
+        LoggingEvent CreateLoggingEvent<TState>(
+            in MessageCandidate<TState> messageCandidate,
+            log4net.Core.ILogger logger,
+            Log4NetProviderOptions options,
+            IExternalScopeProvider scopeProvider);
     }
 }

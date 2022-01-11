@@ -5,8 +5,17 @@ namespace Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities
     /// <summary>
     /// Represents a candidate for a log message that should be printed. This candidate will either be accepted or denied by the logger that is trying to print it.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This is a readonly struct to reduce memory pressure, but because it is quite large (definitly larger than the recommended 16 bytes)
+    /// it needs to be passed as a reference (with the in keyword) to make a difference.
+    /// </para>
+    /// <para>
+    /// See <see href="https://devblogs.microsoft.com/premier-developer/the-in-modifier-and-the-readonly-structs-in-c/"/> for more information.
+    /// </para>
+    /// </remarks>
     /// <typeparam name="TState">Type of the state that is used to format the error message.</typeparam>
-    public class MessageCandidate<TState>
+    public readonly struct MessageCandidate<TState>
     {
         public MessageCandidate(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
