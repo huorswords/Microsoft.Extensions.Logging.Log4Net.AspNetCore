@@ -18,6 +18,17 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: 🔐 Materialize Signing Key
+        id: write_sign_key_file
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: "${{ env.PROJECT_PATH }}/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk"
+          encodedString: ${{ secrets.SIGNING_KEY }}
+      
+      - name: Debug SNK
+        shell: pwsh
+        run: Get-ChildItem -Filter *.snk -Recurse
+
       - name: 🏗 Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
@@ -25,13 +36,6 @@ jobs:
             6.0.x
             5.0.x
             3.1.x
-
-      - name: 🔐 Materialize Signing Key
-        id: write_sign_key_file
-        uses: timheuer/base64-to-file@v1
-        with:
-          fileName: "${{ env.PROJECT_PATH }}/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk"
-          encodedString: ${{ secrets.SIGNING_KEY }}
 
       - name: 🛠 Restore packages
         run: dotnet restore "${{ env.SOLUTION_PATH }}"
