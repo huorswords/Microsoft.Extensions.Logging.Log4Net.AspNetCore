@@ -6,7 +6,7 @@ on:
 
 env:
   SOLUTION_PATH: ./src/Microsoft.Extensions.Logging.Log4net.sln
-  PROJECT_PATH: ./src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
+  SNK_PATH: src/Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk
 
 jobs:
   build:
@@ -19,15 +19,11 @@ jobs:
           persist-credentials: false
 
       - name: 🔐 Materialize Signing Key
-        id: write_sign_key_file
-        uses: timheuer/base64-to-file@v1
-        with:
-          fileName: "${{ env.PROJECT_PATH }}/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk"
-          encodedString: ${{ secrets.SIGNING_KEY }}
-      
-      - name: Debug SNK
-        shell: pwsh
-        run: Get-ChildItem -Filter *.snk -Recurse
+        run: |
+          $signing_keys_payload = [System.Convert]::FromBase64String("${{ secrets.SIGNING_KEY }}")
+          $currentDirectory = Get-Location
+          $certificatePath = Join-Path -Path $currentDirectory -ChildPath "{{ env.SNK_PATH }}"
+          [IO.File]::WriteAllBytes("$certificatePath", $signing_keys_payload)
 
       - name: 🏗 Setup dotnet
         uses: actions/setup-dotnet@v1
