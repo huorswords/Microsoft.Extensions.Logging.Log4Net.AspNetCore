@@ -6,10 +6,11 @@ on:
 
 env:
   SOLUTION_PATH: ./src/Microsoft.Extensions.Logging.Log4net.sln
+  PROJECT_PATH: ./src/Microsoft.Extensions.Logging.Log4Net.AspNetCore
 
 jobs:
   build:
-    name: 🚀🧪 Test solution
+    name: 🚀🧪 Check PR
     runs-on: windows-latest
     steps:
       - name: 🛎 Checkout
@@ -25,11 +26,11 @@ jobs:
             5.0.x
             3.1.x
 
-      - name: Materialize Signing Key
+      - name: 🔐 Materialize Signing Key
         id: write_sign_key_file
         uses: timheuer/base64-to-file@v1
         with:
-          fileName: "src/Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk"
+          fileName: "${{ env.PROJECT_PATH }}/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk"
           encodedString: ${{ secrets.SIGNING_KEY }}
 
       - name: 🛠 Restore packages
