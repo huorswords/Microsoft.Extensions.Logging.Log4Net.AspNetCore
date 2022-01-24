@@ -9,7 +9,7 @@ env:
 
 jobs:
   build:
-    name: 🚀🧪 Check PR
+    name: 🚀🧪 Test PR
     runs-on: windows-latest
     steps:
       - name: 🛎 Checkout
