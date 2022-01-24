@@ -18,13 +18,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: 🔐 Materialize Signing Key
-        run: |
-          $signing_keys_payload = [System.Convert]::FromBase64String("${{ secrets.SIGNING_KEY }}")
-          $currentDirectory = Get-Location
-          $certificatePath = Join-Path -Path $currentDirectory -ChildPath "{{ env.SNK_PATH }}"
-          [IO.File]::WriteAllBytes("$certificatePath", $signing_keys_payload)
-
       - name: 🏗 Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
