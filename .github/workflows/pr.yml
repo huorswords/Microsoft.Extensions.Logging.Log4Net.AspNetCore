@@ -24,12 +24,12 @@ jobs:
             6.0.x
             5.0.x
             3.1.x
-            
+
       - name: Materialize Signing Key
         id: write_sign_key_file
         uses: timheuer/base64-to-file@v1
         with:
-          fileName: 'src/Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk'
+          fileName: "src/Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk"
           encodedString: ${{ secrets.SIGNING_KEY }}
 
       - name: 🛠 Restore packages
