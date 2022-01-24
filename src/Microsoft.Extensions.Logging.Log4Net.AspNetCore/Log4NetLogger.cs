@@ -10,6 +10,8 @@ namespace Microsoft.Extensions.Logging
     /// </summary>
     public class Log4NetLogger : ILogger
     {
+        private readonly IExternalScopeProvider externalScopeProvider;
+
         /// <summary>
         /// The log.
         /// </summary>
@@ -24,9 +26,10 @@ namespace Microsoft.Extensions.Logging
         /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
         /// </summary>
         /// <param name="options">The log4net provider options.</param>
-        public Log4NetLogger(Log4NetProviderOptions options)
+        public Log4NetLogger(Log4NetProviderOptions options, IExternalScopeProvider externalScopeProvider)
         {
             this.options = options ?? throw new ArgumentNullException(nameof(options));
+            this.externalScopeProvider = externalScopeProvider ?? throw new ArgumentNullException(nameof(externalScopeProvider));
             this.logger = LogManager.GetLogger(options.LoggerRepository, options.Name).Logger;
         }
 
@@ -42,6 +45,7 @@ namespace Microsoft.Extensions.Logging
         /// </summary>
         internal Log4NetProviderOptions Options => this.options;
 
+
         /// <summary>
         /// Begins a logical operation scope.
         /// </summary>
@@ -51,7 +55,7 @@ namespace Microsoft.Extensions.Logging
         /// An IDisposable that ends the logical operation scope on dispose.
         /// </returns>
         public IDisposable BeginScope<TState>(TState state)
-            => options.ScopeFactory?.BeginScope(state);
+            => externalScopeProvider.Push(state);
 
         /// <summary>
         /// Determines whether the logging level is enabled.
@@ -97,24 +101,16 @@ namespace Microsoft.Extensions.Logging
                 return;
             }
 
-            var message = PrepareMessage(logLevel, eventId, state, exception, formatter);
-            LogMessage(message);
-        }
+            EnsureValidFormatter(formatter);
 
-        private void LogMessage<TState>(MessageCandidate<TState> candidate)
-        {
-            LoggingEvent loggingEvent = options.LoggingEventFactory.CreateLoggingEvent(candidate, logger, options);
+            var candidate = new MessageCandidate<TState>(logLevel, eventId, state, exception, formatter);
+
+            LoggingEvent loggingEvent = options.LoggingEventFactory.CreateLoggingEvent(in candidate, logger, options, externalScopeProvider);
 
             if (loggingEvent == null)
                 return;
 
             this.logger.Log(loggingEvent);
-        }
-
-        private static MessageCandidate<TState> PrepareMessage<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-        {
-            EnsureValidFormatter(formatter);
-            return new MessageCandidate<TState>(logLevel, eventId, state, exception, formatter);
         }
 
         private static void EnsureValidFormatter<TState>(Func<TState, Exception, string> formatter)

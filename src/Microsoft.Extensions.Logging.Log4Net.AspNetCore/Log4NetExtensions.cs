@@ -46,7 +46,6 @@ namespace Microsoft.Extensions.Logging
             return factory;
         }
 
-#if !NETCOREAPP1_1
         /// <summary>
         /// Adds the log4net logging provider.
         /// </summary>
@@ -96,6 +95,5 @@ namespace Microsoft.Extensions.Logging
             builder.Services.AddSingleton<ILoggerProvider>(new Log4NetProvider(options));
             return builder;
         }
-#endif
     }
 }

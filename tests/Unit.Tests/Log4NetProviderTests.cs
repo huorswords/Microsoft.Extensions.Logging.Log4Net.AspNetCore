@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Scope;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Scope;
 using System.Reflection;
-using Unit.Tests.Target.Net5.Fixtures;
+using Unit.Tests.Fixtures;
 using Xunit;
 
-namespace Unit.Tests.Target.Net5
+namespace Unit.Tests
 {
     [Collection("AppenderCollection")]
     public class Log4NetProviderTests
@@ -33,42 +33,6 @@ namespace Unit.Tests.Target.Net5
 
             var logger = sut.CreateLogger();
             logger.Should().BeOfType(typeof(Log4NetLogger));
-        }
-
-        [Fact]
-        public void WhenScopeFactoryIsNullOnProviderOptions_ThenDefaultLog4NetScopeFactoryIsUsed()
-        {
-            var options = new Log4NetProviderOptions
-            {
-                ScopeFactory = null
-            };
-
-            var sut = new Log4NetProvider(options);
-
-            var logger = sut.CreateLogger("test") as Log4NetLogger;
-
-            var internalOptions = GetInternalOptions(logger);
-            internalOptions.Should().NotBeNull();
-            internalOptions.ScopeFactory.Should().NotBeNull("Scope factory on logger's options should not be null.");
-        }
-
-        [Fact]
-        public void WhenScopeFactoryIsProvidedInProviderOptions_ThenLoggerUsesProvidedScopeFactory()
-        {
-            var expectedFactory = new Log4NetScopeFactory(new Log4NetScopeRegistry());
-            var options = new Log4NetProviderOptions
-            {
-                ScopeFactory = expectedFactory
-            };
-
-            var sut = new Log4NetProvider(options);
-            var logger = sut.CreateLogger("test") as Log4NetLogger;
-
-            var internalOptions = GetInternalOptions(logger);
-
-            internalOptions.Should().NotBeNull();
-            internalOptions.ScopeFactory.Should().NotBeNull("Scope factory on logger's options should not be null.")
-                                                 .And.Be(expectedFactory, "Scope factory on logger does not match factory from provider options.");
         }
 
         [Fact]

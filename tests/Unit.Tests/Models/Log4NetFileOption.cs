@@ -1,4 +1,4 @@
-﻿namespace Unit.Tests.Target.Net5.Models
+﻿namespace Unit.Tests.Models
 {
     public enum Log4NetFileOption
     {
