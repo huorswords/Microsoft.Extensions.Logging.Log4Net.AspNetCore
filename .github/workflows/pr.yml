@@ -1,12 +1,11 @@
 name: 👀 Pull Request Checks
 on:
   workflow_dispatch:
-    pull_request:
-      types: [opened, edited, synchronize]
+  pull_request:
+    types: [opened, edited, synchronize]
 
 env:
   SOLUTION_PATH: ./src/Microsoft.Extensions.Logging.Log4net.sln
-  SNK_PATH: src/Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk
 
 jobs:
   build:
