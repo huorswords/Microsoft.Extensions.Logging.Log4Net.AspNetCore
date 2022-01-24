@@ -36,6 +36,9 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.0.0" PrivateAssets="All" />
 	</ItemGroup>
+	<ItemGroup>		
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
