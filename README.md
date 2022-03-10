@@ -31,6 +31,8 @@ public class Startup
     }
 }
 ```
+* For dotnet 6.0 and later add `builder.Logging.AddLog4Net();` call in your `Program.cs` file.
+
 
 * Add a `log4net.config` file with the content:
 
