@@ -40,9 +40,15 @@ namespace Microsoft.Extensions.Logging
                 message: message,
                 exception: messageCandidate.Exception);
 
-            EnrichWithScopes(loggingEvent, scopeProvider);
+            if (messageCandidate.State is IEnumerable<KeyValuePair<string, object>> formattedLogValues)
+            {
+                foreach (var pair in formattedLogValues)
+                {
+                    loggingEvent.Properties[pair.Key] = pair.Value;
+                }
+            }
 
-            return loggingEvent;
+            EnrichWithScopes(loggingEvent, scopeProvider);
         }
 
 
