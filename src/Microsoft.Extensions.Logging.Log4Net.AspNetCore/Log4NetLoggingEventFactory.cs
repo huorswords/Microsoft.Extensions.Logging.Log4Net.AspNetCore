@@ -106,6 +106,33 @@ namespace Microsoft.Extensions.Logging
                     return;
                 }
 
+                if (FromValueTuple<string>())
+                    return;
+                if (FromValueTuple<int>())
+                    return;
+                if (FromValueTuple<long>())
+                    return;
+                if (FromValueTuple<short>())
+                    return;
+                if (FromValueTuple<decimal>())
+                    return;
+                if (FromValueTuple<double>())
+                    return;
+                if (FromValueTuple<float>())
+                    return;
+                if (FromValueTuple<uint>())
+                    return;
+                if (FromValueTuple<ulong>())
+                    return;
+                if (FromValueTuple<ushort>())
+                    return;
+                if (FromValueTuple<byte>())
+                    return;
+                if (FromValueTuple<sbyte>())
+                    return;
+                if (FromValueTuple<object>())
+                    return;
+
                 if (scope is object)
                 {
                     string previousValue = @event.Properties[DefaultScopeProperty] as string;
@@ -114,9 +141,22 @@ namespace Microsoft.Extensions.Logging
                     return;
                 }
 
+                bool FromValueTuple<T>()
+                {
+                    if (scope is ValueTuple<string, T>)
+                    {
+                        var valueTuple = (ValueTuple<string, T>)scope;
+                        string previousValue = @event.Properties[valueTuple.Item1] as string;
+                        string additionalValue = Convert.ToString(valueTuple.Item2, CultureInfo.InvariantCulture);
+                        @event.Properties[valueTuple.Item1] = JoinOldAndNewValue(previousValue, additionalValue);
+                        return true;
+                    }
+                    return false;
+                }
+
             }, loggingEvent);
         }
-
+        
         private static string JoinOldAndNewValue(string previousValue, string newValue)
         {
             if (string.IsNullOrEmpty(previousValue))

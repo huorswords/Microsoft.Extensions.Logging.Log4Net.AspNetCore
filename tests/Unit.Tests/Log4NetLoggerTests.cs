@@ -663,6 +663,74 @@ namespace Unit.Tests
         }
 
         [Fact]
+        public void BeginScope_Should_Concatenate_ValueTupleCustomScopes_In_LoggedMessage()
+        {
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderWarn);
+            var testAppender = GetTestAppender(options);
+            LoggerExternalScopeProvider scopeProvider = new LoggerExternalScopeProvider();
+
+            var sut = new Log4NetLogger(options, scopeProvider);
+
+            using (sut.BeginScope(("SpanId", (string)"text")))
+            using (sut.BeginScope(("SpanId", (int)1)))
+            using (sut.BeginScope(("SpanId", (long)2)))
+            using (sut.BeginScope(("SpanId", (short)3)))
+            using (sut.BeginScope(("SpanId", (decimal)4.1)))
+            using (sut.BeginScope(("SpanId", (double)4.2)))
+            using (sut.BeginScope(("SpanId", (float)4.3)))
+            using (sut.BeginScope(("SpanId", (uint)5)))
+            using (sut.BeginScope(("SpanId", (ulong)6)))
+            using (sut.BeginScope(("SpanId", (ushort)7)))
+            using (sut.BeginScope(("SpanId", (byte)8)))
+            using (sut.BeginScope(("SpanId", (sbyte)9)))
+            using (sut.BeginScope(("SpanId", (object)"object")))
+            {
+                sut.Log(LogLevel.Critical, _eventId, _logState, null, (message, exception) => message);
+            }
+
+            sut.Log(LogLevel.Critical, _eventId, _logState, null, (message, exception) => message);
+
+            // https://stackoverflow.com/questions/14438217/memoryappender-patternlayout-not-rendering
+            testAppender.GetEvents()
+                .Should()
+                .NotBeEmpty()
+                .And
+                .HaveCount(2);
+            testAppender.GetEvents()
+                .First()
+                .Level
+                .Should()
+                .Be(Level.Fatal);
+            var textWriter = new StringWriter();
+            testAppender.Layout.Format(textWriter, testAppender.GetEvents().First());
+            textWriter.ToString()
+                .Should()
+                .Contain(_logState);
+            textWriter.ToString()
+                .Should()
+                .Contain("text 1 2 3 4.1 4.2 4.3 5 6 7 8 9 object");
+
+            textWriter.Close();
+            textWriter = new StringWriter();
+            testAppender.Layout.Format(textWriter, testAppender.GetEvents().Last());
+            textWriter.ToString()
+                .Should()
+                .NotContain("text")
+                .And.NotContain("1")
+                .And.NotContain("2")
+                .And.NotContain("3")
+                .And.NotContain("4.1")
+                .And.NotContain("4.2")
+                .And.NotContain("4.3")
+                .And.NotContain("5")
+                .And.NotContain("6")
+                .And.NotContain("7")
+                .And.NotContain("8")
+                .And.NotContain("9")
+                .And.NotContain("object");
+        }
+
+        [Fact]
         public void LogMessage_Should_Include_ScopesProvidedExternally_In_LoggedMessage()
         {
             var options = ConfigureOptions(Log4NetFileOption.TestAppenderWarn);
@@ -676,7 +744,8 @@ namespace Unit.Tests
                 s => s.ForEachScope(It.IsAny<Action<object, LoggingEvent>>(), It.IsAny<LoggingEvent>())
             ).Callback<Action<object, LoggingEvent>, LoggingEvent>((scopeCallback, loggingEvent) =>
             {
-                scopeCallback(new Dictionary<string, string> {
+                scopeCallback(new Dictionary<string, string>
+                {
                     ["SpanId"] = "13371337",
                 }, loggingEvent);
                 scopeCallback(new Dictionary<string, string>
