@@ -74,6 +74,7 @@ The `BeginScope` method allow any object, but only some of types are handled in 
 * `string`
 * `IEnumerable<KeyValuePair<string, string>>`
 * `IEnumerable<KeyValuePair<string, object>>`
+* `ValueTuple<string, T>` where `T` is `string`, any numeric type or `object`   
 
 By default, any other type will be managed as a conventional `object`.
 
