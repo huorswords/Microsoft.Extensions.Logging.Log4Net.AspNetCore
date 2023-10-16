@@ -18,16 +18,16 @@
 		<PackageTags>Microsoft Extensions Logging Log4Net AspNet Core</PackageTags>
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
-		<PackageReleaseNotes>#113 - BeginScope don't work as expected
-# BREAKING CHANGES
-* External scope can't be used with the scope factories anymore.
-* Conversion of numeric values now are managed through CultureInfo.InvariantCulture
+		<PackageReleaseNotes>
+			#132 - Add support for ValueTuple scopes
+			#129 - Compatible with .NET 7.0
+			#xxx - Upgrade log4net library version from 2.0.13 to 2.0.15
 		</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>6.1.0</Version>
-		<AssemblyVersion>6.1.0.0</AssemblyVersion>
-		<FileVersion>6.1.0.0</FileVersion>
+		<Version>7.0.0</Version>
+		<AssemblyVersion>7.0.0.0</AssemblyVersion>
+		<FileVersion>7.0.0.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile Condition="'$(Configuration)' == 'Release'">Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseExpression></PackageLicenseExpression>
