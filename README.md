@@ -178,3 +178,4 @@ Thank you very much to all contributors & users by its collaboration, and specia
 * [@willwolfram18](https://github.com/willwolfram18) by bugfixing `Log4NetScopeFactory` usage when provided in `Log4NetProviderOptions`.
 * [@lscorcia](https://github.com/lscorcia) by the fix of incorrect call stack when logging.
 * [@JustusGreiberORGADATA](https://github.com/JustusGreiberORGADATA) by the inclusion of a configurable logging event factory, and `IExternalScope` provider implementation.
+* [@Radim Holek](https://github.com/rholek) for enabling `ValueTuple` mapping in scopes.
