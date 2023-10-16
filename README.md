@@ -31,6 +31,8 @@ public class Startup
     }
 }
 ```
+* For dotnet 6.0 and later add `builder.Logging.AddLog4Net();` call in your `Program.cs` file.
+
 
 * Add a `log4net.config` file with the content:
 
@@ -72,6 +74,7 @@ The `BeginScope` method allow any object, but only some of types are handled in 
 * `string`
 * `IEnumerable<KeyValuePair<string, string>>`
 * `IEnumerable<KeyValuePair<string, object>>`
+* `ValueTuple<string, T>` where `T` is `string`, any numeric type or `object`   
 
 By default, any other type will be managed as a conventional `object`.
 
@@ -175,3 +178,4 @@ Thank you very much to all contributors & users by its collaboration, and specia
 * [@willwolfram18](https://github.com/willwolfram18) by bugfixing `Log4NetScopeFactory` usage when provided in `Log4NetProviderOptions`.
 * [@lscorcia](https://github.com/lscorcia) by the fix of incorrect call stack when logging.
 * [@JustusGreiberORGADATA](https://github.com/JustusGreiberORGADATA) by the inclusion of a configurable logging event factory, and `IExternalScope` provider implementation.
+* [@Radim Holek](https://github.com/rholek) for enabling `ValueTuple` mapping in scopes.
