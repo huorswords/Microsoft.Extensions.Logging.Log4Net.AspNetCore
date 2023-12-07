@@ -12,7 +12,7 @@ variables:
 steps:
   - ${{ each version in variables.SupportedVersions }}:
     - task: UseDotNet@2
-      displayName: "Use .NET Core sdk " ${{ version }}
+      displayName: Use .NET Core sdk $(version)
       inputs:
         version: $(version)
 
