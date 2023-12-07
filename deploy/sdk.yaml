@@ -1,0 +1,10 @@
+parameters:
+  - name: SupportedVersions
+    type: object
+
+steps:
+  - ${{ each version in parameters.SupportedVersions }}:
+    - task: UseDotNet@2
+      displayName: Use .NET Core sdk ${{ version }}
+      inputs:
+        version: ${{ version }}

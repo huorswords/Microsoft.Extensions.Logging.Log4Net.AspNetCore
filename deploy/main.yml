@@ -5,16 +5,13 @@ trigger:
   - main
 
 variables:
-  BuildConfiguration: "Release"
-  SupportedVersions:
-    ["1.1.x", "2.x", "3.0.x", "3.1.x", "5.0.x", "6.0.x", "7.0.x", "8.0.x"]
+  - name: BuildConfiguration
+    value: "Release"
 
 steps:
-  - ${{ each version in variables.SupportedVersions }}:
-    - task: UseDotNet@2
-      displayName: "Use .NET Core sdk " ${{ version }}
-      inputs:
-        version: $(version)
+  - template: sdk.yaml
+    parameters:    
+      SupportedVersions: ["1.1.x", "2.x", "3.0.x", "3.1.x", "5.0.x", "6.0.x", "7.0.x", "8.0.x"]
 
   - task: DownloadSecureFile@1
     name: snkFile # The name with which to reference the secure file's path on the agent, like $(snkFile.secureFilePath)
