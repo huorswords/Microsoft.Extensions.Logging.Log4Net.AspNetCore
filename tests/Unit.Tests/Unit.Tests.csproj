@@ -6,7 +6,7 @@
       See: https://xunit.net/docs/why-no-netstandard
       See: https://docs.microsoft.com/en-us/dotnet/standard/net-standard
     -->
-		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0;net462;net47;net471;net472;net48;net481</TargetFrameworks>
+		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;net462;net47;net471;net472;net48;net481</TargetFrameworks>
 		<IsPackable>false</IsPackable>
 		<SignAssembly>false</SignAssembly>
 		<AssemblyOriginatorKeyFile>Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
@@ -49,7 +49,7 @@
 
 	<!-- .NET Framework versions contain no dot in the TFM. -->
 	<ItemGroup Condition="!'$(TargetFramework.Contains(`.`))'">
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework.Contains(`.`))'">
@@ -62,14 +62,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="xunit" Version="2.5.2" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.3">
+		<PackageReference Include="xunit" Version="2.6.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageReference Include="FluentAssertions" Version="6.12.0" />
-		<PackageReference Include="Moq" Version="4.20.69" />
+		<PackageReference Include="Moq" Version="4.20.70" />
 		<PackageReference Include="coverlet.msbuild" Version="6.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
