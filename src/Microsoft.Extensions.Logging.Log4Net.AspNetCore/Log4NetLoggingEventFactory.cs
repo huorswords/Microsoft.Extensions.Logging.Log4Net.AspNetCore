@@ -11,6 +11,8 @@ namespace Microsoft.Extensions.Logging
     public class Log4NetLoggingEventFactory
         : ILog4NetLoggingEventFactory
     {
+        private const string EventIdProperty = "eventId";
+
         /// <summary>
         /// The default property name for scopes that don't provide their own property name by implementing
         /// an <see cref="IEnumerable{T}"/> where T is <see cref="KeyValuePair{TKey,TValue}"/> and where TKey
@@ -41,6 +43,8 @@ namespace Microsoft.Extensions.Logging
                 exception: messageCandidate.Exception);
 
             EnrichWithScopes(loggingEvent, scopeProvider);
+
+            loggingEvent.Properties[EventIdProperty] = messageCandidate.EventId;
 
             return loggingEvent;
         }

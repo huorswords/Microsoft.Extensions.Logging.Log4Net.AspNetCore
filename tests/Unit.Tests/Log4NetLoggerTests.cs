@@ -67,6 +67,24 @@ namespace Unit.Tests
                .Be(expected);
         }
 
+        [Fact]
+        public void Log_Should_EnsureEventIdProperty()
+        {
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
+
+            LoggerExternalScopeProvider scopeProvider = new LoggerExternalScopeProvider();
+            var testAppender = GetTestAppender(options);
+
+            var sut = new Log4NetLogger(options, scopeProvider);
+            sut.Log(LogLevel.Information, _eventId, _logState, null, (message, exception) => message);
+
+            testAppender.GetEvents()
+                        .First()
+                        .GetProperties()["eventId"]
+                        .Should()
+                        .Be(_eventId);
+        }
+
         [Theory]
         [ClassData(typeof(TestLogMethodData))]
         public void Log_Should_AddMessage_With_ExpectedLevel(LogLevel logLevel, Level eventLevel)
