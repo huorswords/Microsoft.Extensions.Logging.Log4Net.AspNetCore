@@ -1,0 +1,12 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Sample.Windows.Service.Net80": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
