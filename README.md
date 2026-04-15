@@ -4,8 +4,20 @@ Allows to configure Log4net as Microsoft Extensions Logging handler on any ASP.N
 
 Thanks to [@anuraj](https://github.com/anuraj) for this [original blog post](https://dotnetthoughts.net/how-to-use-log4net-with-aspnetcore-for-logging/).
 
-![Deployment](https://swords.vsrm.visualstudio.com/_apis/public/Release/badge/703fb931-72f4-4d54-9c93-d313144cc22a/1/1)
+[![Release Build](https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/actions/workflows/deploy.yml/badge.svg)](https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/actions/workflows/deploy.yml)
 [![NuGet](https://img.shields.io/nuget/dt/Microsoft.Extensions.Logging.Log4net.AspNetCore.svg)](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Log4Net.AspNetCore/)
+
+## GitHub Actions deployment
+
+The release workflow now runs in GitHub Actions instead of Azure DevOps. It builds, tests, and packs the NuGet package on `main` and on manual dispatch.
+
+If you want assembly signing to remain enabled in GitHub, add these repository secrets:
+
+* `SIGNING_SNK_BASE64` for `Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk`
+* `SIGNING_PFX_BASE64` for the companion private certificate file, if you want to keep that asset available privately
+* `SIGNING_PUBLIC_KEY_BASE64` for the public key file, if you want to keep that asset available privately
+
+The workflow restores any configured signing assets into the runner at runtime; none of the signing files need to be committed to the repository.
 
 ## Example of use
 
