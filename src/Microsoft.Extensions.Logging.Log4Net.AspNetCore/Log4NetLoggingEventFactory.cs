@@ -167,10 +167,12 @@ namespace Microsoft.Extensions.Logging
         /// Enriches logging event with additional properties.
         /// </summary>
         /// <remarks>
-        /// The default implementation will adds event id, original format string as "MessageTemplate" properties, and format arguments, if any.
-        /// Format arguments are added as strings using Convert.ToString(scope, CultureInfo.InvariantCulture).
-        /// If you want to do this conversion inside the Log4Net Pipeline, e. g. with a custom layout, you can override this
-        /// method and change the behaviour.
+        /// The default implementation will add the event id, the original format string as the "MessageTemplate" property,
+        /// and argument values from <paramref name="messageCandidate"/>.<see cref="MessageCandidate<TState>.State"/>, if any.
+        /// Argument values are added as strings using <see cref="ConvertValue{T}(T)"/>, which uses
+        /// <see cref="Convert.ToString(object, IFormatProvider)"/> with <see cref="CultureInfo.InvariantCulture"/>.
+        /// If you want to do this conversion inside the Log4Net pipeline, for example with a custom layout, you can
+        /// override this method and change the behavior.
         /// </remarks>
         /// <typeparam name="TState">Type of the state that is used to format the error message.</typeparam>
         /// <param name="loggingEvent">The <see cref="LoggingEvent"/> properties will be added to.</param>
