@@ -3,7 +3,6 @@ using log4net.Appender;
 using log4net.Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Scope;
 using Moq;
 using Moq.Protected;
 using System;

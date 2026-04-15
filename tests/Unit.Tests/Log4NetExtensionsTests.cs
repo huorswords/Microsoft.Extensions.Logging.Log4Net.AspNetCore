@@ -42,7 +42,7 @@ namespace Unit.Tests
             var testAppender = Context.GetTestAppender(options);
             log4net.Core.LoggingEvent[] events = testAppender.GetEvents();
             events.Should().ContainSingle();
-            events.First().RenderedMessage.Should()
+            events[0].RenderedMessage.Should()
                                           .Contain("value");
         }
 
@@ -53,7 +53,7 @@ namespace Unit.Tests
                 .ConfigureLogging(builder =>
                 {
                     builder.SetMinimumLevel(LogLevel.Information);
-                    builder.AddLog4Net(Context.GetLog4netFilePath(Log4NetFileOption.TestAppenderTrace))
+                              builder.AddLog4Net(Context.GetLog4netFilePath(Log4NetFileOption.TestAppenderTrace))
                            .AddDebug();
                 }).Build();
 
@@ -64,7 +64,7 @@ namespace Unit.Tests
             var testAppender = Context.GetTestAppender();
             log4net.Core.LoggingEvent[] events = testAppender.GetEvents();
             events.Should().ContainSingle();
-            events.First().RenderedMessage.Should()
+            events[0].RenderedMessage.Should()
                                           .Contain("value");
         }
 
@@ -75,7 +75,7 @@ namespace Unit.Tests
                 .ConfigureLogging(builder =>
                 {
                     builder.SetMinimumLevel(LogLevel.Information);
-                    builder.AddLog4Net(Context.GetLog4netFilePath(Log4NetFileOption.TestAppenderTrace), true)
+                              builder.AddLog4Net(Context.GetLog4netFilePath(Log4NetFileOption.TestAppenderTrace), true)
                            .AddDebug();
                 }).Build();
 
@@ -86,8 +86,8 @@ namespace Unit.Tests
             var testAppender = Context.GetTestAppender();
             log4net.Core.LoggingEvent[] events = testAppender.GetEvents();
             events.Should().ContainSingle();
-            events.First().RenderedMessage.Should()
-                                          .Contain("value");
+            events[0].RenderedMessage.Should()
+                                      .Contain("value");
         }
 
         [Fact]
@@ -108,8 +108,8 @@ namespace Unit.Tests
             var testAppender = Context.GetTestAppender();
             log4net.Core.LoggingEvent[] events = testAppender.GetEvents();
             events.Should().ContainSingle();
-            events.First().RenderedMessage.Should()
-                                          .Contain("value");
+            events[0].RenderedMessage.Should()
+                                      .Contain("value");
         }
 
 #endif
@@ -119,7 +119,7 @@ namespace Unit.Tests
         {
             Mock<ILoggerFactory> loggerFactoryMock = new Mock<ILoggerFactory>();
 
-            var sut = loggerFactoryMock.Object.AddLog4Net();
+            _ = loggerFactoryMock.Object.AddLog4Net();
 
             loggerFactoryMock.Verify(x => x.AddProvider(It.IsAny<Log4NetProvider>()), Times.Once);
         }
@@ -129,7 +129,7 @@ namespace Unit.Tests
         {
             Mock<ILoggerFactory> loggerFactoryMock = new Mock<ILoggerFactory>();
 
-            var sut = loggerFactoryMock.Object.AddLog4Net("./Resources/log4net.All.config");
+            _ = loggerFactoryMock.Object.AddLog4Net("./Resources/log4net.All.config");
 
             loggerFactoryMock.Verify(x => x.AddProvider(It.IsAny<Log4NetProvider>()), Times.Once);
         }
@@ -139,7 +139,7 @@ namespace Unit.Tests
         {
             Mock<ILoggerFactory> loggerFactoryMock = new Mock<ILoggerFactory>();
 
-            var sut = loggerFactoryMock.Object.AddLog4Net("./Resources/log4net.All.config", true);
+            _ = loggerFactoryMock.Object.AddLog4Net("./Resources/log4net.All.config", true);
 
             loggerFactoryMock.Verify(x => x.AddProvider(It.IsAny<Log4NetProvider>()), Times.Once);
         }
@@ -149,7 +149,7 @@ namespace Unit.Tests
         {
             Mock<ILoggerFactory> loggerFactoryMock = new Mock<ILoggerFactory>();
 
-            var sut = loggerFactoryMock.Object.AddLog4Net(new Log4NetProviderOptions());
+            _ = loggerFactoryMock.Object.AddLog4Net(new Log4NetProviderOptions());
 
             loggerFactoryMock.Verify(x => x.AddProvider(It.IsAny<Log4NetProvider>()), Times.Once);
         }

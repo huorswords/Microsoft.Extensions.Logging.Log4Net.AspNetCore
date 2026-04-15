@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Unit.Tests.Models;
 using Xunit;
 
@@ -47,8 +46,7 @@ namespace Unit.Tests.Fixtures
             ILoggerRepository repository = GetOrCreateRepository();
 
             return repository.GetAppenders()
-                             .Where(x => x.Name.Equals("TestAppender", StringComparison.InvariantCultureIgnoreCase))
-                             .FirstOrDefault();
+                             .FirstOrDefault(x => x.Name.Equals("TestAppender", StringComparison.InvariantCultureIgnoreCase));
         }
 
         private static IAppender CreateTestAppender(Log4NetProviderOptions options)
@@ -56,8 +54,7 @@ namespace Unit.Tests.Fixtures
             ILoggerRepository repository = GetOrCreateRepository(options);
 
             return repository.GetAppenders()
-                             .Where(x => x.Name.Equals("TestAppender", StringComparison.InvariantCultureIgnoreCase))
-                             .FirstOrDefault();
+                             .FirstOrDefault(x => x.Name.Equals("TestAppender", StringComparison.InvariantCultureIgnoreCase));
         }
 
         private static ILoggerRepository GetOrCreateRepository()
@@ -118,14 +115,7 @@ namespace Unit.Tests.Fixtures
         {
             ILoggerRepository repository = GetOrCreateRepository(options);
 
-#if NETCOREAPP3_1_OR_GREATER
-            var assemblyFile = new FileInfo(Assembly.GetCallingAssembly().Location);
-#else
-            var codeBaseUrl = new Uri(Assembly.GetExecutingAssembly().CodeBase);
-            var codeBasePath = Uri.UnescapeDataString(codeBaseUrl.AbsolutePath);
-            var assemblyFile = new FileInfo(codeBasePath);
-#endif
-            string path = Path.Combine(assemblyFile.Directory.FullName, options.Log4NetConfigFileName);
+            string path = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, options.Log4NetConfigFileName));
 
             XmlConfigurator.Configure(repository, File.OpenRead(path));
         }

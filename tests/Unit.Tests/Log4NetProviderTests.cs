@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Scope;
 using System.Reflection;
+using System.Reflection.Emit;
 using Unit.Tests.Fixtures;
 using Xunit;
 
@@ -109,7 +109,27 @@ namespace Unit.Tests
                                                         .And.Be(expectedTranslator, "this LogLevelTranslator was provided in the options");
         }
 
-        private Log4NetProviderOptions GetInternalOptions(Log4NetLogger logger)
+        [Fact]
+        public void Ctor_WhenConfigurationAssemblyIsProvided_Should_CreateRepositoryForThatAssembly()
+        {
+            var assemblyName = new AssemblyName($"Log4NetProviderTests.{System.Guid.NewGuid():N}");
+            var configurationAssembly = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var options = new Log4NetProviderOptions(Context.GetLog4netFilePath(Models.Log4NetFileOption.All))
+            {
+                ConfigurationAssembly = configurationAssembly
+            };
+
+            using (var sut = new Log4NetProvider(options))
+            {
+                var loggerRepositoryField = typeof(Log4NetProvider)
+                    .GetField("loggerRepository", BindingFlags.NonPublic | BindingFlags.Instance);
+                var loggerRepository = loggerRepositoryField.GetValue(sut);
+
+                loggerRepository.Should().BeSameAs(log4net.LogManager.GetRepository(configurationAssembly));
+            }
+        }
+
+        private static Log4NetProviderOptions GetInternalOptions(Log4NetLogger logger)
         {
             var propertyInfo = logger.GetType()
                                      .GetProperty("Options", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);

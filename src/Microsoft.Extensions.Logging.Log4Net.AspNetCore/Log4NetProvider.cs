@@ -79,10 +79,10 @@ namespace Microsoft.Extensions.Logging
         {
             this.SetOptionsIfValid(options);
 
-            Assembly loggingAssembly = GetLoggingReferenceAssembly();
+            Assembly loggingAssembly = this.GetLoggingReferenceAssembly();
 
-            this.CreateLoggerRepository(loggingAssembly)
-                .ConfigureLog4NetLibrary(loggingAssembly);
+            this.CreateLoggerRepository(loggingAssembly);
+            this.ConfigureLog4NetLibrary();
         }
 
         /// <summary>
@@ -217,28 +217,6 @@ namespace Microsoft.Extensions.Logging
         }
 
         /// <summary>
-        /// Tries to retrieve the assembly from a "Startup" type found in the stack trace.
-        /// </summary>
-        /// <returns>Null for NetCoreApp 1.1, otherwise, Assembly of Startup type if found in stack trace.</returns>
-        private static Assembly GetCallingAssemblyFromStartup()
-        {
-            var stackTrace = new System.Diagnostics.StackTrace(2);
-
-            for (int i = 0; i < stackTrace.FrameCount; i++)
-            {
-                var frame = stackTrace.GetFrame(i);
-                var type = frame.GetMethod()?.DeclaringType;
-
-                if (string.Equals(type?.Name, "Startup", StringComparison.OrdinalIgnoreCase))
-                {
-                    return type.Assembly;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Creates the logger implementation.
         /// </summary>
         /// <param name="name">The name.</param>
@@ -261,13 +239,9 @@ namespace Microsoft.Extensions.Logging
         /// Gets the current executing assembly considering the target framework.
         /// </summary>
         /// <returns>The assembly to be used as the reference logging assembly.</returns>
-        private static Assembly GetLoggingReferenceAssembly()
+        private Assembly GetLoggingReferenceAssembly()
         {
-            Assembly assembly = null;
-
-            assembly = Assembly.GetExecutingAssembly();
-
-            return assembly ?? GetCallingAssemblyFromStartup();
+            return this.options.ConfigurationAssembly ?? Assembly.GetExecutingAssembly();
         }
 
         /// <summary>
@@ -299,18 +273,17 @@ namespace Microsoft.Extensions.Logging
         /// <summary>
         /// Configures the log4net library using the available configuration data.
         /// </summary>
-        /// <param name="assembly">The assembly to be used on the configuration.</param>
-        private Log4NetProvider ConfigureLog4NetLibrary(Assembly assembly)
+        private void ConfigureLog4NetLibrary()
         {
             if (this.options.UseWebOrAppConfig)
             {
                 XmlConfigurator.Configure(this.loggerRepository);
-                return this;
+                return;
             }
 
             if (!this.options.ExternalConfigurationSetup)
             {
-                string fileNamePath = CreateLog4NetFilePath(assembly);
+                string fileNamePath = CreateLog4NetFilePath();
                 if (this.options.Watch)
                 {
                     XmlConfigurator.ConfigureAndWatch(
@@ -331,16 +304,13 @@ namespace Microsoft.Extensions.Logging
                     XmlConfigurator.Configure(this.loggerRepository, configXml.DocumentElement);
                 }
             }
-
-            return this;
         }
 
         /// <summary>
         /// Creates the log4net.config file path.
         /// </summary>
-        /// <param name="assembly">The assembly to be used when the configuration indicate to use the current assembly.</param>
         /// <returns>The full path to the log4net.config file.</returns>
-        private string CreateLog4NetFilePath(Assembly assembly)
+        private string CreateLog4NetFilePath()
         {
             string fileNamePath = this.options.Log4NetConfigFileName;
             if (!Path.IsPathRooted(fileNamePath))
@@ -354,8 +324,8 @@ namespace Microsoft.Extensions.Logging
         /// <summary>
         /// Gets or creates the logger repository using the given assembly.
         /// </summary>
-        /// <param name="assembly">The assembly to be used to create de repository.</param>
-        private Log4NetProvider CreateLoggerRepository(Assembly assembly)
+        /// <param name="assembly">The assembly to be used to create the repository.</param>
+        private void CreateLoggerRepository(Assembly assembly)
         {
             Type repositoryType = typeof(log4net.Repository.Hierarchy.Hierarchy);
 
@@ -367,7 +337,7 @@ namespace Microsoft.Extensions.Logging
                     if (this.options.ExternalConfigurationSetup)
                     {
                         // The logger repository is already configured. We can exit here.
-                        return this;
+                        return;
                     }
                 }
                 catch (log4net.Core.LogException)
@@ -387,8 +357,6 @@ namespace Microsoft.Extensions.Logging
                 this.loggerRepository =
                     LogManager.CreateRepository(assembly, repositoryType);
             }
-
-            return this;
         }
 
         public void SetScopeProvider(IExternalScopeProvider scopeProvider)

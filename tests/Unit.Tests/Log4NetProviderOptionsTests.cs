@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore;
 using Moq;
 using Xunit;
 
@@ -20,6 +19,7 @@ namespace Unit.Tests
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
             sut.Watch.Should().BeFalse();
+            sut.ConfigurationAssembly.Should().BeNull();
             sut.LoggingEventFactory.Should().BeNull();
             sut.LogLevelTranslator.Should().BeNull();
         }
@@ -38,6 +38,7 @@ namespace Unit.Tests
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
             sut.Watch.Should().BeFalse();
+            sut.ConfigurationAssembly.Should().BeNull();
             sut.LoggingEventFactory.Should().BeNull();
             sut.LogLevelTranslator.Should().BeNull();
         }
@@ -56,6 +57,7 @@ namespace Unit.Tests
             sut.OverrideCriticalLevelWith.Should().Be("");
             sut.PropertyOverrides.Should().BeEmpty();
             sut.Watch.Should().BeTrue();
+            sut.ConfigurationAssembly.Should().BeNull();
             sut.LoggingEventFactory.Should().BeNull();
             sut.LogLevelTranslator.Should().BeNull();
         }
@@ -76,8 +78,23 @@ namespace Unit.Tests
             sut.PropertyOverrides.Should().BeEmpty();
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeTrue();
+            sut.ConfigurationAssembly.Should().BeNull();
             sut.LoggingEventFactory.Should().BeNull();
             sut.LogLevelTranslator.Should().BeNull();
+        }
+
+        [Fact]
+        public void ConfigurationAssembly_Should_BeEditable()
+        {
+            var configurationAssembly = typeof(Log4NetProviderOptionsTests).Assembly;
+
+            var sut = new Log4NetProviderOptions
+            {
+                ConfigurationAssembly = configurationAssembly
+            };
+
+            sut.ConfigurationAssembly.Should().BeSameAs(configurationAssembly);
+            sut.Log4NetConfigFileName.Should().Be("log4net.config");
         }
 
         [Fact]
@@ -98,6 +115,7 @@ namespace Unit.Tests
             sut.PropertyOverrides.Should().BeEmpty();
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeFalse();
+            sut.ConfigurationAssembly.Should().BeNull();
             sut.LoggingEventFactory.Should().Be(loggingEventFactory);
             sut.LogLevelTranslator.Should().BeNull();
         }
@@ -121,6 +139,7 @@ namespace Unit.Tests
             sut.Watch.Should().BeFalse();
             sut.UseWebOrAppConfig.Should().BeFalse();
             sut.LoggingEventFactory.Should().BeNull();
+            sut.ConfigurationAssembly.Should().BeNull();
             sut.LogLevelTranslator.Should().Be(logLevelTranslator);
         }
     }

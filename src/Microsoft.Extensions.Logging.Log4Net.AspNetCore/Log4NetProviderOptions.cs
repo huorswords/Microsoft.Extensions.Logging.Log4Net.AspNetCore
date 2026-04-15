@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Scope;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Microsoft.Extensions.Logging
 {
@@ -85,6 +86,11 @@ namespace Microsoft.Extensions.Logging
         /// Let user setup log4net from web.config / app.config.
         /// </summary>
         public bool UseWebOrAppConfig { get; set; }
+
+        /// <summary>
+        /// Gets or sets the assembly used to create the log4net repository identity.
+        /// </summary>
+        public Assembly ConfigurationAssembly { get; set; }
 
         /// <summary>
         /// Gets or sets the factory for the log4net <see cref="log4net.Core.LoggingEvent"/>."/>.
