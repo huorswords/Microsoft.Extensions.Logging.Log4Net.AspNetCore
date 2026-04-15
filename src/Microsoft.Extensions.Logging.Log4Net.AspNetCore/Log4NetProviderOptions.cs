@@ -93,7 +93,7 @@ namespace Microsoft.Extensions.Logging
         public Assembly ConfigurationAssembly { get; set; }
 
         /// <summary>
-        /// Gets or sets the factory for the log4net <see cref="log4net.Core.LoggingEvent"/>."/>.
+        /// Gets or sets the factory for the log4net <see cref="log4net.Core.LoggingEvent"/>.
         /// </summary>
         public ILog4NetLoggingEventFactory LoggingEventFactory { get; set; }
 
