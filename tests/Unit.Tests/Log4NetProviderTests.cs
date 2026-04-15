@@ -123,6 +123,7 @@ namespace Unit.Tests
             {
                 var loggerRepositoryField = typeof(Log4NetProvider)
                     .GetField("loggerRepository", BindingFlags.NonPublic | BindingFlags.Instance);
+                loggerRepositoryField.Should().NotBeNull("the test expects Log4NetProvider to keep its repository in the private 'loggerRepository' field");
                 var loggerRepository = loggerRepositoryField.GetValue(sut);
 
                 loggerRepository.Should().BeSameAs(log4net.LogManager.GetRepository(configurationAssembly));
