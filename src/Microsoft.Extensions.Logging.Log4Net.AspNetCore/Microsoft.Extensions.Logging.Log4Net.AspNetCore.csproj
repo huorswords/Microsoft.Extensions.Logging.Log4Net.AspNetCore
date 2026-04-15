@@ -19,13 +19,15 @@
 		<RootNamespace>Microsoft.Extensions.Logging.Log4Net.AspNetCore</RootNamespace>
 		<AssemblyName>Microsoft.Extensions.Logging.Log4Net.AspNetCore</AssemblyName>
 		<PackageReleaseNotes>
-			#133 - Compatible with .NET 8.0
+			#146 - Bump log4net from 2.0.15 to 3.3.0 (major version upgrade - breaking change for consumers that depend on log4net 2.x types).
+			Migration guidance: This package now requires log4net 3.x. If you have direct dependencies on log4net 2.x types (e.g. log4net.Core.LoggingEvent, log4net.Core.Level), you must also upgrade to log4net 3.x.
+			Previous release: #133 - Compatible with .NET 8.0
 		</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore</RepositoryUrl>
-		<Version>8.0.0</Version>
-		<AssemblyVersion>8.0.0.0</AssemblyVersion>
-		<FileVersion>8.0.0.0</FileVersion>
+		<Version>9.0.0</Version>
+		<AssemblyVersion>9.0.0.0</AssemblyVersion>
+		<FileVersion>9.0.0.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile Condition="'$(Configuration)' == 'Release'">Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseExpression></PackageLicenseExpression>
