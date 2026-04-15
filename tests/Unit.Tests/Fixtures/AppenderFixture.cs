@@ -117,7 +117,10 @@ namespace Unit.Tests.Fixtures
 
             string path = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, options.Log4NetConfigFileName));
 
-            XmlConfigurator.Configure(repository, File.OpenRead(path));
+            using (var configStream = File.OpenRead(path))
+            {
+                XmlConfigurator.Configure(repository, configStream);
+            }
         }
     }
 }
