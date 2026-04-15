@@ -88,7 +88,7 @@ namespace Microsoft.Extensions.Logging
         public bool UseWebOrAppConfig { get; set; }
 
         /// <summary>
-        /// Gets or sets the assembly used to create the log4net repository identity.
+        /// Gets or sets the assembly used to create the log4net repository identity when <see cref="LoggerRepository"/> is not provided.
         /// </summary>
         public Assembly ConfigurationAssembly { get; set; }
 
