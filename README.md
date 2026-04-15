@@ -51,7 +51,7 @@ public class Startup
 </log4net>
 ```
 
-You can found more configuration examples on [configuration documentation](/doc/CONFIG.md).
+You can found more configuration examples on [configuration documentation](https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/develop/doc/CONFIG.md).
 
 ## FAQ
 
@@ -166,7 +166,7 @@ Also note that when trying to allow for levels messages below the Information le
 ```
 
 ### Modifying logging behaviour
-In many cases you can modfiy the logging behaviour of the provider to fit your own needs. See [modifying logging behaviour](/doc/ModifyingLoggingBehaviour.md) for more information.
+In many cases you can modfiy the logging behaviour of the provider to fit your own needs. See [modifying logging behaviour](https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/develop/doc/ModifyingLoggingBehaviour.md) for more information.
 
 ## Special thanks
 
