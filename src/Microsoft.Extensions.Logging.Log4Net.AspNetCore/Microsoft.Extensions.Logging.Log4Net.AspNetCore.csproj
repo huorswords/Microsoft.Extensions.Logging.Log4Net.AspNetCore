@@ -27,7 +27,7 @@
 		<AssemblyVersion>10.0.0.0</AssemblyVersion>
 		<FileVersion>10.0.0.0</FileVersion>
 		<SignAssembly>false</SignAssembly>
-		<SignAssembly Condition="Exists('Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk')">true</SignAssembly>
+		<SignAssembly Condition="'$(Configuration)' == 'Release' And Exists('Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk')">true</SignAssembly>
 		<AssemblyOriginatorKeyFile Condition="'$(Configuration)' == 'Release' And Exists('Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk')">Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseExpression></PackageLicenseExpression>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
