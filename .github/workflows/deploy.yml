@@ -73,8 +73,6 @@ jobs:
 
       - name: 🧪 Test
         shell: pwsh
-        env:
-          DOTNET_ROLL_FORWARD: Major
         run: dotnet test "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}"
 
       - name: 📦 Pack
