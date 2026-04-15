@@ -38,6 +38,11 @@ namespace Microsoft.Extensions.Logging
         private ILoggerRepository loggerRepository;
 
         /// <summary>
+        /// Exposes the current logger repository for testing purposes.
+        /// </summary>
+        internal ILoggerRepository LoggerRepository => this.loggerRepository;
+
+        /// <summary>
         /// The provider options.
         /// </summary>
         private Log4NetProviderOptions options;
