@@ -20,6 +20,11 @@ namespace Microsoft.Extensions.Logging
         /// </summary>
         protected const string DefaultScopeProperty = "scope";
 
+        /// <summary>
+        /// The property name for message format as used in Microsoft.Extensions.Logging.FormattedLogValues.
+        /// </summary>
+        protected const string OriginalFormatProperty = "{OriginalFormat}";
+
         /// <inheritdoc/>
         public LoggingEvent CreateLoggingEvent<TState>(
             in MessageCandidate<TState> messageCandidate,
@@ -43,8 +48,8 @@ namespace Microsoft.Extensions.Logging
                 exception: messageCandidate.Exception);
 
             EnrichWithScopes(loggingEvent, scopeProvider);
-
-            loggingEvent.Properties[EventIdProperty] = messageCandidate.EventId;
+            // in case scope and formatted message contain arguments with the same names, formatted message should win
+            EnrichProperties(loggingEvent, in messageCandidate);
 
             return loggingEvent;
         }
@@ -86,24 +91,22 @@ namespace Microsoft.Extensions.Logging
                 {
                     foreach (var item in col)
                     {
-                        if (item is KeyValuePair<string, string>)
+                        if (item is KeyValuePair<string, string> kvpString)
                         {
-                            var keyValuePair = (KeyValuePair<string, string>)item;
-                            string previousValue = @event.Properties[keyValuePair.Key] as string;
-                            @event.Properties[keyValuePair.Key] = JoinOldAndNewValue(previousValue, keyValuePair.Value);
+                            string previousValue = @event.Properties[kvpString.Key] as string;
+                            @event.Properties[kvpString.Key] = JoinOldAndNewValue(previousValue, kvpString.Value);
                             continue;
                         }
 
-                        if (item is KeyValuePair<string, object>)
+                        if (item is KeyValuePair<string, object> kvpObject)
                         {
-                            var keyValuePair = (KeyValuePair<string, object>)item;
-                            string previousValue = @event.Properties[keyValuePair.Key] as string;
+                            string previousValue = @event.Properties[kvpObject.Key] as string;
 
                             // The current culture should not influence how integers/floats/... are displayed in logging,
                             // so we are using Convert.ToString which will convert IConvertible and IFormattable with
                             // the specified IFormatProvider.
-                            string additionalValue = Convert.ToString(keyValuePair.Value, CultureInfo.InvariantCulture);
-                            @event.Properties[keyValuePair.Key] = JoinOldAndNewValue(previousValue, additionalValue);
+                            string additionalValue = ConvertValue(kvpObject.Value);
+                            @event.Properties[kvpObject.Key] = JoinOldAndNewValue(previousValue, additionalValue);
                             continue;
                         }
                     }
@@ -140,18 +143,17 @@ namespace Microsoft.Extensions.Logging
                 if (scope is object)
                 {
                     string previousValue = @event.Properties[DefaultScopeProperty] as string;
-                    string additionalValue = Convert.ToString(scope, CultureInfo.InvariantCulture);
+                    string additionalValue = ConvertValue(scope);
                     @event.Properties[DefaultScopeProperty] = JoinOldAndNewValue(previousValue, additionalValue);
                     return;
                 }
 
                 bool FromValueTuple<T>()
                 {
-                    if (scope is ValueTuple<string, T>)
+                    if (scope is ValueTuple<string, T> valueTuple)
                     {
-                        var valueTuple = (ValueTuple<string, T>)scope;
                         string previousValue = @event.Properties[valueTuple.Item1] as string;
-                        string additionalValue = Convert.ToString(valueTuple.Item2, CultureInfo.InvariantCulture);
+                        string additionalValue = ConvertValue(valueTuple.Item2);
                         @event.Properties[valueTuple.Item1] = JoinOldAndNewValue(previousValue, additionalValue);
                         return true;
                     }
@@ -160,7 +162,48 @@ namespace Microsoft.Extensions.Logging
 
             }, loggingEvent);
         }
-        
+
+        /// <summary>
+        /// Enriches logging event with additional properties.
+        /// </summary>
+        /// <remarks>
+        /// The default implementation will add the event id, the original format string as the "MessageTemplate" property,
+        /// and argument values from <paramref name="messageCandidate"/>.<see cref="MessageCandidate<TState>.State"/>, if any.
+        /// Argument values are added as strings using <see cref="ConvertValue{T}(T)"/>, which uses
+        /// <see cref="Convert.ToString(object, IFormatProvider)"/> with <see cref="CultureInfo.InvariantCulture"/>.
+        /// If you want to do this conversion inside the Log4Net pipeline, for example with a custom layout, you can
+        /// override this method and change the behavior.
+        /// </remarks>
+        /// <typeparam name="TState">Type of the state that is used to format the error message.</typeparam>
+        /// <param name="loggingEvent">The <see cref="LoggingEvent"/> properties will be added to.</param>
+        /// <param name="messageCandidate">Log message candidate.</param>
+        protected virtual void EnrichProperties<TState>(LoggingEvent loggingEvent, in MessageCandidate<TState> messageCandidate)
+        {
+            loggingEvent.Properties[EventIdProperty] = messageCandidate.EventId;
+
+            // State is always passed as Microsoft.Extensions.Logging.FormattedLogValues which is internal
+            // but implements IReadOnlyCollection<KeyValuePair<string, object>>
+            if (messageCandidate.State is IReadOnlyCollection<KeyValuePair<string, object>> stateProperties)
+            {
+                foreach (var kvp in stateProperties)
+                {
+                    var key = kvp.Key;
+                    if (kvp.Key == OriginalFormatProperty && kvp.Value is string)
+                    {
+                        // change property name to match Serilog
+                        key = "MessageTemplate";
+                    }
+                    loggingEvent.Properties[key] = ConvertValue(kvp.Value);
+                }
+            }
+        }
+
+        private static string ConvertValue<T>(T value)
+        {
+            var convertedValue = Convert.ToString(value, CultureInfo.InvariantCulture);
+            return convertedValue;
+        }
+
         private static string JoinOldAndNewValue(string previousValue, string newValue)
         {
             if (string.IsNullOrEmpty(previousValue))

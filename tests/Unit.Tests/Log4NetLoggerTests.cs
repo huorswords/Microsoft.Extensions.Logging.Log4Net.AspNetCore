@@ -2,10 +2,10 @@
 using log4net.Appender;
 using log4net.Core;
 using Microsoft.Extensions.Logging;
+#if NET6_0
 using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Entities;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore.Scope;
+#endif
 using Moq;
-using Moq.Protected;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -299,20 +299,11 @@ namespace Unit.Tests
             LoggerExternalScopeProvider scopeProvider = new LoggerExternalScopeProvider();
 
             var expectedRepository = log4net.LogManager.GetRepository(options.LoggerRepository);
+            var customPropertyValue = "customStuff";
             var expectedCustomPropertyValue = (4, 3f);
 
-            var mockedFactory = new Mock<Log4NetLoggingEventFactory>(MockBehavior.Strict);
-
-            mockedFactory.Protected()
-                .Setup("EnrichWithScopes", ItExpr.IsAny<LoggingEvent>(), scopeProvider)
-                .Callback<LoggingEvent, IExternalScopeProvider>(
-                    (@event, _) =>
-                    {
-                        @event.Properties["customStuff"] = expectedCustomPropertyValue;
-                    }
-                ).Verifiable();
-
-            options.LoggingEventFactory = mockedFactory.Object;
+            options.LoggingEventFactory = new OverriddenScopesLoggingEventFactory(
+                (@event) => @event.Properties[customPropertyValue] = expectedCustomPropertyValue);
 
             var testAppender = GetTestAppender(options);
             var sut = new Log4NetLogger(options, scopeProvider);
@@ -337,11 +328,51 @@ namespace Unit.Tests
             loggingEvent.MessageObject
                         .Should()
                         .Be(_logState);
-            loggingEvent.GetProperties()["customStuff"]
+            loggingEvent.GetProperties()[customPropertyValue]
                         .Should()
                         .Be(expectedCustomPropertyValue);
         }
 
+        [Fact]
+        public void Log_Should_Emit_Custom_Scope_Operations_Created_By_Overriden_Enrich_Properties_Method()
+        {
+            var options = ConfigureOptions(Log4NetFileOption.TestAppenderTrace);
+            LoggerExternalScopeProvider scopeProvider = new LoggerExternalScopeProvider();
+
+            var expectedRepository = log4net.LogManager.GetRepository(options.LoggerRepository);
+            var customPropertyValue = "customStuff";
+            var expectedCustomPropertyValue = (4, 3f);
+
+            options.LoggingEventFactory = new OverriddenPropertiesLoggingEventFactory(
+                (@event) => @event.Properties[customPropertyValue] = expectedCustomPropertyValue);
+
+            var testAppender = GetTestAppender(options);
+            var sut = new Log4NetLogger(options, scopeProvider);
+
+            sut.Log(LogLevel.Debug, _eventId, _logState, null, (message, exception) => message);
+
+            testAppender.GetEvents()
+                        .Should()
+                        .NotBeEmpty()
+                        .And
+                        .HaveCount(1);
+
+            var loggingEvent = testAppender.GetEvents()
+                                           .First();
+
+            loggingEvent.Repository
+                        .Should()
+                        .Be(expectedRepository);
+            loggingEvent.Level
+                        .Should()
+                        .Be(Level.Debug);
+            loggingEvent.MessageObject
+                        .Should()
+                        .Be(_logState);
+            loggingEvent.GetProperties()[customPropertyValue]
+                        .Should()
+                        .Be(expectedCustomPropertyValue);
+        }
 
         [Fact]
         public void Log_Should_Emit_At_LogLevels_Translate_By_LogLevelTranslator()

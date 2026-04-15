@@ -31,8 +31,8 @@ public class Startup
     }
 }
 ```
-* For dotnet 6.0 and later add `builder.Logging.AddLog4Net();` call in your `Program.cs` file.
 
+* For dotnet 6.0 and later add `builder.Logging.AddLog4Net();` call in your `Program.cs` file.
 
 * Add a `log4net.config` file with the content:
 
@@ -149,6 +149,7 @@ public static IWebHost BuildWebHost(string[] args) =>
             })
             .Build();
 ```
+
 ### Logging lower than the Information Level
 
 > Associated issues #85
@@ -164,6 +165,10 @@ Also note that when trying to allow for levels messages below the Information le
   }
 }
 ```
+
+### Structured logging
+
+Structured logging is supported in a way that message format string and its arguments are stored in logging event properties. The message format string is stored in a property named "MessageTemplate", arguments are stored in properties whose names correspond to the argument names and values are string representations of the argument values.
 
 ### Modifying logging behaviour
 In many cases you can modfiy the logging behaviour of the provider to fit your own needs. See [modifying logging behaviour](/doc/ModifyingLoggingBehaviour.md) for more information.

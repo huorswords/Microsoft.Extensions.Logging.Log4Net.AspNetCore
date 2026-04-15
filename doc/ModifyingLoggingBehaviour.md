@@ -86,7 +86,7 @@ public interface ILog4NetLoggingEventFactory
 It can for example be used to extract the state information passed to the logging provider and include it in the message object:
 
 ```csharp
-public class CustomLoggingEventFactory
+public class CustomLoggingEventFactory : ILog4NetLoggingEventFactory
 {
     LoggingEvent CreateLoggingEvent<TState>(
         MessageCandidate<TState> messageCandidate,
@@ -146,6 +146,20 @@ public class CustomLoggingEventFactory
             level: logLevel,
             message: message,
             exception: messageCandidate.Exception);
+    }
+}
+```
+
+It is also possible to inherit default implementation `LoggingEventFactory` and override `EnrichWithScope()` and/or `EnrichProperties` methods:
+
+```csharp
+public class CustomLoggingEventFactory : LoggingEventFactory
+{
+    protected override void EnrichProperties<TState>(LoggingEvent loggingEvent, in MessageCandidate<TState> messageCandidate)
+    {
+        base.EnrichProperties(loggingEvent, in messageCandidate);
+        loggingEvent.Properties["ApplicationName"] = Assembly.GetEntryAssembly().GetName().Name;
+        loggingEvent.Properties["ApplicationVersion"] = Assembly.GetEntryAssembly().GetName().Version.ToString();
     }
 }
 ```
