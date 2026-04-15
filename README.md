@@ -9,7 +9,7 @@ Thanks to [@anuraj](https://github.com/anuraj) for this [original blog post](htt
 
 ## GitHub Actions deployment
 
-Theética documented release workflow runs in GitHub Actions. It builds, tests, and packs the NuGet package on `main` and on manual dispatch.
+The documented release workflow runs in GitHub Actions. It builds, tests, and packs the NuGet package on `main` and on manual dispatch.
 
 If you want assembly signing to remain enabled in GitHub, add these repository secrets:
 
