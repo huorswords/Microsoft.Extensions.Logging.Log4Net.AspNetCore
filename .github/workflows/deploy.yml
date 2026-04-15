@@ -1,0 +1,80 @@
+name: 🚀 Release Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  SOLUTION_PATH: ./src/Microsoft.Extensions.Logging.Log4net.sln
+  CONFIGURATION: Release
+
+jobs:
+  build:
+    name: 📦 Build, Test, Pack
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: 🛎 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: 🔐 Restore signing assets
+        shell: pwsh
+        env:
+          SIGNING_SNK_BASE64: ${{ secrets.SIGNING_SNK_BASE64 }}
+          SIGNING_PFX_BASE64: ${{ secrets.SIGNING_PFX_BASE64 }}
+          SIGNING_PUBLIC_KEY_BASE64: ${{ secrets.SIGNING_PUBLIC_KEY_BASE64 }}
+        run: |
+          $assetDirectory = Join-Path $env:GITHUB_WORKSPACE 'signing-assets'
+          New-Item -ItemType Directory -Path $assetDirectory -Force | Out-Null
+
+          function Write-SecretFile {
+            param(
+              [string]$SecretValue,
+              [string]$FilePath
+            )
+
+            if ([string]::IsNullOrWhiteSpace($SecretValue)) {
+              return
+            }
+
+            $normalizedValue = $SecretValue -replace '\s', ''
+            [System.IO.File]::WriteAllBytes($FilePath, [Convert]::FromBase64String($normalizedValue))
+          }
+
+          $snkAsset = Join-Path $assetDirectory 'Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk'
+          $pfxAsset = Join-Path $assetDirectory 'Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.pfx'
+          $publicKeyAsset = Join-Path $assetDirectory 'Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.publickey'
+
+          Write-SecretFile -SecretValue $env:SIGNING_SNK_BASE64 -FilePath $snkAsset
+          Write-SecretFile -SecretValue $env:SIGNING_PFX_BASE64 -FilePath $pfxAsset
+          Write-SecretFile -SecretValue $env:SIGNING_PUBLIC_KEY_BASE64 -FilePath $publicKeyAsset
+
+          if (Test-Path $snkAsset) {
+            Copy-Item $snkAsset (Join-Path $env:GITHUB_WORKSPACE 'src/Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk') -Force
+          }
+
+      - name: 🛠 Restore packages
+        run: dotnet restore "${{ env.SOLUTION_PATH }}"
+
+      - name: 🧪 Test
+        shell: pwsh
+        env:
+          DOTNET_ROLL_FORWARD: Major
+        run: dotnet test "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}"
+
+      - name: 📦 Pack
+        run: dotnet pack "./src/Microsoft.Extensions.Logging.Log4Net.AspNetCore/Microsoft.Extensions.Logging.Log4Net.AspNetCore.csproj" --configuration "${{ env.CONFIGURATION }}" --output ./artifacts
+
+      - name: ⬆ Upload NuGet artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget
+          path: ./artifacts/*
