@@ -53,7 +53,7 @@ namespace Unit.Tests
                 .ConfigureLogging(builder =>
                 {
                     builder.SetMinimumLevel(LogLevel.Information);
-                              builder.AddLog4Net(Context.GetLog4netFilePath(Log4NetFileOption.TestAppenderTrace))
+                    builder.AddLog4Net(Context.GetLog4netFilePath(Log4NetFileOption.TestAppenderTrace))
                            .AddDebug();
                 }).Build();
 
@@ -75,7 +75,7 @@ namespace Unit.Tests
                 .ConfigureLogging(builder =>
                 {
                     builder.SetMinimumLevel(LogLevel.Information);
-                              builder.AddLog4Net(Context.GetLog4netFilePath(Log4NetFileOption.TestAppenderTrace), true)
+                    builder.AddLog4Net(Context.GetLog4netFilePath(Log4NetFileOption.TestAppenderTrace), true)
                            .AddDebug();
                 }).Build();
 
