@@ -31,6 +31,7 @@
 		<AssemblyOriginatorKeyFile Condition="'$(Configuration)' == 'Release'">Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk</AssemblyOriginatorKeyFile>
 		<PackageLicenseExpression></PackageLicenseExpression>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 	<PropertyGroup>
 		<IncludeSymbols>true</IncludeSymbols>
@@ -85,6 +86,10 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\README.md">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
