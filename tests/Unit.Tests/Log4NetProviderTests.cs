@@ -121,8 +121,11 @@ namespace Unit.Tests
 
             using (var sut = new Log4NetProvider(options))
             {
-                sut.LoggerRepository.Should().NotBeNull("a repository should be created when the provider is initialized");
-                sut.LoggerRepository.Should().BeSameAs(log4net.LogManager.GetRepository(configurationAssembly));
+                var field = sut.GetType().GetField("loggerRepository", BindingFlags.NonPublic | BindingFlags.Instance);
+                var loggerRepository = field?.GetValue(sut);
+
+                loggerRepository.Should().NotBeNull("a repository should be created when the provider is initialized");
+                loggerRepository.Should().BeSameAs(log4net.LogManager.GetRepository(configurationAssembly));
             }
         }
 
