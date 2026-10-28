@@ -7,39 +7,7 @@ Thanks to [@anuraj](https://github.com/anuraj) for this [original blog post](htt
 [![Release Build](https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/actions/workflows/deploy.yml/badge.svg)](https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/actions/workflows/deploy.yml)
 [![NuGet](https://img.shields.io/nuget/dt/Microsoft.Extensions.Logging.Log4net.AspNetCore.svg)](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Log4Net.AspNetCore/)
 
-## Security status of sample applications
-
-The NuGet audit run on 2026-10-28 found vulnerable dependencies in sample applications targeting end-of-support .NET versions. These are sample application dependency findings; the library project has no vulnerable packages after its SourceLink dependency update. Do not use the affected samples as production applications without upgrading their dependencies and target framework.
-
-Findings by target framework:
-
-| Target framework | Support status | Vulnerable package versions by severity |
-| --- | --- | --- |
-| .NET Core 2.0 | Out of support | **Critical:** `log4net 2.0.8`, `System.Text.Encodings.Web 4.4.0`<br>**High:** `Microsoft.NETCore.App 2.0.0`, `Microsoft.AspNetCore.Http 2.0.3`, `Microsoft.AspNetCore.Identity 2.0.4`, `Microsoft.AspNetCore.Server.Kestrel.Core 2.0.4`, `Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv 2.0.4`, `Microsoft.Data.OData 5.8.2`, `Newtonsoft.Json 10.0.1`, `System.Net.Http 4.3.0`, `System.Text.RegularExpressions 4.3.0`<br>**Moderate:** `Microsoft.Rest.ClientRuntime 2.3.8`, `System.Data.SqlClient 4.4.3`, `System.IdentityModel.Tokens.Jwt 5.1.4`, `System.Net.Security 4.3.0`, `System.Security.Cryptography.Xml 4.4.2` |
-| .NET Core 2.2 | Out of support | **Critical:** `log4net 2.0.8`, `Microsoft.AspNetCore.Server.Kestrel.Core 2.2.0`, `System.Text.Encodings.Web 4.5.0`<br>**High:** `Microsoft.NETCore.App 2.2.0`, `Newtonsoft.Json 11.0.2`, `System.Net.Http 4.3.0`, `System.Text.RegularExpressions 4.3.0`<br>**Moderate:** `MessagePack 1.7.3.7`, `Microsoft.IdentityModel.JsonWebTokens 5.3.0`, `Microsoft.Rest.ClientRuntime 2.3.8`, `System.Data.SqlClient 4.6.1`, `System.IdentityModel.Tokens.Jwt 5.3.0`, `System.Net.Security 4.3.0`, `System.Security.Cryptography.Xml 4.5.0` |
-| .NET Core 3.1 | Out of support | **Critical:** `log4net 2.0.8`<br>**High:** `System.Net.Http 4.1.0`, `System.Security.Cryptography.X509Certificates 4.1.0`, `System.Text.RegularExpressions 4.3.0` |
-| .NET 5 | Out of support | **High:** `System.Text.RegularExpressions 4.3.0`<br>**Moderate:** `log4net 2.0.11` |
-| .NET 6 | Out of support | **Moderate:** `log4net 2.0.13`, `Swashbuckle.AspNetCore.SwaggerUI 6.2.3` |
-| .NET 7 | Out of support | **Moderate:** `log4net 2.0.15` |
-| .NET 8 | In support at audit date | **High:** `System.Text.Json 8.0.0` (Windows Service sample)<br>**Moderate:** `log4net 2.0.15` |
-
-The .NET 8 findings are dependency issues, not an end-of-support framework finding. The next major version of this library will remove target frameworks that are out of support at that release, including `netcoreapp3.1`, `net5.0`, `net6.0`, `net7.0`, and `net9.0`. The .NET Core 2.0 and 2.2 applications are legacy samples; they consume the library's `netstandard2.0` asset rather than an explicit `netcoreapp2.0` or `netcoreapp2.2` target.
-
-The next major version of this library will remove target frameworks that are out of support at that release, including `netcoreapp3.1`, `net5.0`, `net6.0`, `net7.0`, and `net9.0`. The .NET Core 2.0 and 2.2 applications are legacy samples; they consume the library's `netstandard2.0` asset rather than an explicit `netcoreapp2.0` or `netcoreapp2.2` target.
-
-## GitHub Actions deployment
-
-The documented release workflow runs in GitHub Actions. It builds, tests, and packs the NuGet package on `main` and on manual dispatch.
-
-If you want assembly signing to remain enabled in GitHub, add these repository secrets:
-
-* `SIGNING_SNK_BASE64` for `Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk`
-* `SIGNING_PFX_BASE64` for the companion private certificate file, if you want to keep that asset available privately
-* `SIGNING_PUBLIC_KEY_BASE64` for the public key file, if you want to keep that asset available privately
-
-The workflow restores any configured signing assets into the runner at runtime; none of the signing files need to be committed to the repository.
-
-## Example of use
+## Getting started
 
 * Install the package or reference the project into your asp.net core application.
 
@@ -199,6 +167,36 @@ Also note that when trying to allow for levels messages below the Information le
 
 ### Modifying logging behaviour
 In many cases you can modfiy the logging behaviour of the provider to fit your own needs. See [modifying logging behaviour](https://github.com/huorswords/Microsoft.Extensions.Logging.Log4Net.AspNetCore/blob/develop/doc/ModifyingLoggingBehaviour.md) for more information.
+
+## Security status of sample applications
+
+The NuGet audit run on 2026-10-28 found vulnerable dependencies in sample applications targeting end-of-support .NET versions. These are sample application dependency findings; the library project has no vulnerable packages after its SourceLink dependency update. Do not use the affected samples as production applications without upgrading their dependencies and target framework.
+
+Findings by target framework:
+
+| Target framework | Support status | Vulnerable package versions by severity |
+| --- | --- | --- |
+| .NET Core 2.0 | Out of support | **Critical:** `log4net 2.0.8`, `System.Text.Encodings.Web 4.4.0`<br>**High:** `Microsoft.NETCore.App 2.0.0`, `Microsoft.AspNetCore.Http 2.0.3`, `Microsoft.AspNetCore.Identity 2.0.4`, `Microsoft.AspNetCore.Server.Kestrel.Core 2.0.4`, `Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv 2.0.4`, `Microsoft.Data.OData 5.8.2`, `Newtonsoft.Json 10.0.1`, `System.Net.Http 4.3.0`, `System.Text.RegularExpressions 4.3.0`<br>**Moderate:** `Microsoft.Rest.ClientRuntime 2.3.8`, `System.Data.SqlClient 4.4.3`, `System.IdentityModel.Tokens.Jwt 5.1.4`, `System.Net.Security 4.3.0`, `System.Security.Cryptography.Xml 4.4.2` |
+| .NET Core 2.2 | Out of support | **Critical:** `log4net 2.0.8`, `Microsoft.AspNetCore.Server.Kestrel.Core 2.2.0`, `System.Text.Encodings.Web 4.5.0`<br>**High:** `Microsoft.NETCore.App 2.2.0`, `Newtonsoft.Json 11.0.2`, `System.Net.Http 4.3.0`, `System.Text.RegularExpressions 4.3.0`<br>**Moderate:** `MessagePack 1.7.3.7`, `Microsoft.IdentityModel.JsonWebTokens 5.3.0`, `Microsoft.Rest.ClientRuntime 2.3.8`, `System.Data.SqlClient 4.6.1`, `System.IdentityModel.Tokens.Jwt 5.3.0`, `System.Net.Security 4.3.0`, `System.Security.Cryptography.Xml 4.5.0` |
+| .NET Core 3.1 | Out of support | **Critical:** `log4net 2.0.8`<br>**High:** `System.Net.Http 4.1.0`, `System.Security.Cryptography.X509Certificates 4.1.0`, `System.Text.RegularExpressions 4.3.0` |
+| .NET 5 | Out of support | **High:** `System.Text.RegularExpressions 4.3.0`<br>**Moderate:** `log4net 2.0.11` |
+| .NET 6 | Out of support | **Moderate:** `log4net 2.0.13`, `Swashbuckle.AspNetCore.SwaggerUI 6.2.3` |
+| .NET 7 | Out of support | **Moderate:** `log4net 2.0.15` |
+| .NET 8 | In support at audit date | **High:** `System.Text.Json 8.0.0` (Windows Service sample)<br>**Moderate:** `log4net 2.0.15` |
+
+The .NET 8 findings are dependency issues, not an end-of-support framework finding. The next major version of this library will remove target frameworks that are out of support at that release, including `netcoreapp3.1`, `net5.0`, `net6.0`, `net7.0`, and `net9.0`. The .NET Core 2.0 and 2.2 applications are legacy samples; they consume the library's `netstandard2.0` asset rather than an explicit `netcoreapp2.0` or `netcoreapp2.2` target.
+
+## GitHub Actions deployment
+
+The documented release workflow runs in GitHub Actions. It builds, tests, and packs the NuGet package on `main` and on manual dispatch.
+
+If you want assembly signing to remain enabled in GitHub, add these repository secrets:
+
+* `SIGNING_SNK_BASE64` for `Microsoft.Extensions.Logging.Log4Net.AspNetCoreKey.snk`
+* `SIGNING_PFX_BASE64` for the companion private certificate file, if you want to keep that asset available privately
+* `SIGNING_PUBLIC_KEY_BASE64` for the public key file, if you want to keep that asset available privately
+
+The workflow restores any configured signing assets into the runner at runtime; none of the signing files need to be committed to the repository.
 
 ## Special thanks
 
