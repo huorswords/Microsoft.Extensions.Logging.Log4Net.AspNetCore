@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+    ignore:
+      # Each target framework pins the Microsoft.Extensions.* line it supports; only patches are safe to take automatically.
+      - dependency-name: "Microsoft.Extensions.*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      # FluentAssertions 8 moved to a commercial licence.
+      - dependency-name: "FluentAssertions"
+        update-types: ["version-update:semver-major"]
+    groups:
+      test-dependencies:
+        patterns:
+          - "xunit*"
+          - "Microsoft.NET.Test.Sdk"
+          - "FluentAssertions"
+          - "Moq"
+          - "coverlet.*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
