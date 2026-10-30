@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [opened, edited, synchronize]
 
+permissions:
+  contents: read
+
 env:
   SOLUTION_PATH: ./src/Microsoft.Extensions.Logging.Log4net.sln
 
